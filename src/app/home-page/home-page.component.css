@@ -1,0 +1,260 @@
+.home-page {
+    overflow: hidden;
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+.nav-item button {
+    margin: 5px;
+    color: var(--black-color);
+}
+
+mat-toolbar {
+    z-index: 12;
+    position: fixed;
+    background: var(--white-color);
+}
+
+mat-toolbar img {
+    height: 65px;
+    width: 150px;
+    cursor: pointer;
+}
+
+.slide-image {
+    width: 100% !important;
+    height: 650px;
+}
+
+.text {
+    position: absolute;
+    top: 80%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(121, 48, 206);
+    color: #d9f00a;
+    padding: 10px 20px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.text-1 {
+    position: absolute;
+    top: 40%;
+    left: 16%;
+    color: var(--white-color);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 35px;
+}
+
+.para-1 {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    color: rgb(196, 193, 193);
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.box-1 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: 40%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(122 48 206 / 23%);
+    clip-path: circle(50% at 50% 50%);
+}
+
+.text-2 {
+    position: absolute;
+    top: 30%;
+    left: 22%;
+    color: var(--black-color);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 35px;
+}
+
+.para-2 {
+    position: absolute;
+    top: 45%;
+    left: 8%;
+    width: 85%;
+    color: var(--greay-color);
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.box-2 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: 70%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(179, 16, 16, 0.23);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.text-3 {
+    position: absolute;
+    top: 20%;
+    left: 16%;
+    color: var(--white-color);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 1px;
+    width: 75%;
+    font-size: 50px;
+}
+
+.para-3 {
+    position: absolute;
+    top: 40%;
+    left: 16%;
+    width: 70%;
+    color: #cbdbde;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.box-3 {
+    position: absolute;
+    width: 60%;
+    height: 300px;
+    top: 30%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(179, 16, 16, 0.23);
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+}
+
+.text-4 {
+    position: absolute;
+    top: 23%;
+    left: 16%;
+    color: var(--white-color);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 1px;
+    width: 70%;
+    font-size: 40px;
+}
+
+.para-4 {
+    position: absolute;
+    top: 70%;
+    left: 16%;
+    width: 70%;
+    color: #cbdbde;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.box-4 {
+    position: absolute;
+    width: 60%;
+    height: 385px;
+    top: 44%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(79 74 74 / 74%);
+    clip-path: ellipse(50% 43% at 50% 50%);
+}
+
+@media screen and (max-width: 768px) {
+    .slide-image {
+        width: 100% !important;
+        height: 350px;
+    }
+
+    .text-1 {
+        font-weight: 550;
+        font-size: 20px;
+        top: 30%;
+        left: 10%;
+    }
+
+    .para-1 {
+        left: 5%;
+        font-size: 12px;
+    }
+
+    .box-1 {
+        width: 260px;
+        height: 250px;
+        top: 49%;
+        left: 30%;
+    }
+
+    .box-2 {
+        width: 325px;
+        height: 300px;
+        left: 40%;
+    }
+
+    .text-2 {
+        top: 34%;
+        left: 17%;
+        font-size: 20px;
+    }
+
+    .para-2 {
+        font-size: 10px;
+    }
+
+    .box-3 {
+        width: 350px;
+        height: 100px;
+    }
+
+    .text-3 {
+        font-size: 15px;
+        top: 27%;
+        left: 15%;
+    }
+
+    .para-3 {
+        top: 60%;
+        left: 10%;
+        font-size: 10px;
+    }
+
+    .box-4 {
+        width: 65%;
+        height: 200px;
+    }
+
+    .text-4 {
+        font-size: 15px;
+    }
+
+    .para-4 {
+        top: 65%;
+        font-size: 12px;
+    }
+}

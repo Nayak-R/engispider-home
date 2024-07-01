@@ -1,1 +1,92 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+    --white-color: #EEEEEE;
+    --greay-color: #686D76;
+    --black-color: #373A40;
+    --orange-color: #DC5F00;
+}
+
+
+.underLine {
+    position: relative;
+    text-decoration: none;
+    transition: all .35s ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--orange-color);
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    &:hover,
+    &:active {
+        color: rgb(7, 99, 71);
+
+        &::before {
+            visibility: visible;
+            transform: scaleX(1);
+            font-weight: bold;
+        }
+    }
+}
+
+.slider-frame .owl-dots {
+    position: absolute;
+    left: 47%;
+    top: 90%;
+}
+
+.slider-frame .owl-prev,
+.slider-frame .owl-next {
+    background: rgb(223, 223, 223) !important;
+    color: black !important;
+    height: 50px;
+    width: 50px;
+    border-radius: 50% !important;
+    position: absolute !important;
+    top: 50%;
+    transition: .3s all ease;
+}
+
+.slider-frame .owl-prev {
+    left: 10px;
+    transform: translate(-50%, -50%);
+    z-index: 111;
+}
+
+.slider-frame .owl-next {
+    right: -30px;
+    transform: translate(-50%, -50%);
+}
+
+.slider-frame .owl-prev i,
+.slider-frame .owl-next i {
+    font-size: 30px;
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.slider-frame .owl-prev:hover,
+.slider-frame.owl-next:hover {
+    color: rgb(223, 223, 223) !important;
+    background: black !important;
+}

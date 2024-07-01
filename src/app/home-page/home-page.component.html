@@ -1,0 +1,71 @@
+<div class="home-page">
+    <mat-toolbar>
+        <img src="assets/logo.png" alt="">
+        <span class="fill-remaining-space"></span>
+        <div class="nav-item d-none d-md-block">
+            <button mat-button class="underLine">Send Inquery</button>
+            <button mat-button class="underLine">Book a Demo</button>
+            <button mat-button class="underLine">Contact Us</button>
+        </div>
+        <div class=" d-block d-md-none">
+            <div class="button-container">
+                <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button mat-button class="underLine">Send Inquery</button>
+                <button mat-button class="underLine">Book a Demo</button>
+                <button mat-button class="underLine">Contact Us</button>
+            </mat-menu>
+        </div>
+    </mat-toolbar>
+
+
+    <div class="slider-frame">
+        <owl-carousel-o [options]="customOptionsDisplayImage">
+          <ng-template carouselSlide>
+            <div class="outer-div">
+              <img class="slide-image" src="assets/image-1.jpg" alt="">   
+              <div class="box-1">
+                <h1 class="text-1">Performance Matters</h1>
+                <p class="para-1">Our coding technology empowers high-end performance.</p>
+              </div>
+            </div>
+          </ng-template>
+      
+          <ng-template carouselSlide>
+            <div class="outer-div">
+              <img class="slide-image" src="assets/image-2.jpg" alt="">   
+              <div class="box-2">
+                <h1 class="text-2">Precision in Planning</h1>
+                <p class="para-2">Streamlining processes through meticulous and strategic planning strategies for optimal outcomes.</p>
+              </div>
+            </div>
+          </ng-template>
+      
+          <ng-template carouselSlide>
+            <div class="outer-div">
+              <img class="slide-image" src="assets/image-4.jpg" alt="">   
+              <div class="box-3">
+                <h1 class="text-3">Dedicated Support</h1>
+                <p class="para-3">Expert assistance available whenever you need it, ensuring seamless operations.</p>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template carouselSlide>
+            <div class="outer-div">
+              <img class="slide-image" src="assets/image-3.jpg" alt="">   
+              <div class="box-4">
+                <h1 class="text-4">We specialize in designing, developing, and hosting your digital solutions.</h1>
+                <p class="para-4">All services in a single location</p>
+              </div>
+            </div>
+          </ng-template>
+          
+          
+        </owl-carousel-o>
+      </div>
+
+</div>
