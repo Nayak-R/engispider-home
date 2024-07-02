@@ -1,69 +1,206 @@
 <div class="home-page">
-    <mat-toolbar>
-        <img src="assets/logo temp.png" alt="">
-        <span class="fill-remaining-space"></span>
-        <div class="nav-item d-none d-md-block">
-            <button mat-button class="underLine">Send Inquery</button>
-            <button mat-button class="underLine">Book a Demo</button>
-            <button mat-button class="underLine">Contact Us</button>
-        </div>
-        <div class=" d-block d-md-none">
-            <div class="button-container">
-                <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
-                    <mat-icon>menu</mat-icon>
-                </button>
-            </div>
-            <mat-menu #menu="matMenu">
-                <button mat-button class="underLine">Send Inquery</button>
-                <button mat-button class="underLine">Book a Demo</button>
-                <button mat-button class="underLine">Contact Us</button>
-            </mat-menu>
-        </div>
-    </mat-toolbar>
-
-    <div class="slider-frame">
-      <owl-carousel-o [options]="customOptionsDisplayImage" (translated)="onTranslated($event)">
-        <ng-template carouselSlide>
-          <div class="outer-div">
-            <img class="slide-image" [ngClass]="{'zoom': isZooming(0)}" src="assets/image-1.jpg" alt="Performance Matters">   
-            <div class="box-1">
-              <h1 class="text-1">Performance Matters</h1>
-              <p class="para-1">Our coding technology empowers high-end performance.</p>
-            </div>
-          </div>
-        </ng-template>
-    
-        <ng-template carouselSlide>
-          <div class="outer-div">
-            <img class="slide-image" [ngClass]="{'zoom': isZooming(1)}" src="assets/image-2.jpg" alt="Precision in Planning">   
-            <div class="box-2">
-              <h1 class="text-2">Precision in Planning</h1>
-              <p class="para-2">Streamlining processes through meticulous and strategic planning strategies for optimal outcomes.</p>
-            </div>
-          </div>
-        </ng-template>
-    
-        <ng-template carouselSlide>
-          <div class="outer-div">
-            <img class="slide-image" [ngClass]="{'zoom': isZooming(2)}" src="assets/image-4.jpg" alt="Dedicated Support">   
-            <div class="box-3">
-              <h1 class="text-3">Dedicated Support</h1>
-              <p class="para-3">Expert assistance available whenever you need it, ensuring seamless operations.</p>
-            </div>
-          </div>
-        </ng-template>
-    
-        <ng-template carouselSlide>
-          <div class="outer-div">
-            <img class="slide-image" [ngClass]="{'zoom': isZooming(3)}" src="assets/image-3.jpg" alt="We specialize in designing">   
-            <div class="box-4">
-              <h1 class="text-4">We specialize in designing, developing, and hosting your digital solutions.</h1>
-              <p class="para-4">All services in a single location</p>
-            </div>
-          </div>
-        </ng-template>
-      </owl-carousel-o>
+  <mat-toolbar>
+    <img src="assets/logo temp.png" alt="">
+    <span class="fill-remaining-space"></span>
+    <div class="nav-item d-none d-md-block">
+      <button mat-button class="underLine">Send Inquery</button>
+      <button mat-button class="underLine">Book a Demo</button>
+      <button mat-button class="underLine">Contact Us</button>
     </div>
-    
+    <div class=" d-block d-md-none">
+      <div class="button-container">
+        <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <mat-menu #menu="matMenu">
+        <button mat-button class="underLine">Send Inquery</button>
+        <button mat-button class="underLine">Book a Demo</button>
+        <button mat-button class="underLine">Contact Us</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+
+  <div class="slider-frame">
+    <owl-carousel-o [options]="customOptionsDisplayImage" (translated)="onTranslated($event)">
+      <ng-template carouselSlide>
+        <div class="outer-div">
+          <img class="slide-image" [ngClass]="{'zoom': isZooming(0)}" src="assets/image-1.jpg"
+            alt="Performance Matters">
+          <div class="box-1">
+            <h1 class="text-1">Performance Matters</h1>
+            <p class="para-1">Our coding technology empowers high-end performance.</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template carouselSlide>
+        <div class="outer-div">
+          <img class="slide-image" [ngClass]="{'zoom': isZooming(1)}" src="assets/image-2.jpg"
+            alt="Precision in Planning">
+          <div class="box-2">
+            <h1 class="text-2">Precision in Planning</h1>
+            <p class="para-2">Streamlining processes through meticulous and strategic planning strategies for optimal
+              outcomes.</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template carouselSlide>
+        <div class="outer-div">
+          <img class="slide-image" [ngClass]="{'zoom': isZooming(2)}" src="assets/image-4.jpg" alt="Dedicated Support">
+          <div class="box-3">
+            <h1 class="text-3">Dedicated Support</h1>
+            <p class="para-3">Expert assistance available whenever you need it, ensuring seamless operations.</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template carouselSlide>
+        <div class="outer-div">
+          <img class="slide-image" [ngClass]="{'zoom': isZooming(3)}" src="assets/image-3.jpg"
+            alt="We specialize in designing">
+          <div class="box-4">
+            <h1 class="text-4">We specialize in designing, developing, and hosting your digital solutions.</h1>
+            <p class="para-4">All services in a single location</p>
+          </div>
+        </div>
+      </ng-template>
+    </owl-carousel-o>
+  </div>
+
+  <section>
+    <div class="about-sec">
+      <div class="container ">
+        <div class="row">
+          <div class="col-sm-12 col-md-6 ">
+            <figure class="why-img-box">
+              <img class="img-fluid why-img" src="assets/computer.jpg" alt="Why Engispider">
+              <i class='bx bx-check-shield col-6 why-icon-1'></i>
+              <i class='bx bx-timer col-6 why-icon-2'></i>
+              <i class='bx bxl-internet-explorer col-6 why-icon-3'></i>
+              <i class='bx bx-support col-6 why-icon-4'></i>
+            </figure>
+            <ul class="d-inline-flex">
+              <li>Allways Online</li>
+              <li>Allways Ready to Hear You</li>
+              <li>Safe & Secure</li>
+              <li>Your Time Metters</li>             
+            </ul>
+          </div>
+
+          <div class="col-sm-12 col-md-6 p-5">
+            <div class="why-heading">
+              <h1>Transform with <span class="why-name">Engispider</span></h1>
+            </div>
+            <div class="why-para">
+              <p>Engispider, your trusted partner in digital transformation. We specialize in providing comprehensive
+                ERP web applications designed to streamline and optimize your business processes. Our solutions are
+                tailored to meet the unique needs of your organization, ensuring efficiency, accessibility, and
+                scalability.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="services p-5">
+      <div class="row text-centre">
+        <h1 class="services-head">
+          Our Services
+        </h1>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.9s" data-wow-delay="1.9s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>Custom Website Development</h1>
+            <p>Elevate your online presence with our custom website development services. Whether you need a stunning
+              homepage, a high-converting landing page, or a complete website overhaul, our team is here to bring your
+              vision to life.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>Software Development</h1>
+            <p>Utilizing Angular, Java Spring Boot, MongoDB to create robust, scalable software solutions at EngiSpider
+              Technologies.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>Web Application Development</h1>
+            <p>Crafting dynamic web applications that enhance user experience and business efficiency with innovative
+              technologies.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>Website Designing</h1>
+            <p>Designing visually appealing and functional websites that reflect your brand identity and engage your
+              audience effectively.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>E-commerce Development</h1>
+            <p>Building tailored e-commerce platforms that drive sales and customer satisfaction through seamless user
+              interfaces and secure transactions.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 p-3 mt-5">
+          <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
+            style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
+            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <h1>All Types of Software Solutions</h1>
+            <p>Providing comprehensive, customizable software solutions to meet diverse business needs and accelerate
+              digital transformation.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+<!-- we work on platforms -->
+
+<!-- review -->
+
+
+<section>
+  <div class="table-box">
+    <div class="table-inn row">
+      <div class="col-sm-12 col-md-6 table-head ">
+        <div class="row m-3">
+          Experience our solution firsthand - request a demo today!
+        </div>
+        <div class="row m-4">
+          <button type="button" class="btn btn-outline-success table-btm">Book for a Demo</button>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 table-img">
+        <img src="assets/desk.png" alt="Phone Chat" class="table-image">
+      </div>
+    </div>
+  </div>
+</section>
 
 </div>
