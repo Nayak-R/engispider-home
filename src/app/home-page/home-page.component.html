@@ -21,51 +21,49 @@
         </div>
     </mat-toolbar>
 
-
     <div class="slider-frame">
-        <owl-carousel-o [options]="customOptionsDisplayImage">
-          <ng-template carouselSlide>
-            <div class="outer-div">
-              <img class="slide-image" src="assets/image-1.jpg" alt="">   
-              <div class="box-1">
-                <h1 class="text-1">Performance Matters</h1>
-                <p class="para-1">Our coding technology empowers high-end performance.</p>
-              </div>
+      <owl-carousel-o [options]="customOptionsDisplayImage" (translated)="onTranslated($event)">
+        <ng-template carouselSlide>
+          <div class="outer-div">
+            <img class="slide-image" [ngClass]="{'zoom': isZooming(0)}" src="assets/image-1.jpg" alt="Performance Matters">   
+            <div class="box-1">
+              <h1 class="text-1">Performance Matters</h1>
+              <p class="para-1">Our coding technology empowers high-end performance.</p>
             </div>
-          </ng-template>
-      
-          <ng-template carouselSlide>
-            <div class="outer-div">
-              <img class="slide-image" src="assets/image-2.jpg" alt="">   
-              <div class="box-2">
-                <h1 class="text-2">Precision in Planning</h1>
-                <p class="para-2">Streamlining processes through meticulous and strategic planning strategies for optimal outcomes.</p>
-              </div>
+          </div>
+        </ng-template>
+    
+        <ng-template carouselSlide>
+          <div class="outer-div">
+            <img class="slide-image" [ngClass]="{'zoom': isZooming(1)}" src="assets/image-2.jpg" alt="Precision in Planning">   
+            <div class="box-2">
+              <h1 class="text-2">Precision in Planning</h1>
+              <p class="para-2">Streamlining processes through meticulous and strategic planning strategies for optimal outcomes.</p>
             </div>
-          </ng-template>
-      
-          <ng-template carouselSlide>
-            <div class="outer-div">
-              <img class="slide-image" src="assets/image-4.jpg" alt="">   
-              <div class="box-3">
-                <h1 class="text-3">Dedicated Support</h1>
-                <p class="para-3">Expert assistance available whenever you need it, ensuring seamless operations.</p>
-              </div>
+          </div>
+        </ng-template>
+    
+        <ng-template carouselSlide>
+          <div class="outer-div">
+            <img class="slide-image" [ngClass]="{'zoom': isZooming(2)}" src="assets/image-4.jpg" alt="Dedicated Support">   
+            <div class="box-3">
+              <h1 class="text-3">Dedicated Support</h1>
+              <p class="para-3">Expert assistance available whenever you need it, ensuring seamless operations.</p>
             </div>
-          </ng-template>
-
-          <ng-template carouselSlide>
-            <div class="outer-div">
-              <img class="slide-image" src="assets/image-3.jpg" alt="">   
-              <div class="box-4">
-                <h1 class="text-4">We specialize in designing, developing, and hosting your digital solutions.</h1>
-                <p class="para-4">All services in a single location</p>
-              </div>
+          </div>
+        </ng-template>
+    
+        <ng-template carouselSlide>
+          <div class="outer-div">
+            <img class="slide-image" [ngClass]="{'zoom': isZooming(3)}" src="assets/image-3.jpg" alt="We specialize in designing">   
+            <div class="box-4">
+              <h1 class="text-4">We specialize in designing, developing, and hosting your digital solutions.</h1>
+              <p class="para-4">All services in a single location</p>
             </div>
-          </ng-template>
-          
-          
-        </owl-carousel-o>
-      </div>
+          </div>
+        </ng-template>
+      </owl-carousel-o>
+    </div>
+    
 
 </div>

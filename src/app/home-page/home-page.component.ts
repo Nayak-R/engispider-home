@@ -17,7 +17,7 @@ export class HomePageComponent {
     pullDrag: true,
     dots: true,
     autoplay: true,
-    autoplayTimeout: 3000, // Set the time between slides in milliseconds
+    autoplayTimeout: 4000, // Set the time between slides in milliseconds
     autoplayHoverPause: true, // Pause autoplay when hovering over the carousel
     items: 1,
     navSpeed: 900,
@@ -36,7 +36,18 @@ export class HomePageComponent {
         items: 1
       }
     },
-    nav: false
+    nav: false,
+    animateOut: 'fadeOut'
+  }
+
+  currentIndex = 0;
+
+  onTranslated(event: any) {
+    this.currentIndex = event.startPosition;
+  }
+
+  isZooming(index: number) {
+    return this.currentIndex === index;
   }
 
 }
