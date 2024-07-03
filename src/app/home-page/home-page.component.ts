@@ -40,6 +40,36 @@ export class HomePageComponent {
     animateOut: 'fadeOut'
   }
 
+  customOptionsTestimonial: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: true,
+    autoplay: true,
+    autoplayTimeout: 3000, // Set the time between slides in milliseconds
+    autoplayHoverPause: true, // Pause autoplay when hovering over the carousel
+    items: 1,
+    center: true,
+    navSpeed: 700,
+    navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 1
+      },
+      740: {
+        items: 3
+      },
+      940: {
+        items: 4
+      }
+    },
+    nav: false
+  }
+
   currentIndex = 0;
 
   onTranslated(event: any) {
