@@ -5,7 +5,8 @@
     <div class="nav-item d-none d-md-block">
       <button mat-button class="underLine">Send Inquery</button>
       <button mat-button class="underLine">Book a Demo</button>
-      <button mat-button class="underLine">Contact Us</button>
+      <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+      <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
     </div>
     <div class=" d-block d-md-none">
       <div class="button-container">
@@ -16,7 +17,8 @@
       <mat-menu #menu="matMenu">
         <button mat-button class="underLine">Send Inquery</button>
         <button mat-button class="underLine">Book a Demo</button>
-        <button mat-button class="underLine">Contact Us</button>
+        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+        <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
       </mat-menu>
     </div>
   </mat-toolbar>
@@ -106,7 +108,7 @@
     </div>
   </section>
 
-  <section>
+  <section  id="services-section">
     <div class="services p-5">
       <div class="row text-centre">
         <h1 class="services-head">
@@ -364,7 +366,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="contact-section">
     <div class="footer">
       <div class="row">
         <div class="col-sm-12 col-md-4">

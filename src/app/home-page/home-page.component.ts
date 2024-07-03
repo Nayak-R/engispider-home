@@ -80,4 +80,14 @@ export class HomePageComponent {
     return this.currentIndex === index;
   }
 
+  scrollToSection(data:string) {
+    if(data==='services') {
+      document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    if(data==='contact') {
+      document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
 }
