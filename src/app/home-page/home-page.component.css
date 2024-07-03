@@ -648,6 +648,10 @@ li:last-child {
     color: rgba(255, 255, 255, 0.767);
 }
 
+.text-padding {
+    padding: 3rem ;
+}
+
 @media screen and (max-width: 768px) {
 
     mat-toolbar img {
@@ -794,6 +798,10 @@ li:last-child {
     .techno-logo-8 {
         top: 35%;
         left: 44%;
+    }
+
+    .text-padding {
+        padding: 10px;
     }
 }
 
