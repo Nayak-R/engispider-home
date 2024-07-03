@@ -2,6 +2,11 @@
     overflow: hidden;
 }
 
+.mat-mdc-mini-fab.mat-accent {
+    --mdc-fab-container-color: #DC5F00;
+    --mat-mdc-fab-color: var(--white-color);
+}
+
 .fill-remaining-space {
     flex: 1 1 auto;
 }
