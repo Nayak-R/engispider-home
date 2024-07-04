@@ -3,9 +3,9 @@
     <img src="assets/logo temp.png" alt="">
     <span class="fill-remaining-space"></span>
     <div class="nav-item d-none d-md-block">
-      <button mat-button class="underLine">Send Inquery</button>
-      <button mat-button class="underLine">Book a Demo</button>
       <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+      <button mat-button class="underLine">Send Inquery</button>
+      <button mat-button class="underLine">Book a Demo</button>      
       <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
     </div>
     <div class=" d-block d-md-none">
@@ -15,9 +15,9 @@
         </button>
       </div>
       <mat-menu #menu="matMenu">
+        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
         <button mat-button class="underLine">Send Inquery</button>
         <button mat-button class="underLine">Book a Demo</button>
-        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
         <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
       </mat-menu>
     </div>
@@ -108,7 +108,7 @@
     </div>
   </section>
 
-  <section  id="services-section">
+  <section id="services-section">
     <div class="services p-5">
       <div class="row text-centre">
         <h1 class="services-head">
@@ -119,7 +119,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.9s" data-wow-delay="1.9s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bxl-internet-explorer'></i></div>
             <h1>Custom Website Development</h1>
             <p>Elevate your online presence with our custom website development services. Whether you need a stunning
               homepage, a high-converting landing page, or a complete website overhaul, our team is here to bring your
@@ -130,7 +130,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-laptop'></i></div>
             <h1>Software Development</h1>
             <p>Utilizing Angular, Java Spring Boot, MongoDB to create robust, scalable software solutions at EngiSpider
               Technologies.</p>
@@ -140,7 +140,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-desktop'></i></div>
             <h1>Web Application Development</h1>
             <p>Crafting dynamic web applications that enhance user experience and business efficiency with innovative
               technologies.</p>
@@ -150,7 +150,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-palette'></i></div>
             <h1>Website Designing</h1>
             <p>Designing visually appealing and functional websites that reflect your brand identity and engage your
               audience effectively.</p>
@@ -160,7 +160,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-cart'></i></div>
             <h1>E-commerce Development</h1>
             <p>Building tailored e-commerce platforms that drive sales and customer satisfaction through seamless user
               interfaces and secure transactions.</p>
@@ -170,7 +170,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="service-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-devices'></i></div>
             <h1>All Types of Software Solutions</h1>
             <p>Providing comprehensive, customizable software solutions to meet diverse business needs and accelerate
               digital transformation.</p>
@@ -191,12 +191,15 @@
               <h1>Creating Excellence with Modern Technologies</h1>
             </div>
             <div class="why-para">
-              <p>We at <span class="techno-name techno-logo-name">Engispider</span>, specialize in delivering top-notch websites,
+              <p>We at <span class="techno-name techno-logo-name">Engispider</span>, specialize in delivering top-notch
+                websites,
                 applications, and web solutions
-                using high-end technology platforms like <span class="techno-angular techno-logo-name">Angular</span>, <span
-                  class="techno-react techno-logo-name">React</span>, <span class="techno-js techno-logo-name">JavaScript</span>, <span
-                  class="techno-node techno-logo-name">Node.js</span>, <span class="techno-java techno-logo-name">Java Spring Boot</span>, <span
-                  class="techno-md techno-logo-name">MongoDB</span>, and <span class="techno-sql techno-logo-name">SQL</span>.
+                using high-end technology platforms like <span class="techno-angular techno-logo-name">Angular</span>,
+                <span class="techno-react techno-logo-name">React</span>, <span
+                  class="techno-js techno-logo-name">JavaScript</span>, <span
+                  class="techno-node techno-logo-name">Node.js</span>, <span class="techno-java techno-logo-name">Java
+                  Spring Boot</span>, <span class="techno-md techno-logo-name">MongoDB</span>, and <span
+                  class="techno-sql techno-logo-name">SQL</span>.
                 Our expertise ensures innovative, robust, and scalable solutions tailored to meet your business needs.
               </p>
             </div>
@@ -232,8 +235,10 @@
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting. "
+                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
+                small,
+                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
+                "
               </div>
               <div class="student-name">Rahul Nayak</div>
               <div class="student-company">Software Developer</div>
@@ -242,8 +247,10 @@
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting. "
+                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
+                small,
+                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
+                "
               </div>
               <div class="student-name">Rahul Nayak</div>
               <div class="student-company">Software Developer</div>
@@ -252,8 +259,10 @@
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting. "
+                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
+                small,
+                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
+                "
               </div>
               <div class="student-name">Rahul Nayak</div>
               <div class="student-company">Software Developer</div>
@@ -262,8 +271,10 @@
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting. "
+                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
+                small,
+                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
+                "
               </div>
               <div class="student-name">Rahul Nayak</div>
               <div class="student-company">Software Developer</div>
@@ -285,7 +296,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.9s" data-wow-delay="1.9s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-shield-quarter'></i></div>
             <h1>Gatepass System</h1>
             <p>Enhance your security and streamline visitor management with our advanced gatepass
               system.
@@ -296,7 +307,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-fingerprint'></i></div>
             <h1>Biometric HRMS</h1>
             <p>Effortlessly manage your human resources with our biometric HRMS solution. From
               attendance
@@ -307,7 +318,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-money-withdraw'></i></div>
             <h1>Financial Module</h1>
             <p>Manage your finances with ease using our comprehensive online financial module. From
               invoicing to expense tracking, our solution simplifies financial management.</p>
@@ -317,7 +328,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-store-alt'></i></div>
             <h1>Inventory Management</h1>
             <p>Optimize your inventory levels, reduce costs, and prevent stockouts with our robust
               inventory management system. Gain real-time visibility into your inventory to make informed decisions.</p>
@@ -327,7 +338,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-user-voice'></i></div>
             <h1>Exceptional Customer Service</h1>
             <p>We provide top-notch service to ensure your satisfaction. Our dedicated support team is
               always ready to assist you, making your experience smooth and hassle-free.</p>
@@ -337,7 +348,7 @@
         <div class="col-md-4 col-sm-12 p-3 mt-5">
           <div class="deliverables-item wow  fadeInUp animated " data-wow-duration="1.5s" data-wow-delay="1.5s"
             style="visibility: visible; animation-duration: 2s; animation-delay: 1.9s; animation-name: fadeInUp;">
-            <div class="hi-icon service-icon"><img src="assets/logo temp.png" alt="engispider logo"></div>
+            <div class="hi-icon service-icon"><i class='bx bx-shield-plus'></i></div>
             <h1>Robust Security</h1>
             <p>Protect your data with our advanced security protocols and regular updates.</p>
           </div>
@@ -366,41 +377,87 @@
     </div>
   </section>
 
+  <button class="scroll-to-top text-centre align-cntr" (click)="scrollToTop()" *ngIf="isVisible" mat-fab matTooltip="Back To Top">
+    <i class='bx bxs-to-top'></i>
+  </button>
+
   <section id="contact-section">
     <div class="footer">
       <div class="row">
-        <div class="col-sm-12 col-md-4">
-          <div class="contact text-centre">
-            <div class="contact-head">Contact Us</div>
-            <div class="row p-1 flex-end">
-              <div class="col-4 text-right">
-                <i class='bx bxs-phone-call'></i>
-              </div>
-              <div class="col-8 text-left">
-                <a class="underLine a-tag p-1" href="tel:09937000553"> +91 99370 00553</a>
-              </div>
+
+        <div class="col-sm-12 col-md-3 align-cntr text-centre">
+          <img class="footer-logo m-4" src="assets/logo.png" alt="Logo">
+        </div>
+
+        <div class="col-sm-12 col-md-3 mt-4">
+          <div class="text-centre">
+            <div class="row align-cntr p-1 ">
+              <h2 class="contact-head ">Contacts</h2>
             </div>
-            <div class="row p-1 flex-end">
-              <div class="col-4 text-right">
-                <i class='bx bxl-gmail'></i>
-              </div>
-              <div class="col-8 text-left">
-                <a class="underLine a-tag p-1" href="mailto:engispider@gmail.com"> engispider@gmail.com</a>
+            <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bx-mobile-vibration'></i></div>
+              <div class="col-10"><a class="btm-p" href="tel:09937000553"> +91 99370 00553</a></div>
+            </div>
+            <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bxs-phone-call'></i></div>
+              <div class="col-10"><a class="btm-p" href="tel:+916744617932">+91 674 4617932</a></div>
+            </div>
+            <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bx-mail-send'></i></div>
+              <div class="col-10"><a class="btm-p" href="mailto:info@engispider.com">info@engispider.com</a></div>
+            </div>
+            <!-- <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bx-mail-send'></i></div>
+              <div class="col-10"><a class="btm-p" href="mailto:support@engispider.com">support@engispider.com</a></div>
+            </div>
+            <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bx-mail-send'></i></div>
+              <div class="col-10"><a class="btm-p" href="mailto:accounts@engispider.com">accounts@engispider.com</a></div>
+            </div> -->
+            <div class="row align-cntr p-1 text-start">
+              <div class="col-2"><i class='bx bxs-landmark'></i></div>
+              <div class="col-10">
+                <p class="btm-p">Jharapada, Laxmisagar
+                  Bhubaneswar, Odisha 751006</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-12 col-md-4"></div>
-        <div class="col-sm-12 col-md-4">
-          <div class="pull-right p-4">
-            <div class="row">
-              <img class="footer-logo" src="assets/logo.png" alt="Logo">
-            </div>
-            <div class="row footer-name">Engispider Technologies</div>
-            <div class="row footer-para">Jharapada, Laxmisagar</div>
-            <div class="row footer-para">Bhubaneswar, Odisha 751006</div>
-          </div>
 
+        <div class="col-sm-12 col-md-3 mt-4">
+          <div class="text-centre">
+            <div class="row align-cntr p-1 ">
+              <h2 class="contact-head ">Social Media</h2>
+            </div>
+            <div class="row align-cntr p-1">
+              <a class="btm-p p-1" href="https://www.instagram.com" target="_blank">Instagram</a>
+            </div>
+            <div class="row align-cntr p-1">
+              <a class="btm-p p-1" href="https://www.facebook.com" target="_blank">Facebook</a>
+            </div>
+            <div class="row align-cntr p-1">
+              <a class="btm-p p-1" href="https://in.linkedin.com" target="_blank">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3 mt-4">
+          <div class="text-centre">
+            <div class="row align-cntr p-1 ">
+              <h2 class="contact-head ">Important Links</h2>
+            </div>
+            <div class="row align-cntr p-1">
+              <p class="btm-p" (click)="scrollToSection('services')">Our Services</p>
+            </div>
+            <div class="row align-cntr p-1">
+              <p class="btm-p">Send Inquery</p>
+            </div>
+            <div class="row align-cntr p-1">
+              <p class="btm-p" >Book a Demo</p>
+            </div>
+            <div class="row align-cntr p-1">
+              <p class="btm-p" (click)="scrollToSection('services')">Contact Us</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -409,6 +466,6 @@
   <div class="footer-bottom">
     <p>&copy; Copyright 2024 | All Rights Reserved</p>
     <p> <a href="https://engispider.com" target="_blank">Engispider Technologies</a></p>
-</div>
+  </div>
 
 </div>

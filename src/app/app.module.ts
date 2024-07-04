@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
 
@@ -27,6 +28,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
+    MatTooltipModule
 
   ],
 

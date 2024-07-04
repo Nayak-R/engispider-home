@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -88,6 +88,17 @@ export class HomePageComponent {
     if(data==='contact') {
       document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  isVisible = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isVisible = window.scrollY > 500;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
 }

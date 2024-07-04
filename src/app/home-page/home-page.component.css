@@ -25,7 +25,7 @@ mat-toolbar {
 
 mat-toolbar img {
     height: 80px;
-    width: 200px;
+    width: 192px;
     cursor: pointer;
     padding-left: 30px;
 }
@@ -308,8 +308,8 @@ mat-toolbar img {
 }
 
 .deliverables {
-    background: rgb(238,238,238);
-    background: linear-gradient(190deg, rgba(238,238,238,1) 31%, rgba(238,136,58,0.8911939775910365) 74%);
+    background: rgb(238, 238, 238);
+    background: linear-gradient(190deg, rgba(238, 238, 238, 1) 31%, rgba(238, 136, 58, 0.8911939775910365) 74%);
 }
 
 .services::before {
@@ -397,9 +397,11 @@ mat-toolbar img {
     background-color: var(--white-color);
 }
 
-.service-icon img {
-    max-width: 100%;
-    margin-top: 10px;
+.service-icon i {
+    font-size: 60px;
+    margin: 10px;
+    margin-top: 18px;
+    color: var(--greay-color);
 }
 
 .service-item:hover {
@@ -458,7 +460,7 @@ mat-toolbar img {
 
 ul {
     margin: 0;
-    margin-top: 6px;
+    margin-top: 15px;
     padding: 0;
     list-style-type: none;
     color: var(--greay-color);
@@ -478,7 +480,7 @@ li:last-child {
 .techno {
     padding: 80px;
     background: rgb(238, 238, 238);
-    background: linear-gradient(356deg, rgba(238, 238, 238, 1) 31%, rgba(238, 136, 58, 0.8911939775910365) 74%);
+    background: linear-gradient(340deg, rgba(238, 238, 238, 1) 31%, rgba(238, 136, 58, 0.8911939775910365) 74%);
 }
 
 .techno-name {
@@ -623,17 +625,24 @@ li:last-child {
     padding: 35px;
 }
 
-.a-tag {
+.text-start {
+    text-align: start;
+}
+
+.btm-p {
     text-decoration: none;
     color: var(--white-color);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: 600;
-    letter-spacing: 1px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btm-p:hover {
+    color: var(--orange-color);
 }
 
 .footer-logo {
     height: auto;
-    width: 180px;
+    width: 192px;
 }
 
 .footer-bottom {
@@ -666,8 +675,8 @@ li:last-child {
 
 .contact-head {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 25px;
+    font-weight: 600;
     color: rgba(255, 255, 255, 0.767);
     line-height: 1;
     padding: 10px;
@@ -695,14 +704,33 @@ li:last-child {
 }
 
 .text-padding {
-    padding: 3rem ;
+    padding: 3rem;
+}
+
+.align-cntr {
+    align-items: center;
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: #dc5f00a1;
+    color: var(--white-color);
+    font-size: 25px;
+}
+
+.scroll-to-top:hover {
+    background-color: #DC5F00;
 }
 
 @media screen and (max-width: 768px) {
 
     mat-toolbar img {
-        height: 75px;
-        width: 175px;
+        height: 80px;
+        width: 192px;
         padding-left: 0px;
     }
 
