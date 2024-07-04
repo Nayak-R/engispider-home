@@ -2,34 +2,6 @@
     overflow: hidden;
 }
 
-.mat-mdc-mini-fab.mat-accent {
-    --mdc-fab-container-color: #DC5F00;
-    --mat-mdc-fab-color: var(--white-color);
-}
-
-.fill-remaining-space {
-    flex: 1 1 auto;
-}
-
-.nav-item button {
-    margin: 5px;
-    color: var(--black-color);
-}
-
-mat-toolbar {
-    z-index: 12;
-    position: fixed;
-    background: var(--white-color);
-    height: 90px;
-}
-
-mat-toolbar img {
-    height: 80px;
-    width: 192px;
-    cursor: pointer;
-    padding-left: 30px;
-}
-
 .slide-image {
     width: 100% !important;
     height: 600px;
@@ -329,7 +301,7 @@ mat-toolbar img {
 .service-item {
     min-height: 215px;
     width: 100%;
-    border: 2px solid #ededed;
+    border: 2px solid var(--orange-color);
     border-radius: 8px;
     position: relative;
     padding: 30px 30px;
@@ -361,7 +333,7 @@ mat-toolbar img {
 .deliverables-item {
     min-height: 215px;
     width: 100%;
-    border: 2px solid #ededed;
+    border: 2px solid var(--orange-color);
     border-radius: 8px;
     position: relative;
     padding: 30px 30px;
@@ -391,7 +363,7 @@ mat-toolbar img {
     margin: 8px auto;
     position: relative;
     margin-top: -85px;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 4px var(--orange-color);
     border-radius: 50%;
     padding: 0px;
     background-color: var(--white-color);
@@ -408,9 +380,6 @@ mat-toolbar img {
     transform: scale(1.1);
 }
 
-.text-centre {
-    text-align: center;
-}
 
 .services-head {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -584,7 +553,7 @@ li:last-child {
 
 .rivew-card {
     margin: 20px;
-    padding: 20px;
+    padding: 15px;
     border-color: var(--orange-color);
     transition: transform 0.8s ease-in-out;
 }
@@ -645,26 +614,6 @@ li:last-child {
     width: 192px;
 }
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    color: var(--black-color);
-    font-size: 0.8em;
-    background-color: var(--white-color);
-    padding: 10px;
-    height: 50px;
-}
-
-.footer-bottom p {
-    font-weight: bold;
-    margin: 0%;
-}
-
-.footer-bottom p a {
-    text-decoration: none;
-    color: var(--orange-color);
-}
-
 .text-left {
     text-align: start;
 }
@@ -707,10 +656,6 @@ li:last-child {
     padding: 3rem;
 }
 
-.align-cntr {
-    align-items: center;
-}
-
 .scroll-to-top {
     position: fixed;
     bottom: 20px;
@@ -723,14 +668,14 @@ li:last-child {
 }
 
 .scroll-to-top:hover {
-    background-color: #DC5F00;
+    background-color: var(--orange-color);
 }
 
 @media screen and (max-width: 768px) {
 
     mat-toolbar img {
-        height: 80px;
-        width: 192px;
+        height: 70px;
+        width: 134px;
         padding-left: 0px;
     }
 

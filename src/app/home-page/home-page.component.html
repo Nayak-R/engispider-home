@@ -1,27 +1,5 @@
 <div class="home-page">
-  <mat-toolbar>
-    <img src="assets/logo temp.png" alt="">
-    <span class="fill-remaining-space"></span>
-    <div class="nav-item d-none d-md-block">
-      <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
-      <button mat-button class="underLine">Send Inquery</button>
-      <button mat-button class="underLine">Book a Demo</button>      
-      <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
-    </div>
-    <div class=" d-block d-md-none">
-      <div class="button-container">
-        <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
-      <mat-menu #menu="matMenu">
-        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
-        <button mat-button class="underLine">Send Inquery</button>
-        <button mat-button class="underLine">Book a Demo</button>
-        <button mat-button class="underLine" (click)="scrollToSection('contact')">Contact Us</button>
-      </mat-menu>
-    </div>
-  </mat-toolbar>
+
 
   <div class="slider-frame">
     <owl-carousel-o [options]="customOptionsDisplayImage" (translated)="onTranslated($event)">
@@ -235,49 +213,57 @@
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
-                small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
-                "
+                " EngiSpider's customer service is unparalleled. Their team is not only knowledgeable but also
+                incredibly responsive. They took the time to understand our unique requirements and provided tailored
+                solutions that perfectly met our needs. Whenever we had questions or concerns, their support team was
+                just a call or email away, ready to assist us promptly."
               </div>
-              <div class="student-name">Rahul Nayak</div>
-              <div class="student-company">Software Developer</div>
+              <div class="student-name">Somnath Pathak</div>
+              <div class="student-company">Senior Manager, Logistics</div>
             </div>
           </ng-template>
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
-                small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
-                "
+                "The technical proficiency of the EngiSpider team is impressive. They demonstrated a deep understanding
+                of the latest technologies and best practices in the industry. Their innovative approach and attention
+                to detail ensured that our project was completed on time and within budget. The quality of their work is
+                truly top-notch."
               </div>
-              <div class="student-name">Rahul Nayak</div>
-              <div class="student-company">Software Developer</div>
+              <div class="student-name">Anil Singh</div>
+              <div class="student-company">Manager, IT</div>
             </div>
           </ng-template>
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
-                small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
-                "
+                "What truly sets EngiSpider apart is their exceptional support. Even after the project was completed,
+                they continued to provide outstanding post-implementation support. They offered comprehensive training
+                to our team, ensuring we were fully equipped to utilize the new system effectively. Whenever we
+                encountered any issues, their support team was quick to resolve them, minimizing any downtime."
               </div>
-              <div class="student-name">Rahul Nayak</div>
-              <div class="student-company">Software Developer</div>
+              <div class="student-name">Puja Nayak</div>
+              <div class="student-company">GM, Human Resource</div>
             </div>
           </ng-template>
           <ng-template carouselSlide>
             <div class="card rivew-card">
               <div class="student-review">
-                " The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A
-                small,
-                agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
-                "
+                "EngiSpider offers excellent value for money. Their pricing is competitive, and the quality of their
+                service justifies every penny spent. They are transparent with their pricing structure and do not have
+                any hidden fees, which is a huge plus."
               </div>
-              <div class="student-name">Rahul Nayak</div>
-              <div class="student-company">Software Developer</div>
+              <div class="student-name">Suraj Pattnayak</div>
+              <div class="student-company">AGM, Finance</div>
+            </div>
+          </ng-template>
+          <ng-template carouselSlide>
+            <div class="card rivew-card">
+              <div class="student-review">
+                "Overall, my experience with EngiSpider has been nothing short of exceptional. Their commitment to customer satisfaction, combined with their technical prowess, makes them a standout in the industry. I highly recommend EngiSpider to anyone looking for reliable, professional, and top-quality service and support. They have certainly earned my trust and loyalty."
+              </div>
+              <div class="student-name">Aarav Agarwal</div>
+              <div class="student-company">Vice President</div>
             </div>
           </ng-template>
         </ng-container>
@@ -377,7 +363,8 @@
     </div>
   </section>
 
-  <button class="scroll-to-top text-centre align-cntr" (click)="scrollToTop()" *ngIf="isVisible" mat-fab matTooltip="Back To Top">
+  <button class="scroll-to-top text-centre align-cntr" (click)="scrollToTop()" *ngIf="isVisible" mat-fab
+    matTooltip="Scroll To Top">
     <i class='bx bxs-to-top'></i>
   </button>
 
@@ -385,42 +372,40 @@
     <div class="footer">
       <div class="row">
 
-        <div class="col-sm-12 col-md-3 align-cntr text-centre">
-          <img class="footer-logo m-4" src="assets/logo.png" alt="Logo">
-        </div>
-
         <div class="col-sm-12 col-md-3 mt-4">
           <div class="text-centre">
             <div class="row align-cntr p-1 ">
               <h2 class="contact-head ">Contacts</h2>
             </div>
-            <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bx-mobile-vibration'></i></div>
-              <div class="col-10"><a class="btm-p" href="tel:09937000553"> +91 99370 00553</a></div>
-            </div>
-            <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bxs-phone-call'></i></div>
-              <div class="col-10"><a class="btm-p" href="tel:+916744617932">+91 674 4617932</a></div>
-            </div>
-            <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bx-mail-send'></i></div>
-              <div class="col-10"><a class="btm-p" href="mailto:info@engispider.com">info@engispider.com</a></div>
-            </div>
-            <!-- <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bx-mail-send'></i></div>
-              <div class="col-10"><a class="btm-p" href="mailto:support@engispider.com">support@engispider.com</a></div>
-            </div>
-            <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bx-mail-send'></i></div>
-              <div class="col-10"><a class="btm-p" href="mailto:accounts@engispider.com">accounts@engispider.com</a></div>
-            </div> -->
-            <div class="row align-cntr p-1 text-start">
-              <div class="col-2"><i class='bx bxs-landmark'></i></div>
-              <div class="col-10">
-                <p class="btm-p">Jharapada, Laxmisagar
-                  Bhubaneswar, Odisha 751006</p>
+            <div>
+              <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bx-mobile-vibration'></i></div>
+                <div class="col-10"><a class="btm-p" href="tel:09937000553"> +91 99370 00553</a></div>
+              </div>
+              <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bxs-phone-call'></i></div>
+                <div class="col-10"><a class="btm-p" href="tel:+916744617932">+91 674 4617932</a></div>
+              </div>
+              <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bx-mail-send'></i></div>
+                <div class="col-10"><a class="btm-p" href="mailto:info@engispider.com">info@engispider.com</a></div>
+              </div>
+              <!-- <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bx-mail-send'></i></div>
+                <div class="col-10"><a class="btm-p" href="mailto:support@engispider.com">support@engispider.com</a></div>
+              </div>
+              <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bx-mail-send'></i></div>
+                <div class="col-10"><a class="btm-p" href="mailto:accounts@engispider.com">accounts@engispider.com</a></div>
+              </div> -->
+              <div class="row align-cntr p-1 text-start">
+                <div class="col-2"><i class='bx bxs-landmark'></i></div>
+                <div class="col-10">
+                  <p class="btm-p">Laxmisagar, Bhubaneswar, Odisha 751006</p>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -452,20 +437,23 @@
               <p class="btm-p">Send Inquery</p>
             </div>
             <div class="row align-cntr p-1">
-              <p class="btm-p" >Book a Demo</p>
+              <p class="btm-p">Book a Demo</p>
             </div>
             <div class="row align-cntr p-1">
-              <p class="btm-p" (click)="scrollToSection('services')">Contact Us</p>
+              <p class="btm-p" (click)="routeToContacts()">Contact Us</p>
             </div>
           </div>
         </div>
+
+        <div class="col-sm-12 col-md-3 text-centre">
+          <div class="align-cntr ">
+            <img class="footer-logo m-4" src="assets/logo.png" alt="Logo">
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <div class="footer-bottom">
-    <p>&copy; Copyright 2024 | All Rights Reserved</p>
-    <p> <a href="https://engispider.com" target="_blank">Engispider Technologies</a></p>
-  </div>
 
 </div>

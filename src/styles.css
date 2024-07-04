@@ -13,7 +13,7 @@ body {
     --white-color: #EEEEEE;
     --greay-color: #686D76;
     --black-color: #373A40;
-    --orange-color: #DC5F00;
+    --orange-color: #FB7C1F;
 }
 
 
@@ -89,4 +89,12 @@ body {
 .slider-frame.owl-next:hover {
     color: rgb(223, 223, 223) !important;
     background: black !important;
+}
+
+.align-cntr {
+    align-items: center;
+}
+
+.text-centre {
+    text-align: center;
 }

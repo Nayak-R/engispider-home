@@ -10,13 +10,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ContactsComponent } from './contacts/contacts.component';
+import { BookDemoComponent } from './book-demo/book-demo.component';
+import { InqueryComponent } from './inquery/inquery.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
 
   declarations: [
     AppComponent,
-    HomePageComponent
+    HomePageComponent,
+    ContactsComponent,
+    BookDemoComponent,
+    InqueryComponent
   ],
 
   imports: [
@@ -28,7 +36,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatFormFieldModule,
+    FormsModule
 
   ],
 

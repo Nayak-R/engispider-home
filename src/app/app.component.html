@@ -1,1 +1,32 @@
+<mat-toolbar>
+    <img src="assets/logo temp.png" alt="">
+    <span class="fill-remaining-space"></span>
+    <div class="nav-item d-none d-md-block">
+        <button mat-button class="underLine" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
+        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+        <button mat-button class="underLine" *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()">Send Inquery</button>
+        <button mat-button class="underLine" *ngIf="!isDemoPageRoute()" (click)="routeToDemo()">Book a Demo</button>
+        <button mat-button class="underLine" *ngIf="!isContactPageRoute()" (click)="routeToContacts()">Contact Us</button>
+    </div>
+    <div class=" d-block d-md-none">
+        <div class="button-container">
+            <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+        <mat-menu #menu="matMenu">
+            <button mat-button class="underLine" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
+            <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+            <button mat-button class="underLine" *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()">Send Inquery</button>
+            <button mat-button class="underLine" *ngIf="!isDemoPageRoute()" (click)="routeToDemo()">Book a Demo</button>
+            <button mat-button class="underLine" *ngIf="!isContactPageRoute()" (click)="routeToContacts()">Contact Us</button>
+        </mat-menu>
+    </div>
+</mat-toolbar>
+
 <router-outlet></router-outlet>
+
+<div class="footer-bottom">
+    <p>&copy; Copyright 2024 | All Rights Reserved</p>
+    <p> <a href="https://engispider.com" target="_blank">Engispider Technologies</a></p>
+</div>

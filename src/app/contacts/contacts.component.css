@@ -1,0 +1,85 @@
+
+.contact-page {
+    padding-top: 90px;
+    overflow: hidden;
+    background: rgb(238,238,238);
+    background: linear-gradient(170deg, rgba(238,238,238,1) 31%, rgba(238,136,58,0.8911939775910365) 74%);
+    min-height: 100%;
+}
+
+.container {
+    text-align: center; /* Center text */
+}
+
+.services-head {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 55px;
+    font-weight: 700;
+    color: var(--greay-color);
+    z-index: 5;
+    line-height: 1;
+}
+
+.deliverables-head {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 55px;
+    font-weight: 700;
+    color: var(--black-color);
+    z-index: 5;
+    line-height: 1;
+}
+
+.deliverables-item {
+    min-height: 215px;
+    width: 100%;
+    border: 2px solid var(--orange-color);
+    border-radius: 8px;
+    position: relative;
+    padding: 30px 20px;
+    text-align: center;
+    transition: transform 1s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.315);
+}
+
+.btm-p {
+    text-decoration: none;
+    color: var(--black-color);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.deliverables-item h1 {
+    color: rgba(0, 0, 0, 0.555);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+
+.service-icon {
+    width: 100px;
+    height: 100px;
+    margin: 8px auto;
+    position: relative;
+    margin-top: -85px;
+    box-shadow: 0 0 0 4px var(--orange-color);
+    border-radius: 50%;
+    padding: 0px;
+    background-color: var(--greay-color);
+}
+
+.service-icon i {
+    font-size: 60px;
+    margin: 10px;
+    margin-top: 18px;
+    color: var(--white-color);
+    font-weight: 00 !important;
+}
+
+.col-1 .bx {
+    font-weight: 600;
+}
+
+.copied {
+    color: green;
+  }

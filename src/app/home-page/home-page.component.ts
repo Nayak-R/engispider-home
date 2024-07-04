@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -8,6 +9,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 })
 export class HomePageComponent {
 
+  constructor(private router: Router) { }
 
   // Card scroll animation start
   customOptionsDisplayImage: OwlOptions = {
@@ -101,4 +103,10 @@ export class HomePageComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  routeToContacts() {
+    this.router.navigate(['/contacts']);
+  }
+
+
+  
 }

@@ -1,0 +1,61 @@
+
+@media screen and (max-width: 768px) {
+
+    mat-toolbar img {
+        height: 70px;
+        width: 134px;
+        padding-left: 0px;
+    }
+}
+
+
+.mat-mdc-mini-fab.mat-accent {
+    --mdc-fab-container-color: var(--orange-color);
+    --mat-mdc-fab-color: var(--white-color);
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+.nav-item button {
+    margin: 5px;
+    color: var(--black-color);
+    font-size: 13px;
+    font-weight: 450;
+}
+
+mat-toolbar {
+    z-index: 12;
+    position: fixed;
+    background: var(--white-color);
+    height: 90px;
+}
+
+mat-toolbar img {
+    height: 80px;
+    width: 192px;
+    cursor: pointer;
+    padding-left: 30px;
+}
+
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    color: var(--black-color);
+    font-size: 0.8em;
+    background-color: var(--white-color);
+    padding: 10px;
+    height: 50px;
+}
+
+.footer-bottom p {
+    font-weight: bold;
+    margin: 0%;
+}
+
+.footer-bottom p a {
+    text-decoration: none;
+    color: var(--orange-color);
+}
