@@ -1,13 +1,4 @@
 
-@media screen and (max-width: 768px) {
-
-    mat-toolbar img {
-        height: 70px;
-        width: 134px;
-        padding-left: 0px;
-    }
-}
-
 
 .mat-mdc-mini-fab.mat-accent {
     --mdc-fab-container-color: var(--orange-color);
@@ -58,4 +49,15 @@ mat-toolbar img {
 .footer-bottom p a {
     text-decoration: none;
     color: var(--orange-color);
+}
+
+
+@media screen and (max-width: 768px) {
+
+    mat-toolbar img {
+        height: 77px;
+        width: 161px;
+        padding-left: 0px;
+    }
+    
 }

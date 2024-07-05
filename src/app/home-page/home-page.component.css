@@ -673,13 +673,6 @@ li:last-child {
 
 @media screen and (max-width: 768px) {
 
-    mat-toolbar img {
-        height: 70px;
-        width: 134px;
-        padding-left: 0px;
-    }
-
-
     .slide-image {
         width: 100% !important;
         height: 350px;
@@ -762,13 +755,26 @@ li:last-child {
         padding-top: 40px;
     }
 
+    .why-icon-1 {
+        font-size: 40px;
+        width: 60px;
+    }
 
     .why-icon-2 {
         right: -2%;
+        font-size: 40px;
+        width: 60px;
     }
 
     .why-icon-3 {
         left: -2%;
+        font-size: 40px;
+        width: 60px;
+    }
+
+    .why-icon-4 {
+        font-size: 40px;
+        width: 60px;
     }
 
     .services {
@@ -821,6 +827,10 @@ li:last-child {
 
     .text-padding {
         padding: 10px;
+    }
+
+    li {
+        font-size: 13px;
     }
 }
 
