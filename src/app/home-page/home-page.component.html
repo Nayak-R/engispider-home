@@ -353,7 +353,7 @@
             Experience our solution firsthand - request a demo today!
           </div>
           <div class="row m-4">
-            <button type="button" class="btn btn-outline-success table-btm">Book for a Demo</button>
+            <button type="button" class="btn btn-outline-success table-btm" (click)="routeToDemo()" >Book for a Demo</button>
           </div>
         </div>
         <div class="col-sm-12 col-md-6 table-img">
@@ -434,10 +434,10 @@
               <p class="btm-p" (click)="scrollToSection('services')">Our Services</p>
             </div>
             <div class="row align-cntr p-1">
-              <p class="btm-p">Send Inquery</p>
+              <p class="btm-p" (click)="routeToInquery()" >Send Inquery</p>
             </div>
             <div class="row align-cntr p-1">
-              <p class="btm-p">Book a Demo</p>
+              <p class="btm-p" (click)="routeToDemo()" >Book a Demo</p>
             </div>
             <div class="row align-cntr p-1">
               <p class="btm-p" (click)="routeToContacts()">Contact Us</p>

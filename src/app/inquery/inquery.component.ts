@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InquiryService } from '../inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DiologComponent } from '../diolog/diolog.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-inquery',
@@ -13,15 +14,23 @@ export class InqueryComponent {
 
   inquiryForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private inquiryService: InquiryService, private dialog: MatDialog) {
+  constructor(private fb: FormBuilder, private inquiryService: InquiryService, private dialog: MatDialog, private router: Router) {
     this.inquiryForm = this.fb.group({
       nameOfSender: ['', Validators.required],
       emailOfSender: ['', [Validators.required, Validators.email]],
       mobileNo: ['', Validators.required],
-      bussiness: ['', Validators.required],
+      bussiness: ['', ],
       inqueryFor: ['', Validators.required],
-      messageFromSender: ['', Validators.required],
-      addressOfSender: ['', Validators.required]
+      messageFromSender: ['', ],
+      addressOfSender: ['', ]
+    });
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
     });
   }
 

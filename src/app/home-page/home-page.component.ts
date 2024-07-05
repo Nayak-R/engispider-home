@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -10,6 +10,14 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 export class HomePageComponent {
 
   constructor(private router: Router) { }
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
 
   // Card scroll animation start
   customOptionsDisplayImage: OwlOptions = {
@@ -107,6 +115,12 @@ export class HomePageComponent {
     this.router.navigate(['/contacts']);
   }
 
+  routeToDemo() {
+    this.router.navigate(['/book-demo']);
+  }
 
+  routeToInquery() {
+    this.router.navigate(['/inquery']);
+  }
   
 }

@@ -12,34 +12,37 @@
                     <h2>Inquiry Form</h2>
                     <form [formGroup]="inquiryForm" (ngSubmit)="onSubmit()">
                         <div class="mb-3">
-                          <label for="name" class="form-label">Name</label>
+                          <label for="name" class="form-label">Name <em>*</em></label>
                           <input type="text" class="form-control" id="name" formControlName="nameOfSender" placeholder="Enter your name" required>
                         </div>
                         <div class="mb-3">
-                          <label for="email" class="form-label">Email</label>
+                          <label for="email" class="form-label">Email <em>*</em></label>
                           <input type="email" class="form-control" id="email" formControlName="emailOfSender" placeholder="Enter your email" required>
                         </div>
                         <div class="mb-3">
-                          <label for="mobile" class="form-label">Mobile</label>
+                          <label for="mobile" class="form-label">Mobile <em>*</em></label>
                           <input type="tel" class="form-control" id="mobile" formControlName="mobileNo" placeholder="Enter your mobile number" required>
                         </div>
                         <div class="mb-3">
-                          <label for="business" class="form-label">Business</label>
-                          <input type="text" class="form-control" id="business" formControlName="bussiness" placeholder="Enter your business" required>
+                          <label for="business" class="form-label">Business </label>
+                          <input type="text" class="form-control" id="business" formControlName="bussiness" placeholder="Enter your business">
                         </div>
                         <div class="mb-3">
-                          <label for="inquiry" class="form-label">Inquiry For</label>
+                          <label for="inquiry" class="form-label">Inquiry For <em>*</em></label>
                           <input type="text" class="form-control" id="inquiry" formControlName="inqueryFor" placeholder="Enter the subject of your inquiry" required>
                         </div>
                         <div class="mb-3">
-                          <label for="description" class="form-label">Brief Description</label>
-                          <textarea class="form-control" id="description" formControlName="messageFromSender" rows="4" placeholder="Enter a brief description" required></textarea>
+                          <label for="description" class="form-label">Brief Description </label>
+                          <textarea class="form-control" id="description" formControlName="messageFromSender" rows="4" placeholder="Enter a brief description"></textarea>
                         </div>
                         <div class="mb-3">
-                          <label for="address" class="form-label">Address</label>
-                          <textarea class="form-control" id="address" formControlName="addressOfSender" rows="4" placeholder="Enter address" required></textarea>
+                          <label for="address" class="form-label">Address </label>
+                          <textarea class="form-control" id="address" formControlName="addressOfSender" rows="4" placeholder="Enter address"></textarea>
                         </div>
-                        <div class="text-centre">
+                        <div class="note">
+                            <span class="bold">Note: </span>Fields marked with an asterisk (<em>*</em> ) are mandatory.
+                        </div>                      
+                        <div class="text-centre mt-4">
                             <button type="submit" class="btn btn-primary" [disabled]="inquiryForm.invalid" >Submit</button>
                         </div>                        
                       </form>

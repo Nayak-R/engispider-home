@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryService } from '../inquiry.service';
 import { DiologComponent } from '../diolog/diolog.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-demo',
@@ -11,7 +12,15 @@ import { DiologComponent } from '../diolog/diolog.component';
 export class BookDemoComponent {
   formData: any = {};
 
-  constructor(private inquiryService: InquiryService, private dialog: MatDialog) {}
+  constructor(private inquiryService: InquiryService, private dialog: MatDialog, private router: Router) {}
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
 
   onSubmit(): void {
 
