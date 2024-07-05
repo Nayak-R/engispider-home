@@ -1,0 +1,35 @@
+.inquery-page {
+    padding-top: 90px;
+    overflow: hidden;
+    background: rgb(238,238,238);
+    background: linear-gradient(170deg, rgba(238,238,238,1) 31%, rgba(238,136,58,0.8911939775910365) 74%);
+    min-height: 100%;
+}
+
+img {
+    height: auto;
+    width: 100%;
+}
+
+.centre {
+    align-content: center;
+}
+
+h2 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 35px;
+    font-weight: 800;
+    color: var(--orange-color);
+    z-index: 5;
+    line-height: 1.2;
+    margin: 30px 10px 40px 10px;
+    text-align: center;
+}
+
+.btn-primary {
+    text-align: center;
+}
+
+.text-centre {
+    text-align: center;
+}

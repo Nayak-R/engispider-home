@@ -1,1 +1,51 @@
-<p>inquery works!</p>
+<div class="inquery-page ">
+
+    <div class="row centre container">
+        <div class="col-md-6 centre">
+            <div class="">
+                <img src="assets/message-img.png" alt="Inquery">
+            </div>
+        </div>
+        <div class="col-md-6 centre">
+            <div class=" p-5">
+                <div class="container mt-5">
+                    <h2>Inquiry Form</h2>
+                    <form [formGroup]="inquiryForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Name</label>
+                          <input type="text" class="form-control" id="name" formControlName="nameOfSender" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="email" formControlName="emailOfSender" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="mobile" class="form-label">Mobile</label>
+                          <input type="tel" class="form-control" id="mobile" formControlName="mobileNo" placeholder="Enter your mobile number" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="business" class="form-label">Business</label>
+                          <input type="text" class="form-control" id="business" formControlName="bussiness" placeholder="Enter your business" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="inquiry" class="form-label">Inquiry For</label>
+                          <input type="text" class="form-control" id="inquiry" formControlName="inqueryFor" placeholder="Enter the subject of your inquiry" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Brief Description</label>
+                          <textarea class="form-control" id="description" formControlName="messageFromSender" rows="4" placeholder="Enter a brief description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="address" class="form-label">Address</label>
+                          <textarea class="form-control" id="address" formControlName="addressOfSender" rows="4" placeholder="Enter address" required></textarea>
+                        </div>
+                        <div class="text-centre">
+                            <button type="submit" class="btn btn-primary" [disabled]="inquiryForm.invalid" >Submit</button>
+                        </div>                        
+                      </form>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+</div>

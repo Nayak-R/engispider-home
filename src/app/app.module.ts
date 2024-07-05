@@ -15,7 +15,12 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { BookDemoComponent } from './book-demo/book-demo.component';
 import { InqueryComponent } from './inquery/inquery.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InquiryService } from './inquiry.service';
+import { HttpClientModule } from '@angular/common/http';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DiologComponent } from './diolog/diolog.component';
+
 
 @NgModule({
 
@@ -24,7 +29,8 @@ import { FormsModule } from '@angular/forms';
     HomePageComponent,
     ContactsComponent,
     BookDemoComponent,
-    InqueryComponent
+    InqueryComponent,
+    DiologComponent
   ],
 
   imports: [
@@ -38,11 +44,13 @@ import { FormsModule } from '@angular/forms';
     MatToolbarModule,
     MatTooltipModule,
     MatFormFieldModule,
-    FormsModule
-
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatDialogModule
   ],
 
-  providers: [],
+  providers: [InquiryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

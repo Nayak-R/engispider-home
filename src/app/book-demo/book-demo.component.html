@@ -1,3 +1,49 @@
-<div class="demo-page">
+<div class="inquery-page ">
+
+    <div class="row centre container">
+        <div class="col-md-6 centre">
+            <div class="">
+                <img src="assets/demo.png" alt="Inquery">
+            </div>
+        </div>
+        <div class="col-md-6 centre">
+            <div class=" p-5">
+                <div class="container mt-5">
+                    <h2>Demo Booking</h2>
+                    <form (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Name</label>
+                          <input type="text" class="form-control" id="name" placeholder="Enter your name" required [(ngModel)]="formData.nameOfSender" name="name">
+                        </div>
+                      
+                        <div class="mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="email" placeholder="Enter your email" required [(ngModel)]="formData.emailOfSender" name="email">
+                        </div>
+                      
+                        <div class="mb-3">
+                          <label for="phone" class="form-label">Phone</label>
+                          <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required [(ngModel)]="formData.mobileNo" name="phone">
+                        </div>
+                      
+                        <div class="mb-3">
+                          <label for="date" class="form-label">Date</label>
+                          <input type="date" class="form-control" id="date" placeholder="Select booking date" required [(ngModel)]="formData.demoDate" name="date">
+                        </div>
+                      
+                        <div class="mb-3">
+                          <label for="message" class="form-label">Message (optional)</label>
+                          <textarea class="form-control" id="message" rows="4" placeholder="Enter additional information" [(ngModel)]="formData.messageFromSender" name="message"></textarea>
+                        </div>
+                        <div class="text-centre">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> 
+                        
+                      </form>
+                      
+                  </div>
+            </div>
+        </div>
+    </div>
 
 </div>
