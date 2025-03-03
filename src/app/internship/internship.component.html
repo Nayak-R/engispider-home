@@ -151,7 +151,12 @@
                             <div class="form-group">
                                 <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" required>
                             </div>
-                            <button class="btn btn-primary" (click)="submitPaymentProof()" [disabled]="!formData.paymentScreenshot">Submit Payment Proof</button>
+                            <button class="btn btn-primary" (click)="submitPaymentProof()" [disabled]="!formData.paymentScreenshot || isSubmitting">
+                                <div class="spinner-border text-light" role="status" *ngIf="isSubmitting">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <span *ngIf="!isSubmitting">Submit Payment Proof</span>
+                            </button>
                         </div>
                     </div>
                 </div>

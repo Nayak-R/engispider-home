@@ -17,5 +17,9 @@ export class InquiryService {
   demoBooking(inquiryData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}demo-booking`, inquiryData);
   }
+
+  internshipRegistration(registrationData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}intership`, registrationData);
+  }
   
 }

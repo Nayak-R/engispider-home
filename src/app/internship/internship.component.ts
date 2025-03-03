@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
+import { InquiryService } from '../inquiry.service';
+import { DialogService } from '../dialog.service';
 
 interface InternshipRegistration {
   name: string;
@@ -39,6 +41,11 @@ enum RegistrationStep {
   styleUrls: ['./internship.component.css']
 })
 export class InternshipComponent {
+
+  constructor(private inquiryService: InquiryService, private dialogService: DialogService) {
+
+  }
+
   internshipPrograms: InternshipProgram[] = [
     {
       title: 'Website Development',
@@ -179,7 +186,7 @@ export class InternshipComponent {
     if (this.selectedProgram && this.currentStep === RegistrationStep.FORM) {
       if (this.validateEmail() && this.validatePhone() && this.validateAddress() && this.validateSemester()) {
         this.isQrLoading = true;
-        this.formData.transactionId = uuidv4();
+        this.formData.transactionId = uuidv4().toUpperCase().replaceAll("-","").substring(0, 15);
         this.formData.selectedProgramTitle = this.selectedProgram.title;
         this.formData.paymentDate = new Date().toISOString();
         
@@ -233,8 +240,11 @@ export class InternshipComponent {
       gender: '',
       address: '',
       college: '',
+      otherCollege: '',
       degree: '',
+      otherDegree: '',
       branch: '',
+      otherBranch: '',
       semester: '',
       selectedProgramTitle: '',
       transactionId: '',
@@ -249,13 +259,27 @@ export class InternshipComponent {
     this.qrCodeUrl = '';
   }
 
+  isSubmitting: boolean = false;
+
   submitPaymentProof(): void {
     if (this.formData.paymentScreenshot && this.selectedProgram) {
-      console.log('Submitting registration data:', this.formData);
-
-      this.resetForm();
-      this.selectedProgram = null;
-      this.currentStep = RegistrationStep.FORM;
+      this.isSubmitting = true;
+      this.inquiryService.internshipRegistration(this.formData).subscribe({
+        next: (data: any) => {
+          console.log('Registration successful:', data);
+          this.dialogService.openDialog('Success', 'Your internship registration was successful!');
+          this.closeModal();
+          this.selectedProgram = null;
+          this.currentStep = RegistrationStep.FORM;
+          this.isSubmitting = false;
+        },
+        error: (error: any) => {
+          this.dialogService.openDialog('Error', 'Failed to submit registration. Please try again.');
+          this.isSubmitting = false;
+        },
+      });
+      alert("Your internship registration was successful!");
+      this.closeModal();
     }
   }
 }
