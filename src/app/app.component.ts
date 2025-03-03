@@ -65,4 +65,12 @@ export class AppComponent {
     return this.router.url === '/inquery' //|| this.router.url === '/login'; 
   }
 
+  routeToInternships() {
+    this.router.navigate(['/internships']);
+  }
+
+  isInternshipsPageRoute(): boolean {
+    return this.router.url === '/internships';
+  }
+
 }

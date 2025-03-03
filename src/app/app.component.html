@@ -1,26 +1,41 @@
 <mat-toolbar>
-    <img src="assets/logo temp.png" alt="">
+    <img src="assets/EngiSpider fnl.png" alt="Logo" (click)="routeToHome()">
     <span class="fill-remaining-space"></span>
     <div class="nav-item d-none d-md-block">
         <button mat-button class="underLine" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
         <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
+        <button mat-button class="underLine" *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()">Internships</button>
         <button mat-button class="underLine" *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()">Send Inquery</button>
         <button mat-button class="underLine" *ngIf="!isDemoPageRoute()" (click)="routeToDemo()">Book a Demo</button>
         <button mat-button class="underLine" *ngIf="!isContactPageRoute()" (click)="routeToContacts()">Contact Us</button>
     </div>
-    <div class=" d-block d-md-none">
-        <div class="button-container">
-            <button mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon button with a menu icon">
-                <mat-icon>menu</mat-icon>
+    <div class="mobile-nav d-block d-md-none">
+        <nav class="bottom-nav">
+            <button mat-button *ngIf="!isHomePageRoute()" (click)="routeToHome()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
             </button>
-        </div>
-        <mat-menu #menu="matMenu">
-            <button mat-button class="underLine" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
-            <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
-            <button mat-button class="underLine" *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()">Send Inquery</button>
-            <button mat-button class="underLine" *ngIf="!isDemoPageRoute()" (click)="routeToDemo()">Book a Demo</button>
-            <button mat-button class="underLine" *ngIf="!isContactPageRoute()" (click)="routeToContacts()">Contact Us</button>
-        </mat-menu>
+            <button mat-button (click)="scrollToSection('services')" routerLinkActive="active">
+                <mat-icon>build</mat-icon>
+                <span>Services</span>
+            </button>
+            <button mat-button *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()" routerLinkActive="active">
+                <mat-icon>school</mat-icon>
+                <span>Internships</span>
+            </button>
+            <button mat-button *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()" routerLinkActive="active">
+                <mat-icon>mail</mat-icon>
+                <span>Inquiry</span>
+            </button>
+            <button mat-button *ngIf="!isDemoPageRoute()" (click)="routeToDemo()" routerLinkActive="active">
+                <mat-icon>event</mat-icon>
+                <span>Demo</span>
+            </button>
+            <button mat-button *ngIf="!isContactPageRoute()" (click)="routeToContacts()" routerLinkActive="active">
+                <mat-icon>contacts</mat-icon>
+                <span>Contact</span>
+            </button>
+        </nav>
     </div>
 </mat-toolbar>
 

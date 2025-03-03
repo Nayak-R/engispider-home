@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { InqueryComponent } from './inquery/inquery.component';
 import { BookDemoComponent } from './book-demo/book-demo.component';
+import { InternshipComponent } from './internship/internship.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'book-demo',
     component: BookDemoComponent
+  },
+  {
+    path: 'internships',
+    component: InternshipComponent
   }
 ];
 

@@ -1,0 +1,161 @@
+<div>
+    <div class="outer-div">
+        <img class="slide-image zoom" src="assets/internship.jpg" alt="Performance Matters">
+        <div class="box-1">
+            <h1 class="text-1">Internship Opportunities</h1>
+            <p class="para-1">Gain hands-on experience and develop skills for future success.</p>
+        </div>
+    </div>
+
+    <div class="inquery-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <figure class="why-img-box">
+                        <img class="img-fluid why-img" src="assets/internship-small.svg" alt="Why Engispider">
+                    </figure>
+                    <ul class="d-inline-flex">
+                        <li>Real-World Experience</li>
+                        <li>Expert Guidance</li>
+                        <li>Skill Development</li>
+                        <li>Career Growth</li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-12 col-md-6 text-padding">
+                    <div class="why-heading">
+                        <h1>Internship with <span class="why-name">Engispider</span></h1>
+                    </div>
+                    <div class="why-para">
+                        <p>Kickstart your career with our dynamic internship program! Gain hands-on experience, work
+                            alongside industry experts, and develop essential skills in a collaborative environment.
+                            Our internship opportunities provide a platform to innovate, learn, and grow, helping
+                            you build a strong foundation for your future. Whether you're passionate about coding,
+                            design, or problem-solving, this is your chance to turn knowledge into real-world
+                            impact.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="programs-section">
+                <h2 class="section-title">Internship Programs Offered</h2>
+                <div class="row program-cards">
+                    <div class="col-md-4 col-sm-6 mb-4" *ngFor="let program of internshipPrograms">
+                        <div class="program-card" (click)="openRegistrationForm(program)">
+                            <div class="card-icon">
+                                <i [class]="program.icon"></i>
+                            </div>
+                            <h3>{{program.title}}</h3>
+                            <p>{{program.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Backdrop -->
+            <div class="modal-backdrop" *ngIf="selectedProgram" (click)="closeModal()"></div>
+
+            <!-- Registration Modal -->
+            <div class="registration-modal" *ngIf="selectedProgram">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Register for {{selectedProgram.title}}</h2>
+                        <button type="button" class="close-btn" (click)="closeModal()">&times;</button>
+                    </div>
+                    
+                    <!-- Step 1: Registration Form -->
+                    <form (ngSubmit)="onSubmit()" #registrationForm="ngForm" *ngIf="currentStep === 'form'">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="formData.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="formData.email" (input)="validateEmail()" required>
+                            <div class="error-message" *ngIf="emailError">{{emailError}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="college">College</label>
+                            <select class="form-control" id="college" name="college" [(ngModel)]="formData.college" required>
+                                <option value="">Select College</option>
+                                <option *ngFor="let college of colleges" [value]="college">{{college}}</option>
+                            </select>
+                            <input *ngIf="formData.college === 'Other'" type="text" class="form-control mt-2" id="otherCollege" name="otherCollege" [(ngModel)]="formData.otherCollege" placeholder="Enter your college name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="formData.phone" (input)="validatePhone()" required>
+                            <div class="error-message" *ngIf="phoneError">{{phoneError}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" name="gender" [(ngModel)]="formData.gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea class="form-control" id="address" name="address" [(ngModel)]="formData.address" (input)="validateAddress()" rows="3" required></textarea>
+                            <div class="error-message" *ngIf="addressError">{{addressError}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="degree">Degree</label>
+                            <select class="form-control" id="degree" name="degree" [(ngModel)]="formData.degree" required>
+                                <option value="">Select Degree</option>
+                                <option value="btech">B.Tech</option>
+                                <option value="mtech">M.Tech</option>
+                                <option value="bca">BCA</option>
+                                <option value="mca">MCA</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input *ngIf="formData.degree === 'Other'" type="text" class="form-control mt-2" id="otherDegree" name="otherDegree" [(ngModel)]="formData.otherDegree" placeholder="Enter your degree" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="branch">Branch</label>
+                            <select class="form-control" id="branch" name="branch" [(ngModel)]="formData.branch" required>
+                                <option value="">Select Branch</option>
+                                <option value="cse">Computer Science & Engineering</option>
+                                <option value="it">Information Technology</option>
+                                <option value="ece">Electronics & Communication</option>
+                                <option value="ee">Electrical Engineering</option>
+                                <option value="me">Mechanical Engineering</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input *ngIf="formData.branch === 'Other'" type="text" class="form-control mt-2" id="otherBranch" name="otherBranch" [(ngModel)]="formData.otherBranch" placeholder="Enter your branch" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <input type="number" class="form-control" id="semester" name="semester" [(ngModel)]="formData.semester" (input)="validateSemester()" min="1" max="8" required>
+                            <div class="error-message" *ngIf="semesterError">{{semesterError}}</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid || emailError || phoneError || addressError || semesterError">Proceed to Payment</button>
+                    </form>
+
+                    <!-- Step 2: Payment QR Code -->
+                    <div class="payment-section" *ngIf="currentStep === 'payment'">
+                        <h3>Payment Details</h3>
+                        <p>Please scan the QR code below to make the payment of ₹2300</p>
+                        <div class="qr-code">
+                            <div class="loading-spinner" *ngIf="isQrLoading">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <img [src]="qrCodeUrl" alt="Payment QR Code" *ngIf="!isQrLoading">
+                        </div>
+                        <div class="mt-4">
+                            <p>After completing the payment, please upload the screenshot below:</p>
+                            <div class="form-group">
+                                <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" required>
+                            </div>
+                            <button class="btn btn-primary" (click)="submitPaymentProof()" [disabled]="!formData.paymentScreenshot">Submit Payment Proof</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

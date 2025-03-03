@@ -20,6 +20,7 @@ import { InquiryService } from './inquiry.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DiologComponent } from './diolog/diolog.component';
+import { InternshipComponent } from './internship/internship.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { DiologComponent } from './diolog/diolog.component';
     ContactsComponent,
     BookDemoComponent,
     InqueryComponent,
-    DiologComponent
+    DiologComponent,
+    InternshipComponent
   ],
 
   imports: [
