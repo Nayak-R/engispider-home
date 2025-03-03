@@ -2,24 +2,24 @@
     <img src="assets/EngiSpider fnl.png" alt="Logo" (click)="routeToHome()">
     <span class="fill-remaining-space"></span>
     <div class="nav-item d-none d-md-block">
-        <button mat-button class="underLine" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
-        <button mat-button class="underLine" (click)="scrollToSection('services')">Our Services</button>
-        <button mat-button class="underLine" *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()">Internships</button>
+        <button mat-button class="underLine prominent-nav" *ngIf="!isHomePageRoute()" (click)="routeToHome()">Home</button>
+        <button mat-button class="underLine prominent-nav" (click)="scrollToSection('services')">Our Services</button>
+        <button mat-button class="underLine prominent-nav" *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()">Internships</button>
         <button mat-button class="underLine" *ngIf="!isInqueryPageRoute()" (click)="routeToInquery()">Send Inquery</button>
         <button mat-button class="underLine" *ngIf="!isDemoPageRoute()" (click)="routeToDemo()">Book a Demo</button>
         <button mat-button class="underLine" *ngIf="!isContactPageRoute()" (click)="routeToContacts()">Contact Us</button>
     </div>
     <div class="mobile-nav d-block d-md-none">
         <nav class="bottom-nav">
-            <button mat-button *ngIf="!isHomePageRoute()" (click)="routeToHome()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <button mat-button class="prominent-nav" *ngIf="!isHomePageRoute()" (click)="routeToHome()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <mat-icon>home</mat-icon>
                 <span>Home</span>
             </button>
-            <button mat-button (click)="scrollToSection('services')" routerLinkActive="active">
+            <button mat-button class="prominent-nav" (click)="scrollToSection('services')" routerLinkActive="active">
                 <mat-icon>build</mat-icon>
                 <span>Services</span>
             </button>
-            <button mat-button *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()" routerLinkActive="active">
+            <button mat-button class="prominent-nav" *ngIf="!isInternshipsPageRoute()" (click)="routeToInternships()" routerLinkActive="active">
                 <mat-icon>school</mat-icon>
                 <span>Internships</span>
             </button>

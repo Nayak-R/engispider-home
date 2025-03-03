@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { InquiryService } from '../inquiry.service';
-import { DialogService } from '../dialog.service';
 
 interface InternshipRegistration {
   name: string;
@@ -42,7 +41,7 @@ enum RegistrationStep {
 })
 export class InternshipComponent {
 
-  constructor(private inquiryService: InquiryService, private dialogService: DialogService) {
+  constructor(private inquiryService: InquiryService) {
 
   }
 
@@ -218,6 +217,12 @@ export class InternshipComponent {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      // Check file size (500KB = 500 * 1024 bytes)
+      if (file.size > 500 * 1024) {
+        alert('File size must not exceed 500KB');
+        event.target.value = ''; // Clear the file input
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.formData.paymentScreenshot = e.target.result;
@@ -267,14 +272,12 @@ export class InternshipComponent {
       this.inquiryService.internshipRegistration(this.formData).subscribe({
         next: (data: any) => {
           console.log('Registration successful:', data);
-          this.dialogService.openDialog('Success', 'Your internship registration was successful!');
           this.closeModal();
           this.selectedProgram = null;
           this.currentStep = RegistrationStep.FORM;
           this.isSubmitting = false;
         },
         error: (error: any) => {
-          this.dialogService.openDialog('Error', 'Failed to submit registration. Please try again.');
           this.isSubmitting = false;
         },
       });
