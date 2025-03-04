@@ -327,6 +327,40 @@ ul.d-inline-flex li {
     color: var(--orange-color);
 }
 @media screen and (max-width: 768px) {
+    .services-head {
+        font-size: 32px;
+    }
+
+    .deliverables-head {
+        font-size: 32px;
+    }
+
+    .deliverables-item {
+        min-height: 180px;
+        padding: 20px 15px;
+    }
+
+    .deliverables-item h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .deliverables-item p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        margin-top: -60px;
+    }
+
+    .service-icon i {
+        font-size: 40px;
+        margin: 8px;
+        margin-top: 12px;
+    }
     .outer-div {
         height: 400px;
     }
