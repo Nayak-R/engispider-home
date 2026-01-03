@@ -67,7 +67,7 @@ export default function SolutionsPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left pl-8 lg:pl-12"
+              className="text-left lg:pl-12"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

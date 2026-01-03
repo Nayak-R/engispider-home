@@ -46,8 +46,7 @@ export default function Header() {
         { href: '/solutions/restaurant', label: 'Restaurant Manager', icon: FaUtensils, color: 'from-yellow-600 to-amber-500', description: 'POS & management' },
         { href: '/solutions/business', label: 'Business Solutions', icon: FaBriefcase, color: 'from-indigo-600 to-blue-500', description: 'Custom enterprise tools' },
       ]
-    },
-    { href: '/contact', label: 'Contact', icon: Mail },
+    }
   ];
 
   return (
@@ -55,12 +54,41 @@ export default function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 px-4 lg:px-8 py-4"
     >
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <nav className={`relative transition-all duration-300 rounded-full px-6 py-3 border border-white/20 ${
+        isScrolled
+          ? 'bg-gradient-to-r from-gray-900/95 via-black/95 to-gray-900/95 backdrop-blur-xl shadow-2xl shadow-blue-500/20'
+          : 'bg-gradient-to-r from-gray-900/90 via-black/90 to-gray-900/90 backdrop-blur-md shadow-xl'
+      }`}>
+        {/* Animated gradient border */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-rotate-gradient blur-sm opacity-70 -z-10"></div>
+
+        {/* Inner glow effect */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 animate-rotate-gradient -z-10" style={{ animationDelay: '1s' }}></div>
+
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-blue-400 rounded-full animate-float-particle"
+              style={{
+                left: `${15 + i * 15}%`,
+                top: '50%',
+                animationDelay: `${i * 0.5}s`,
+                opacity: 0.4
+              }}
+            />
+          ))}
+
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 w-1/3 h-[200%] bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between relative z-10">
           <Link href="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -69,7 +97,7 @@ export default function Header() {
               <img
                 src="/images/EngiSpider-Wht.png"
                 alt="Engispider Logo"
-                className="h-14 md:h-16 w-auto"
+                className="h-12 md:h-14 w-auto"
               />
             </motion.div>
           </Link>
@@ -83,7 +111,7 @@ export default function Header() {
                   <Link
                     href={link.href}
                     className={`font-medium transition-colors flex items-center gap-1 py-2 ${
-                      isActive ? 'text-blue-400' : 'text-white hover:text-blue-400'
+                      isActive ? 'text-blue-400' : 'text-gray-200 hover:text-blue-400'
                     }`}
                   >
                     {link.label}
@@ -94,7 +122,7 @@ export default function Header() {
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400 rounded-full"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -149,9 +177,10 @@ export default function Header() {
             })}
             <Link
               href="/contact"
-              className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all hover:scale-105"
+              className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-blue-500 hover:to-purple-500 transition-all hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 flex items-center gap-2 group overflow-hidden"
             >
-              Get Started
+              <span className="relative z-10">Contact Us</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
           </div>
 
@@ -167,17 +196,21 @@ export default function Header() {
             )}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden mt-6"
-            >
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden mt-4 relative"
+          >
+              {/* Gradient glow for mobile menu */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/40 via-purple-500/40 to-pink-500/40 animate-rotate-gradient blur-md -z-10"></div>
+
               <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 backdrop-blur-2xl border border-blue-200/50 rounded-2xl shadow-2xl p-3 space-y-2">
                 {navLinks.map((link, index) => {
                   const isActive = isLinkActive(link.href, link.submenu);
@@ -306,7 +339,6 @@ export default function Header() {
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
     </motion.header>
   );
 }

@@ -256,8 +256,8 @@ export default function Home() {
         <div className="container mx-auto px-4 z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <motion.div className="text-left space-y-8 pl-8 lg:pl-12">
-              {/* Animated Badge */}
+            <motion.div className="text-left space-y-8 lg:pl-12">
+              {/* Animated Badge */}  
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}

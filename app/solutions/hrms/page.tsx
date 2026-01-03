@@ -73,7 +73,7 @@ export default function HRMSPage() {
 
         <div className="container mx-auto px-4 z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-left pl-8 lg:pl-12">
+            <div className="text-left lg:pl-12">
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}

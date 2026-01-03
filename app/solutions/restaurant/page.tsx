@@ -28,7 +28,7 @@ export default function RestaurantPage() {
 
         <div className="container mx-auto px-4 z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-left pl-8 lg:pl-12">
+            <div className="text-left lg:pl-12">
               <motion.h1 initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="text-5xl md:text-6xl font-bold mb-6 mt-16">
                 Restaurant Manager Software
                 <span className="block text-amber-400 mt-2 text-3xl md:text-4xl">Complete POS & Management</span>
