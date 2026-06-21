@@ -338,6 +338,21 @@ export default function Footer() {
             >
               &copy; {currentYear} <span className="text-blue-400 font-semibold">Engispider Infotech Private Limited</span>. All rights reserved.
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 text-sm"
+            >
+              <Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-colors">
+                Privacy Policy
+              </Link>
+              <span className="text-gray-600">|</span>
+              <Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-colors">
+                Terms &amp; Conditions
+              </Link>
+            </motion.div>
             <motion.p
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
