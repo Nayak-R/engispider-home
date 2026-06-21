@@ -82,16 +82,16 @@ export default function ServicesPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left lg:pl-12"
+              className="text-left lg:pl-12 px-4 py-10"
             >
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
                 className="inline-block mb-6 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mt-16"
               >
                 <span className="text-purple-400 text-sm font-semibold">Our Services</span>
-              </motion.div>
+              </motion.div> */}
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
                 Comprehensive Software Solutions

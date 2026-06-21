@@ -21,17 +21,42 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #000;
 }
 
+/* Headings use the Sora display font for a more distinctive, modern feel */
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-sora), var(--font-inter), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Branded text selection */
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
 section {
-  padding-left: 35px !important;
-  padding-right: 35px !important;
+  padding-left: 1.5rem !important;   /* 24px on phones */
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-left: 2.5rem !important;  /* 40px on tablets */
+    padding-right: 2.5rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  section {
+    padding-left: 4rem !important;    /* 64px on desktop — more breathing room */
+    padding-right: 4rem !important;
+  }
 }
 
 @keyframes blob {
@@ -68,10 +93,7 @@ section {
   animation: gradient 8s ease infinite;
 }
 
-/* Smooth scrolling for all browsers */
-* {
-  scroll-behavior: smooth !important;
-}
+/* Smooth scrolling (scoped to the document root, not every element) */
 
 /* Rotating gradient animation for header */
 @keyframes rotate-gradient {

@@ -10,12 +10,38 @@ import InnovationIllustration from '@/components/svg/InnovationIllustration';
 import DevelopmentIllustration from '@/components/svg/DevelopmentIllustration';
 import TeamIllustration from '@/components/svg/TeamIllustration';
 import HeroIllustration from '@/components/svg/HeroIllustration';
+import { BrowserFrame, PhoneFrame, DashboardMock, PhoneOrderMock } from '@/components/restro/Mockups';
 import {
   FaCode, FaLaptopCode, FaMobile, FaShoppingCart,
   FaPalette, FaCloud, FaChartLine, FaUsers, FaRocket,
   FaShieldAlt, FaCog, FaHeadset, FaAward, FaCheckCircle,
   FaLightbulb, FaPencilRuler, FaRedo, FaHandshake
 } from 'react-icons/fa';
+
+// Fixed particle field for the hero — deterministic so server and client render
+// identically (avoids React hydration warnings and per-render reshuffling).
+const HERO_PARTICLES = [
+  { left: 8, top: 18, duration: 4.2, delay: 0.2 },
+  { left: 22, top: 64, duration: 5.1, delay: 1.1 },
+  { left: 15, top: 82, duration: 3.6, delay: 0.6 },
+  { left: 34, top: 30, duration: 4.8, delay: 1.6 },
+  { left: 47, top: 72, duration: 3.9, delay: 0.4 },
+  { left: 41, top: 12, duration: 5.4, delay: 1.9 },
+  { left: 58, top: 48, duration: 4.1, delay: 0.9 },
+  { left: 63, top: 22, duration: 3.7, delay: 1.4 },
+  { left: 71, top: 78, duration: 5.0, delay: 0.3 },
+  { left: 78, top: 38, duration: 4.5, delay: 1.7 },
+  { left: 86, top: 66, duration: 3.8, delay: 0.7 },
+  { left: 92, top: 26, duration: 4.9, delay: 1.2 },
+  { left: 5, top: 46, duration: 4.3, delay: 1.0 },
+  { left: 28, top: 50, duration: 3.5, delay: 0.5 },
+  { left: 52, top: 88, duration: 5.2, delay: 1.5 },
+  { left: 67, top: 58, duration: 4.0, delay: 0.8 },
+  { left: 82, top: 14, duration: 3.6, delay: 1.3 },
+  { left: 95, top: 54, duration: 4.7, delay: 1.8 },
+  { left: 38, top: 92, duration: 4.4, delay: 0.6 },
+  { left: 18, top: 36, duration: 5.3, delay: 1.1 },
+];
 
 // Counter animation hook
 function useCountAnimation(end: number, duration: number = 2) {
@@ -217,37 +243,41 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Animated Background with Grid */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-blue-900">
-          {/* Animated Grid */}
+          {/* Animated Grid — fades out toward the edges via a radial mask */}
           <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
+            backgroundImage: 'linear-gradient(rgba(99, 102, 241, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.12) 1px, transparent 1px)',
+            backgroundSize: '54px 54px',
+            maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, #000 50%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, #000 50%, transparent 100%)'
           }}></div>
 
+          {/* Top spotlight glow */}
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at center, rgba(79,70,229,0.30), rgba(79,70,229,0) 70%)' }}></div>
+
           {/* Animated Blobs */}
-          <div className="absolute inset-0 opacity-40">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-            <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute inset-0 opacity-50">
+            <div className="absolute top-10 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-screen filter blur-3xl animate-blob"></div>
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-violet-500 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-sky-500 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000"></div>
           </div>
 
-          {/* Floating Particles */}
-          {[...Array(20)].map((_, i) => (
+          {/* Floating Particles — deterministic positions (no hydration mismatch) */}
+          {HERO_PARTICLES.map((pt, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-blue-400 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
+              className="absolute w-1.5 h-1.5 bg-indigo-300/70 rounded-full"
+              style={{ left: `${pt.left}%`, top: `${pt.top}%` }}
               animate={{
                 y: [0, -30, 0],
-                opacity: [0.2, 0.8, 0.2],
+                opacity: [0.15, 0.7, 0.15],
                 scale: [1, 1.5, 1]
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
+                duration: pt.duration,
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: pt.delay,
+                ease: 'easeInOut'
               }}
             />
           ))}
@@ -256,9 +286,9 @@ export default function Home() {
         <div className="container mx-auto px-4 z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <motion.div className="text-left space-y-8 lg:pl-12">
+            <motion.div className="text-left space-y-8 lg:pl-12 px-4 py-10">
               {/* Animated Badge */}  
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
@@ -269,7 +299,7 @@ export default function Home() {
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
                 </span>
                 <span className="text-sm font-medium text-blue-300">Trusted by 500+ Businesses</span>
-              </motion.div>
+              </motion.div> */}
 
               {/* Main Heading with Typewriter Effect */}
               <motion.div
@@ -648,6 +678,77 @@ export default function Home() {
             {solutions.map((solution, index) => (
               <SolutionCard key={solution.title} solution={solution} index={index} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Restro360 Featured Highlight */}
+      <section className="py-28 px-4 bg-gradient-to-b from-black via-[#1a1206] to-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 right-1/4 w-96 h-96 bg-amber-500/20 rounded-full filter blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full filter blur-3xl" />
+        </div>
+        <div className="container mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 mb-6">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span className="text-amber-300 text-sm font-medium">Featured Product · Live now</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-400">Restro360</span>
+                <span className="block">Restaurant Management, end to end.</span>
+              </h2>
+              <p className="text-lg text-gray-300 max-w-xl mb-8">
+                POS &amp; QR ordering, kitchen display, inventory &amp; recipes, supplier payables,
+                profit &amp; loss, loyalty, reservations and staff attendance — on web and mobile,
+                across all your outlets.
+              </p>
+              <div className="grid grid-cols-2 gap-3 max-w-md mb-9">
+                {['POS & QR Ordering', 'Kitchen Display (KDS)', 'Inventory & Recipes', 'Profit & Loss', 'Loyalty & Promotions', 'Multi-outlet'].map((f) => (
+                  <div key={f} className="flex items-center gap-2 text-sm text-gray-200">
+                    <FaCheckCircle className="text-amber-400 shrink-0" /> {f}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <a href="https://restro360.engispider.com/login" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-7 py-3.5 rounded-full font-semibold hover:scale-105 transition-transform shadow-xl shadow-amber-500/25">
+                  <FaRocket /> Launch App
+                </a>
+                <Link href="/solutions/restaurant" className="inline-flex items-center gap-2 border border-white/20 bg-white/5 text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/10 transition-colors">
+                  Explore Restro360
+                </Link>
+                <Link href="/solutions/restaurant/guide" className="inline-flex items-center gap-2 border border-white/20 bg-white/5 text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/10 transition-colors">
+                  Training Guide
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <BrowserFrame>
+                <DashboardMock />
+              </BrowserFrame>
+              <motion.div
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="hidden md:block absolute -bottom-10 -right-6"
+              >
+                <PhoneFrame className="scale-[0.6] origin-bottom-right">
+                  <PhoneOrderMock />
+                </PhoneFrame>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>

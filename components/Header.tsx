@@ -13,6 +13,9 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
   const pathname = usePathname();
+  // trailingSlash is enabled, so usePathname() returns e.g. "/solutions/restaurant/".
+  // Normalise it so active-state comparisons match the (slash-less) hrefs.
+  const path = pathname.replace(/\/+$/, '') || '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,11 +28,11 @@ export default function Header() {
   // Helper function to check if a link is active
   const isLinkActive = (href: string, submenu?: any[]) => {
     // Exact match for home page
-    if (href === '/' && pathname === '/') return true;
-    // For other pages, check if pathname starts with href (but not for home)
-    if (href !== '/' && pathname.startsWith(href)) return true;
+    if (href === '/') return path === '/';
+    // For other pages: active on the page itself or any of its sub-routes
+    if (path === href || path.startsWith(href + '/')) return true;
     // Check submenu items
-    if (submenu && submenu.some(sub => pathname === sub.href)) return true;
+    if (submenu && submenu.some(sub => path === sub.href || path.startsWith(sub.href + '/'))) return true;
     return false;
   };
 
@@ -132,7 +135,7 @@ export default function Header() {
                       <div className="p-1.5">
                         {link.submenu.map((sublink, index) => {
                           const Icon = sublink.icon;
-                          const isSubActive = pathname === sublink.href;
+                          const isSubActive = path === sublink.href || path.startsWith(sublink.href + '/');
                           return (
                             <Link
                               key={sublink.href}
@@ -270,7 +273,7 @@ export default function Header() {
                               >
                                 {link.submenu.map((sublink, subIndex) => {
                                   const Icon = sublink.icon;
-                                  const isSubActive = pathname === sublink.href;
+                                  const isSubActive = path === sublink.href || path.startsWith(sublink.href + '/');
                                   return (
                                     <motion.div
                                       key={sublink.href}
