@@ -1,9 +1,13 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://www.engispider.com',
+  siteUrl: process.env.SITE_URL || 'https://engispider.com',
+  // Static export lands in ./out, and this postbuild step runs after the export —
+  // write the sitemap/robots straight into the deployed folder so they're fresh.
+  outDir: 'out',
   generateRobotsTxt: true,
   generateIndexSitemap: false,
-  exclude: ['/server-sitemap.xml'],
+  // Keep redirect stubs and the (noindex) search page out of the sitemap.
+  exclude: ['/server-sitemap.xml', '/search', '/contacts', '/book-demo', '/inquery'],
   changefreq: 'weekly',
   priority: 0.7,
   sitemapSize: 5000,

@@ -16,7 +16,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.engispider.com'),
+  metadataBase: new URL('https://engispider.com'),
   title: {
     default: "Engispider Infotech - Best Software Company in Bhubaneswar | HRMS, CRM, ERP Solutions",
     template: "%s | Engispider Infotech"
@@ -112,7 +112,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://www.engispider.com",
+    url: "https://engispider.com",
     siteName: "Engispider Infotech",
     title: "Engispider Infotech - Best Software Company in Bhubaneswar",
     description: "Leading software development company offering HRMS, CRM, ERP, and custom business solutions in India.",
@@ -132,7 +132,7 @@ export const metadata: Metadata = {
     images: ["/images/EngiSpider-fnl.png"],
   },
   alternates: {
-    canonical: "https://www.engispider.com",
+    canonical: "https://engispider.com",
   },
   verification: {
     google: "your-google-verification-code",
@@ -158,8 +158,8 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Engispider Infotech Private Limited",
               "alternateName": "Engispider",
-              "url": "https://www.engispider.com",
-              "logo": "https://www.engispider.com/images/EngiSpider-fnl.png",
+              "url": "https://engispider.com",
+              "logo": "https://engispider.com/images/EngiSpider-fnl.png",
               "description": "Leading software development company in Bhubaneswar, India offering HRMS, CRM, ERP, Inventory Management, Pharmacy, Restaurant POS, and custom business software solutions.",
               "foundingDate": "2014",
               "address": {
@@ -202,9 +202,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "@id": "https://www.engispider.com",
+              "@id": "https://engispider.com",
               "name": "Engispider Infotech Private Limited",
-              "image": "https://www.engispider.com/images/EngiSpider-fnl.png",
+              "image": "https://engispider.com/images/EngiSpider-fnl.png",
               "telephone": "+91-7377799937",
               "email": "info@engispider.com",
               "address": {
@@ -220,7 +220,7 @@ export default function RootLayout({
                 "latitude": "20.2961",
                 "longitude": "85.8245"
               },
-              "url": "https://www.engispider.com",
+              "url": "https://engispider.com",
               "openingHoursSpecification": [
                 {
                   "@type": "OpeningHoursSpecification",
@@ -321,12 +321,12 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "Engispider Infotech",
-              "url": "https://www.engispider.com",
+              "url": "https://engispider.com",
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://www.engispider.com/?s={search_term_string}"
+                  "urlTemplate": "https://engispider.com/search/?q={search_term_string}"
                 },
                 "query-input": "required name=search_term_string"
               }

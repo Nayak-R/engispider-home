@@ -696,10 +696,6 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 mb-6">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <span className="text-amber-300 text-sm font-medium">Featured Product · Live now</span>
-              </div>
               <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-400">Restro360</span>
                 <span className="block">Restaurant Management, end to end.</span>

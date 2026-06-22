@@ -11,7 +11,7 @@ User-agent: Bingbot
 Allow: /
 
 # Host
-Host: https://www.engispider.com
+Host: https://engispider.com
 
 # Sitemaps
-Sitemap: https://www.engispider.com/sitemap.xml
+Sitemap: https://engispider.com/sitemap.xml
