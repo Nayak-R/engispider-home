@@ -31,8 +31,8 @@ export default function ContactPage() {
       icon: FaShoppingBag,
       title: 'Sales',
       description: 'For new projects and business inquiries',
-      phone: '+91 73777 99937',
-      phoneLink: 'tel:+917377799937',
+      phone: '+91 95833 15151',
+      phoneLink: 'tel:+919583315151',
       email: 'accounts@engispider.com',
       emailLink: 'mailto:accounts@engispider.com',
       color: 'from-blue-500 to-cyan-500'
@@ -41,8 +41,8 @@ export default function ContactPage() {
       icon: FaQuestionCircle,
       title: 'Inquiry',
       description: 'General questions and information',
-      phone: '+91 73777 99937',
-      phoneLink: 'tel:+917377799937',
+      phone: '+91 95833 15151',
+      phoneLink: 'tel:+919583315151',
       email: 'info@engispider.com',
       emailLink: 'mailto:info@engispider.com',
       color: 'from-purple-500 to-pink-500'
@@ -51,8 +51,8 @@ export default function ContactPage() {
       icon: FaHeadset,
       title: 'Support',
       description: 'Technical assistance and help',
-      phone: '+91 78737 82505',
-      phoneLink: 'tel:+917873782505',
+      phone: '+91 73777 99937',
+      phoneLink: 'tel:+917377799937',
       email: 'support@engispider.com',
       emailLink: 'mailto:support@engispider.com',
       color: 'from-green-500 to-emerald-500'
@@ -60,7 +60,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen overflow-x-hidden bg-black">
       <Header />
 
       {/* Hero Section */}
@@ -73,7 +73,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left lg:pl-12 px-4 py-10"
+              className="min-w-0 text-left lg:pl-12 px-4 py-10"
             >
               {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -84,7 +84,7 @@ export default function ContactPage() {
                 <span className="text-green-400 text-sm font-semibold">Contact Us</span>
               </motion.div> */}
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 break-words bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
                 Let's Start a Conversation
               </h1>
 
@@ -208,8 +208,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Phone</h4>
-                    <p className="text-gray-600">Sales: +91 73777 99937</p>
-                    <p className="text-gray-600">Support: +91 78737 82505</p>
+                    <p className="text-gray-600">Sales: +91 95833 15151</p>
+                    <p className="text-gray-600">Support: +91 73777 99937</p>
                   </div>
                 </div>
 

@@ -1,11 +1,28 @@
-import { Metadata } from 'next';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About Us | Leading Software Company in Bhubaneswar',
-  description: 'Learn about Engispider Infotech - a leading software development company in Bhubaneswar offering HRMS, CRM, and custom business solutions since 10+ years.',
-  keywords: ['About Engispider', 'Software Company Bhubaneswar', 'IT Company Odisha', 'Software Development Company'],
-};
+export const metadata = pageMetadata({
+  title: 'About Us | Software Company in Bhubaneswar',
+  description:
+    'Engispider Infotech is a software development company in Bhubaneswar building HRMS, CRM and custom business systems, with 10+ years of delivery behind us.',
+  path: '/about',
+  keywords: [
+    'About Engispider',
+    'Software Company Bhubaneswar',
+    'IT Company Odisha',
+    'Software Development Company',
+  ],
+});
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        trail={[
+          { name: 'About Us', path: '/about' },
+        ]}
+      />
+      {children}
+    </>
+  );
 }

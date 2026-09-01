@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 
 /**
- * Client-side redirect used by retired/legacy URLs (e.g. /contacts, /book-demo).
+ * Client-side redirect used by retired/legacy URLs (e.g. /contacts, /inquery).
  * The page also carries a canonical tag to the real destination and is marked
  * noindex, so crawlers consolidate it to the target instead of indexing the stub.
  */

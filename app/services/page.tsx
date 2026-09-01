@@ -69,7 +69,7 @@ export default function ServicesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen overflow-x-hidden bg-black">
       <Header />
 
       {/* Hero Section */}
@@ -82,7 +82,7 @@ export default function ServicesPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left lg:pl-12 px-4 py-10"
+              className="min-w-0 text-left lg:pl-12 px-4 py-10"
             >
               {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export default function ServicesPage() {
                 <span className="text-purple-400 text-sm font-semibold">Our Services</span>
               </motion.div> */}
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 break-words bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
                 Comprehensive Software Solutions
               </h1>
 

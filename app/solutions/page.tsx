@@ -5,10 +5,18 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import InnovationIllustration from '@/components/svg/InnovationIllustration';
-import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase } from 'react-icons/fa';
+import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 export default function SolutionsPage() {
   const solutions = [
+    {
+      title: 'Campus360 — School & College ERP',
+      description: 'Complete school & college management: online admissions, fees, automatic accounting, online fee payment, examinations, hostel, transport, library and staff payroll — one platform for your whole education group',
+      href: '/solutions/education',
+      gradient: 'from-violet-600 via-indigo-500 to-blue-500',
+      Icon: FaGraduationCap
+    },
     {
       title: 'HRMS Software',
       description: 'Complete HR management system for efficient workforce management, payroll, attendance, and employee performance tracking across your organization',
@@ -54,7 +62,9 @@ export default function SolutionsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen overflow-x-hidden bg-black">
+      <BreadcrumbJsonLd trail={[{ name: 'Solutions', path: '/solutions' }]} />
+
       <Header />
 
       {/* Hero Section */}
@@ -67,7 +77,7 @@ export default function SolutionsPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left lg:pl-12 px-4 py-10"
+              className="min-w-0 text-left lg:pl-12 px-4 py-10"
             >
               {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -78,7 +88,7 @@ export default function SolutionsPage() {
                 <span className="text-indigo-400 text-sm font-semibold">Our Solutions</span>
               </motion.div> */}
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-indigo-100 to-white bg-clip-text text-transparent">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 break-words bg-gradient-to-r from-white via-indigo-100 to-white bg-clip-text text-transparent">
                 Industry-Specific Solutions
               </h1>
 

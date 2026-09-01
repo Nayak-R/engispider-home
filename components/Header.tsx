@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Home, Info, Briefcase, Mail, Sparkles } from 'lucide-react';
-import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase } from 'react-icons/fa';
+import { Menu, X, ChevronDown, Home, Info, Briefcase, Mail, Sparkles, Building2 } from 'lucide-react';
+import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,6 +42,7 @@ export default function Header() {
     { href: '/services', label: 'Services', icon: Briefcase },
     { href: '/solutions', label: 'Solutions', icon: Sparkles,
       submenu: [
+        { href: '/solutions/education', label: 'School & College ERP', icon: FaGraduationCap, color: 'from-violet-600 to-indigo-500', description: 'School & college management' },
         { href: '/solutions/hrms', label: 'HRMS Software', icon: FaUsers, color: 'from-blue-600 to-cyan-500', description: 'HR & workforce management' },
         { href: '/solutions/crm', label: 'CRM System', icon: FaChartLine, color: 'from-purple-600 to-pink-500', description: 'Customer relationship tools' },
         { href: '/solutions/inventory', label: 'Inventory Manager', icon: FaBox, color: 'from-green-600 to-emerald-500', description: 'Stock tracking system' },
@@ -49,7 +50,8 @@ export default function Header() {
         { href: '/solutions/restaurant', label: 'Restaurant Manager', icon: FaUtensils, color: 'from-yellow-600 to-amber-500', description: 'POS & management' },
         { href: '/solutions/business', label: 'Business Solutions', icon: FaBriefcase, color: 'from-indigo-600 to-blue-500', description: 'Custom enterprise tools' },
       ]
-    }
+    },
+    { href: '/customers', label: 'Customers', icon: Building2 }
   ];
 
   return (
@@ -214,7 +216,7 @@ export default function Header() {
               {/* Gradient glow for mobile menu */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/40 via-purple-500/40 to-pink-500/40 animate-rotate-gradient blur-md -z-10"></div>
 
-              <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 backdrop-blur-2xl border border-blue-200/50 rounded-2xl shadow-2xl p-3 space-y-2">
+              <div className="mobile-nav-panel bg-gradient-to-br from-blue-50 via-white to-purple-50 backdrop-blur-2xl border border-blue-200/50 rounded-2xl shadow-2xl p-3 space-y-2">
                 {navLinks.map((link, index) => {
                   const isActive = isLinkActive(link.href, link.submenu);
                   const hasSubmenu = link.submenu;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Sora } from "next/font/google";
+import RouteTransitionLoader from "@/components/RouteTransitionLoader";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,10 +19,13 @@ const sora = Sora({
 export const metadata: Metadata = {
   metadataBase: new URL('https://engispider.com'),
   title: {
-    default: "Engispider Infotech - Best Software Company in Bhubaneswar | HRMS, CRM, ERP Solutions",
-    template: "%s | Engispider Infotech"
+    // Brand first: it is one of the signals Google uses to pick the site name
+    // shown in results. 58 chars, so it survives truncation at ~60.
+    default: "Engispider Infotech | Best Software Company in Bhubaneswar",
+    // Short suffix keeps child titles inside the same budget.
+    template: "%s | Engispider"
   },
-  description: "Leading software development company in Bhubaneswar offering HRMS Software India, CRM System, Inventory Management, Pharmacy Manager, Restaurant POS, and custom business software solutions. Expert website development agency.",
+  description: "Software development company in Bhubaneswar building HRMS, CRM, ERP, inventory, pharmacy and restaurant POS systems for businesses across India.",
   keywords: [
     // Software Company Keywords
     "software company",
@@ -112,7 +116,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://engispider.com",
+    url: "/",
     siteName: "Engispider Infotech",
     title: "Engispider Infotech - Best Software Company in Bhubaneswar",
     description: "Leading software development company offering HRMS, CRM, ERP, and custom business solutions in India.",
@@ -131,11 +135,11 @@ export const metadata: Metadata = {
     description: "Leading software development company offering HRMS, CRM, ERP, and custom business solutions.",
     images: ["/images/EngiSpider-fnl.png"],
   },
+  // Only the homepage inherits this. Every other route sets its own canonical
+  // via lib/seo.ts — previously they all inherited this one and told Google
+  // they were duplicates of the homepage.
   alternates: {
-    canonical: "https://engispider.com",
-  },
-  verification: {
-    google: "your-google-verification-code",
+    canonical: "/",
   },
 };
 
@@ -156,7 +160,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
+              "@id": "https://engispider.com/#organization",
               "name": "Engispider Infotech Private Limited",
+              "legalName": "Engispider Infotech Private Limited",
               "alternateName": "Engispider",
               "url": "https://engispider.com",
               "logo": "https://engispider.com/images/EngiSpider-fnl.png",
@@ -172,14 +178,14 @@ export default function RootLayout({
               "contactPoint": [
                 {
                   "@type": "ContactPoint",
-                  "telephone": "+91-7377799937",
+                  "telephone": "+91-9583315151",
                   "contactType": "sales",
                   "areaServed": "IN",
                   "availableLanguage": ["English", "Hindi"]
                 },
                 {
                   "@type": "ContactPoint",
-                  "telephone": "+91-7873782505",
+                  "telephone": "+91-7377799937",
                   "contactType": "customer support",
                   "areaServed": "IN",
                   "availableLanguage": ["English", "Hindi"]
@@ -205,7 +211,7 @@ export default function RootLayout({
               "@id": "https://engispider.com",
               "name": "Engispider Infotech Private Limited",
               "image": "https://engispider.com/images/EngiSpider-fnl.png",
-              "telephone": "+91-7377799937",
+              "telephone": "+91-9583315151",
               "email": "info@engispider.com",
               "address": {
                 "@type": "PostalAddress",
@@ -240,102 +246,10 @@ export default function RootLayout({
           }}
         />
 
-        {/* SoftwareApplication Schema for Products */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "itemListElement": [
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "HRMS Software",
-                  "applicationCategory": "BusinessApplication",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "INR"
-                  },
-                  "operatingSystem": "Web",
-                  "description": "Complete HR Management System for workforce management, payroll, and attendance tracking"
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "CRM System",
-                  "applicationCategory": "BusinessApplication",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "INR"
-                  },
-                  "operatingSystem": "Web",
-                  "description": "Customer Relationship Management system for business growth and sales tracking"
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "Inventory Manager",
-                  "applicationCategory": "BusinessApplication",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "INR"
-                  },
-                  "operatingSystem": "Web",
-                  "description": "Smart inventory tracking and stock management solution"
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "Pharmacy Manager",
-                  "applicationCategory": "BusinessApplication",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "INR"
-                  },
-                  "operatingSystem": "Web",
-                  "description": "Pharmacy management software with billing and inventory features"
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "Restaurant Manager",
-                  "applicationCategory": "BusinessApplication",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "INR"
-                  },
-                  "operatingSystem": "Web",
-                  "description": "Complete POS and management system for restaurants"
-                }
-              ]
-            })
-          }}
-        />
-
-        {/* Website Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "Engispider Infotech",
-              "url": "https://engispider.com",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": {
-                  "@type": "EntryPoint",
-                  "urlTemplate": "https://engispider.com/search/?q={search_term_string}"
-                },
-                "query-input": "required name=search_term_string"
-              }
-            })
-          }}
-        />
       </head>
       <body className="antialiased">
         {children}
+        <RouteTransitionLoader />
       </body>
     </html>
   );

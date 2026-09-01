@@ -1,8 +1,12 @@
-import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Software Solutions | HRMS, CRM, Inventory, Pharmacy & Restaurant Systems',
-  description: 'Explore our comprehensive software solutions including HRMS, CRM, Inventory Management, Pharmacy Manager, Restaurant POS, and custom business software.',
+export const metadata = pageMetadata({
+  title: 'Software Solutions | HRMS, CRM, POS & ERP',
+  description:
+    'Ready-built business software from Engispider: HRMS, CRM, inventory, pharmacy, restaurant POS and school ERP, plus custom systems built to order.',
+  path: '/solutions',
+  // Children under /solutions would otherwise render with no brand suffix.
+  childTitleTemplate: '%s | Engispider',
   keywords: [
     'Software Solutions India',
     'HRMS Software',
@@ -10,9 +14,9 @@ export const metadata: Metadata = {
     'Inventory Management',
     'Pharmacy Software',
     'Restaurant POS',
-    'Business Software'
+    'Business Software',
   ],
-};
+});
 
 export default function SolutionsLayout({ children }: { children: React.ReactNode }) {
   return children;

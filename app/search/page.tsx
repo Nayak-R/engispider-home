@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { pageMetadata } from '@/lib/seo';
 import SearchClient from './SearchClient';
 
-export const metadata: Metadata = {
-  title: 'Search | Engispider Infotech',
+export const metadata = pageMetadata({
+  title: 'Search',
   description:
-    'Search Engispider Infotech — HRMS, CRM, Inventory, Pharmacy and Restaurant software solutions, services and resources.',
-  alternates: { canonical: 'https://engispider.com/search/' },
-  // Search results pages should not themselves be indexed, but links are followed.
-  robots: { index: false, follow: true },
-};
+    'Search Engispider Infotech — HRMS, CRM, inventory, pharmacy and restaurant software, services and resources.',
+  path: '/search',
+  // A search results page should not compete in the index, but its links
+  // are still worth following.
+  noindex: true,
+});
 
 export default function SearchPage() {
   return (

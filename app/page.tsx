@@ -11,11 +11,14 @@ import DevelopmentIllustration from '@/components/svg/DevelopmentIllustration';
 import TeamIllustration from '@/components/svg/TeamIllustration';
 import HeroIllustration from '@/components/svg/HeroIllustration';
 import { BrowserFrame, PhoneFrame, DashboardMock, PhoneOrderMock } from '@/components/restro/Mockups';
+import { CampusDashboardMock, PhonePortalMock } from '@/components/academic/Mockups';
+import ClientLogoGrid from '@/components/ClientLogoGrid';
+import { CLIENTS } from '@/data/clients';
 import {
   FaCode, FaLaptopCode, FaMobile, FaShoppingCart,
   FaPalette, FaCloud, FaChartLine, FaUsers, FaRocket,
   FaShieldAlt, FaCog, FaHeadset, FaAward, FaCheckCircle,
-  FaLightbulb, FaPencilRuler, FaRedo, FaHandshake
+  FaLightbulb, FaPencilRuler, FaRedo, FaHandshake, FaGraduationCap, FaArrowRight
 } from 'react-icons/fa';
 
 // Fixed particle field for the hero — deterministic so server and client render
@@ -192,6 +195,13 @@ export default function Home() {
 
   const solutions = [
     {
+      title: 'Campus360 · School & College ERP',
+      description: 'Admissions to accounting, one platform',
+      href: '/solutions/education',
+      gradient: 'from-violet-600 via-indigo-500 to-blue-500',
+      Icon: FaGraduationCap
+    },
+    {
       title: 'HRMS Software',
       description: 'Transform workforce management',
       href: '/solutions/hrms',
@@ -237,6 +247,105 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Homepage-only structured data: Google reads site-name markup from
+          the homepage, and the product ItemList is only true here. */}
+      {/* SoftwareApplication Schema for Products */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": [
+              {
+                "@type": "SoftwareApplication",
+                "name": "HRMS Software",
+                "applicationCategory": "BusinessApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "operatingSystem": "Web",
+                "description": "Complete HR Management System for workforce management, payroll, and attendance tracking"
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "CRM System",
+                "applicationCategory": "BusinessApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "operatingSystem": "Web",
+                "description": "Customer Relationship Management system for business growth and sales tracking"
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Inventory Manager",
+                "applicationCategory": "BusinessApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "operatingSystem": "Web",
+                "description": "Smart inventory tracking and stock management solution"
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Pharmacy Manager",
+                "applicationCategory": "BusinessApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "operatingSystem": "Web",
+                "description": "Pharmacy management software with billing and inventory features"
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Restaurant Manager",
+                "applicationCategory": "BusinessApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "operatingSystem": "Web",
+                "description": "Complete POS and management system for restaurants"
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* Website Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://engispider.com/#website",
+            "name": "Engispider Infotech",
+            "alternateName": ["Engispider", "Engispider Infotech Private Limited"],
+            "url": "https://engispider.com/",
+            "publisher": { "@id": "https://engispider.com/#organization" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://engispider.com/search/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+
       <Header />
 
       {/* Hero Section - Enhanced */}
@@ -286,7 +395,7 @@ export default function Home() {
         <div className="container mx-auto px-4 z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <motion.div className="text-left space-y-8 lg:pl-12 px-4 py-10">
+            <motion.div className="min-w-0 text-left space-y-8 lg:pl-12 px-4 py-10">
               {/* Animated Badge */}  
               {/* <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -749,6 +858,67 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Campus360 Featured Highlight */}
+      <section className="py-28 px-4 bg-gradient-to-b from-black via-[#120a24] to-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-1/4 w-96 h-96 bg-violet-500/20 rounded-full filter blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-3xl" />
+        </div>
+        <div className="container mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="relative order-2 lg:order-1"
+            >
+              <BrowserFrame url="campus360.engispider.com"><CampusDashboardMock /></BrowserFrame>
+              <motion.div
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="hidden md:block absolute -bottom-10 -right-6"
+              >
+                <PhoneFrame className="scale-[0.6] origin-bottom-right"><PhonePortalMock /></PhoneFrame>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+              className="order-1 lg:order-2"
+            >
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">Campus360</span>
+                <span className="block">School &amp; College ERP, end to end.</span>
+              </h2>
+              <p className="text-lg text-gray-300 max-w-xl mb-8">
+                Admissions, fees, automatic accounting, online fee payment, examinations, hostel,
+                transport, library and staff payroll — one platform for schools, colleges and
+                multi-institution education groups.
+              </p>
+              <div className="grid grid-cols-2 gap-3 max-w-md mb-9">
+                {['Admissions & Fees', 'Auto Receipt on Payment', 'Online Fee Payment', 'Automatic Accounting', 'Hostel & Transport', 'Parent Portal'].map((f) => (
+                  <div key={f} className="flex items-center gap-2 text-sm text-gray-200">
+                    <FaCheckCircle className="text-violet-400 shrink-0" /> {f}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 text-white px-7 py-3.5 rounded-full font-semibold hover:scale-105 transition-transform shadow-xl shadow-violet-500/25">
+                  <FaRocket /> Book a Free Demo
+                </Link>
+                <Link href="/solutions/education" className="inline-flex items-center gap-2 border border-white/20 bg-white/5 text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/10 transition-colors">
+                  Explore Campus360
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Success Metrics Section */}
       <section className="py-32 px-4 bg-gradient-to-b from-black via-gray-900 to-black text-white relative overflow-hidden">
         <div className="absolute inset-0">
@@ -886,6 +1056,44 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Customers — social proof, placed right before the closing CTA */}
+      <section className="py-24 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent"></div>
+
+        <div className="container mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-sm font-medium">
+              <FaHandshake className="w-4 h-4" />
+              Our Customers
+            </span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-6 mb-4">
+              Trusted by <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">teams that ship</span>.
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Hospitals, campuses, logistics fleets and cafes run day to day on software we built
+            </p>
+          </motion.div>
+
+          <ClientLogoGrid clients={CLIENTS} />
+
+          <div className="text-center mt-14">
+            <Link
+              href="/customers"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 text-white font-semibold hover:border-blue-400/60 hover:bg-white/5 transition-all"
+            >
+              View all customers
+              <FaArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

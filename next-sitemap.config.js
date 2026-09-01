@@ -7,7 +7,7 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   // Keep redirect stubs and the (noindex) search page out of the sitemap.
-  exclude: ['/server-sitemap.xml', '/search', '/contacts', '/book-demo', '/inquery'],
+  exclude: ['/server-sitemap.xml', '/search', '/contacts', '/inquery'],
   changefreq: 'weekly',
   priority: 0.7,
   sitemapSize: 5000,
@@ -22,7 +22,7 @@ module.exports = {
       changefreq = 'daily';
     }
     // Main navigation pages
-    else if (['/about', '/services', '/solutions', '/contact'].includes(path)) {
+    else if (['/about', '/services', '/solutions', '/contact', '/customers'].includes(path)) {
       priority = 0.9;
       changefreq = 'weekly';
     }

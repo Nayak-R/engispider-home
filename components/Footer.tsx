@@ -10,6 +10,7 @@ export default function Footer() {
   const pathname = usePathname();
 
   const solutions = [
+    { name: 'School & College ERP', href: '/solutions/education' },
     { name: 'HRMS Software', href: '/solutions/hrms' },
     { name: 'CRM System', href: '/solutions/crm' },
     { name: 'Inventory Manager', href: '/solutions/inventory' },
@@ -22,6 +23,7 @@ export default function Footer() {
     { name: 'About Us', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Our Customers', href: '/customers' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -292,11 +294,11 @@ export default function Footer() {
               >
                 <FaPhone className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
                 <div className="space-y-1">
-                  <a href="tel:+917377799937" className="hover:text-blue-400 transition-all block group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 73777 99937</span>
+                  <a href="tel:+919583315151" className="hover:text-blue-400 transition-all block group">
+                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 95833 15151</span>
                   </a>
-                  <a href="tel:+917873782505" className="hover:text-blue-400 transition-all block text-sm group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 78737 82505</span>
+                  <a href="tel:+917377799937" className="hover:text-blue-400 transition-all block text-sm group">
+                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 73777 99937</span>
                   </a>
                 </div>
               </motion.li>

@@ -57,7 +57,7 @@ function Sidebar({ active }: { active: string }) {
     <div className="hidden sm:flex w-44 flex-col bg-white border-r border-gray-200 py-3 shrink-0">
       <div className="px-4 pb-3 mb-2 flex items-center gap-2 border-b border-gray-100">
         <div className="w-7 h-7 rounded-lg" style={{ background: PRIMARY }} />
-        <span className="font-extrabold text-gray-800 text-sm">Restro360</span>
+        <span className="font-extrabold text-gray-800 text-xs">Restro360</span>
       </div>
       {items.map(({ k, label, Icon }) => {
         const on = k === active;
@@ -77,7 +77,7 @@ function Sidebar({ active }: { active: string }) {
 function TopBar({ title }: { title: string }) {
   return (
     <div className="flex items-center justify-between px-4 h-12 bg-white border-b border-gray-200">
-      <span className="font-bold text-gray-800 text-sm">{title}</span>
+      <span className="font-bold text-gray-800 text-xs">{title}</span>
       <div className="flex items-center gap-3">
         <Bell size={16} className="text-gray-400" />
         <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-[11px] font-bold" style={{ color: PRIMARY }}>RN</div>
@@ -109,7 +109,7 @@ function Stat({ label, value, sub, Icon, tone }: { label: string; value: string;
         </div>
         <span className="text-[11px] text-gray-500">{label}</span>
       </div>
-      <div className="text-lg font-extrabold text-gray-900">{value}</div>
+      <div className="text-sm font-extrabold text-gray-900">{value}</div>
       {sub && <div className="text-[10px] text-emerald-600 font-medium mt-0.5">{sub}</div>}
     </div>
   );
@@ -256,7 +256,7 @@ export function PnlMock() {
               <span>{l}</span><span>{v}</span>
             </div>
           ))}
-          <div className="flex justify-between text-sm font-extrabold border-t border-gray-200 pt-2 mt-1" style={{ color: '#16a34a' }}>
+          <div className="flex justify-between text-xs font-extrabold border-t border-gray-200 pt-2 mt-1" style={{ color: '#16a34a' }}>
             <span>Net Profit</span><span>₹1,70,400</span>
           </div>
         </div>
@@ -301,7 +301,7 @@ export function PhoneOrderMock() {
   return (
     <div className="bg-gray-50">
       <div className="flex items-center justify-between px-4 pt-7 pb-2 bg-white">
-        <span className="font-extrabold text-gray-800 text-sm">Place Order</span>
+        <span className="font-extrabold text-gray-800 text-xs">Place Order</span>
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 font-semibold" style={{ color: PRIMARY }}>Table 5</span>
       </div>
       <div className="p-3 space-y-2 h-[380px] overflow-hidden">
@@ -314,7 +314,7 @@ export function PhoneOrderMock() {
             </div>
             {added ? (
               <div className="flex items-center gap-2 text-gray-700">
-                <Minus size={14} /><span className="font-bold text-sm">1</span><Plus size={14} style={{ color: PRIMARY }} />
+                <Minus size={14} /><span className="font-bold text-xs">1</span><Plus size={14} style={{ color: PRIMARY }} />
               </div>
             ) : (
               <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg" style={{ background: '#eef2ff', color: PRIMARY }}>ADD</span>
@@ -323,7 +323,7 @@ export function PhoneOrderMock() {
         ))}
       </div>
       <div className="p-3 bg-white border-t border-gray-100">
-        <button className="w-full py-2.5 rounded-xl text-white text-sm font-bold" style={{ background: PRIMARY }}>Place Order · ₹560</button>
+        <button className="w-full py-2.5 rounded-xl text-white text-xs font-bold" style={{ background: PRIMARY }}>Place Order · ₹560</button>
       </div>
     </div>
   );
@@ -332,13 +332,13 @@ export function PhoneOrderMock() {
 export function PhoneAttendanceMock() {
   return (
     <div className="bg-gray-50">
-      <div className="px-4 pt-7 pb-2 bg-white"><span className="font-extrabold text-gray-800 text-sm">Attendance</span></div>
+      <div className="px-4 pt-7 pb-2 bg-white"><span className="font-extrabold text-gray-800 text-xs">Attendance</span></div>
       <div className="p-3 h-[380px]">
         <div className="bg-white rounded-2xl border border-gray-200 p-4 mb-3">
           <div className="text-[11px] text-gray-400 uppercase font-semibold mb-1">My status today</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-bold text-gray-800 text-sm">Rahul Nayak</div>
+              <div className="font-bold text-gray-800 text-xs">Rahul Nayak</div>
               <div className="text-[11px] text-gray-500">In 09:58 · 4h 12m</div>
             </div>
             <button className="px-3 py-2 rounded-xl text-[12px] font-bold flex items-center gap-1.5" style={{ background: '#fef3c7', color: '#b45309' }}>

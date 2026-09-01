@@ -22,6 +22,13 @@ interface SearchEntry {
 
 const INDEX: SearchEntry[] = [
   {
+    title: 'School & College ERP',
+    description: 'Admissions, fees, accounting, online fee payment, exams, hostel, transport, library and payroll for schools and colleges.',
+    href: '/solutions/education',
+    category: 'Solution',
+    keywords: 'school management software college erp student fees online fee payment admission examination hostel transport library education campus academic',
+  },
+  {
     title: 'HRMS Software',
     description: 'Workforce management, payroll, attendance, leave and employee self-service.',
     href: '/solutions/hrms',

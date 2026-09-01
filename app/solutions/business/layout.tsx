@@ -1,11 +1,31 @@
-import { Metadata } from 'next';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Business Software Solutions | Custom ERP Development India',
-  description: 'Custom business software solutions including ERP, cloud applications, mobile apps, and digital transformation services. Best software development company in India.',
-  keywords: ['Business Software Solutions', 'Custom ERP Development', 'Enterprise Software', 'Digital Transformation', 'Custom Software India', 'Business Applications'],
-};
+export const metadata = pageMetadata({
+  title: 'Business Software Solutions | Custom ERP',
+  description:
+    'Custom business software — ERP, cloud applications, mobile apps and digital transformation services for growing companies across India.',
+  path: '/solutions/business',
+  keywords: [
+    'Business Software Solutions',
+    'Custom ERP Development',
+    'Enterprise Software',
+    'Digital Transformation',
+    'Custom Software India',
+    'Business Applications',
+  ],
+});
 
 export default function BusinessLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        trail={[
+          { name: 'Solutions', path: '/solutions' },
+          { name: 'Business Solutions', path: '/solutions/business' },
+        ]}
+      />
+      {children}
+    </>
+  );
 }

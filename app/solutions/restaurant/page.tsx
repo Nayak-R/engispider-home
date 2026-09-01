@@ -16,6 +16,7 @@ import {
   FaBell, FaFileExcel, FaEnvelopeOpenText,
 } from 'react-icons/fa';
 import { BookOpen, ArrowRight, CheckCircle2, Smartphone, Monitor } from 'lucide-react';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
@@ -88,6 +89,13 @@ export default function RestaurantPage() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+      <BreadcrumbJsonLd
+        trail={[
+          { name: 'Solutions', path: '/solutions' },
+          { name: 'Restaurant Manager', path: '/solutions/restaurant' },
+        ]}
+      />
+
       <Header />
 
       {/* ───────────────────────── Hero ───────────────────────── */}
