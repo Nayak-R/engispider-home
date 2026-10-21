@@ -20,7 +20,6 @@ import { CLIENTS } from '@/data/clients';
  */
 
 const CREDENTIALS = [
-  `${CLIENTS.length} brands`,
   'Education & training',
   'Logistics & infrastructure',
   'Hospitality & healthcare',

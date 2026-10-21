@@ -1071,10 +1071,6 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-sm font-medium">
-              <FaHandshake className="w-4 h-4" />
-              Our Customers
-            </span>
             <h2 className="text-4xl md:text-6xl font-bold mt-6 mb-4">
               Trusted by <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">teams that ship</span>.
             </h2>

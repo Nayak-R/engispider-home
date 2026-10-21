@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ContactIllustration from '@/components/svg/ContactIllustration';
+import { submitContact } from '@/lib/contactApi';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaShoppingBag, FaQuestionCircle, FaHeadset, FaClock } from 'react-icons/fa';
 
 export default function ContactPage() {
@@ -16,10 +17,21 @@ export default function ContactPage() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+    try {
+      const res = await submitContact({
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.phone,
+        company: formData.company,
+        message: formData.message,
+      });
+      alert(res.message || 'Thank you for your message! We will get back to you soon.');
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Could not send your message. Please try again.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
