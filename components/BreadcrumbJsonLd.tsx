@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/seo';
  * Emits BreadcrumbList structured data.
  *
  * Google uses this to replace the bare URL in a search result with a clickable
- * trail (engispider.com › Solutions › HRMS Software), which is both more
+ * trail (engispider.com › Solutions › Engispider HRMS), which is both more
  * legible and a clearer signal of how the site is organised. "Home" is prepended
  * automatically, so callers pass only the trail below it.
  *

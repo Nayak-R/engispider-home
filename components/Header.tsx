@@ -2,348 +2,451 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Home, Info, Briefcase, Mail, Sparkles, Building2 } from 'lucide-react';
-import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Menu, X, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { PRODUCTS } from '@/data/products';
+
+/**
+ * Site header.
+ *
+ * Squared, hairline-bounded, monospace labels — the same technical-editorial
+ * language as the page. The catalogue is too long for one dropdown
+ * column, so the panel groups them the way buyers search: by the industry
+ * they are in, then by the business function they need.
+ */
+const BY_INDUSTRY = ['restro360', 'campus360', 'retail360', 'lims', 'pharmacy', 'clinic', 'site-manager'];
+const BY_FUNCTION = ['hrms', 'face-recognition', 'crm', 'inventory', 'whatsapp', 'monitoring', 'business'];
+
+const pick = (slugs: string[]) =>
+  slugs.map((s) => PRODUCTS.find((p) => p.slug === s)!).filter(Boolean);
+
+type NavItem = { href: string; label: string; mega?: boolean };
+
+const NAV: NavItem[] = [
+  { href: '/solutions', label: 'Products', mega: true },
+  { href: '/services', label: 'Services' },
+  { href: '/customers', label: 'Customers' },
+  { href: '/about', label: 'About' },
+];
+
+/**
+ * Home is in the nav everywhere EXCEPT home.
+ *
+ * The logo already goes home, but that is a convention people have to know
+ * rather than see — and on a deep page like /solutions/restaurant it is the
+ * only way back to the top of the site. On the homepage itself the link
+ * would point at the page you are already reading, so it is dropped there
+ * instead of sitting permanently greyed out.
+ */
+const HOME_ITEM: NavItem = { href: '/', label: 'Home' };
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
-  // trailingSlash is enabled, so usePathname() returns e.g. "/solutions/restaurant/".
-  // Normalise it so active-state comparisons match the (slash-less) hrefs.
-  const path = pathname.replace(/\/+$/, '') || '/';
+
+  // trailingSlash is on, so usePathname() yields '/solutions/restaurant/'.
+  const path = (pathname || '/').replace(/\/+$/, '') || '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Helper function to check if a link is active
-  const isLinkActive = (href: string, submenu?: any[]) => {
-    // Exact match for home page
-    if (href === '/') return path === '/';
-    // For other pages: active on the page itself or any of its sub-routes
-    if (path === href || path.startsWith(href + '/')) return true;
-    // Check submenu items
-    if (submenu && submenu.some(sub => path === sub.href || path.startsWith(sub.href + '/'))) return true;
-    return false;
+  /*
+   * Close every menu when the route changes. This is a reset driven by an
+   * external event (navigation), not state derived from a prop — the user
+   * opened these, and arriving somewhere new has to shut them. Costs one
+   * extra render per navigation.
+   */
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setMobileOpen(false);
+    setMegaOpen(false);
+    setMobileProductsOpen(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMegaOpen(false);
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
+  const isActive = (href: string) =>
+    href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+  const productsActive = path.startsWith('/solutions');
+
+  const navItems = path === '/' ? NAV : [HOME_ITEM, ...NAV];
+
+  const openMega = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setMegaOpen(true);
+  };
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setMegaOpen(false), 140);
   };
 
-  const navLinks = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/about', label: 'About', icon: Info },
-    { href: '/services', label: 'Services', icon: Briefcase },
-    { href: '/solutions', label: 'Solutions', icon: Sparkles,
-      submenu: [
-        { href: '/solutions/education', label: 'School & College ERP', icon: FaGraduationCap, color: 'from-violet-600 to-indigo-500', description: 'School & college management' },
-        { href: '/solutions/hrms', label: 'HRMS Software', icon: FaUsers, color: 'from-blue-600 to-cyan-500', description: 'HR & workforce management' },
-        { href: '/solutions/crm', label: 'CRM System', icon: FaChartLine, color: 'from-purple-600 to-pink-500', description: 'Customer relationship tools' },
-        { href: '/solutions/inventory', label: 'Inventory Manager', icon: FaBox, color: 'from-green-600 to-emerald-500', description: 'Stock tracking system' },
-        { href: '/solutions/pharmacy', label: 'Pharmacy Manager', icon: FaCapsules, color: 'from-red-600 to-orange-500', description: 'Pharmacy operations' },
-        { href: '/solutions/restaurant', label: 'Restaurant Manager', icon: FaUtensils, color: 'from-yellow-600 to-amber-500', description: 'POS & management' },
-        { href: '/solutions/business', label: 'Business Solutions', icon: FaBriefcase, color: 'from-indigo-600 to-blue-500', description: 'Custom enterprise tools' },
-      ]
-    },
-    { href: '/customers', label: 'Customers', icon: Building2 }
-  ];
-
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 px-4 lg:px-8 py-4"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || megaOpen || mobileOpen
+          ? 'border-hairline bg-white/90 backdrop-blur-xl'
+          : 'border-transparent bg-white/0'
+      }`}
     >
-      <nav className={`relative transition-all duration-300 rounded-full px-6 py-3 border border-white/20 ${
-        isScrolled
-          ? 'bg-gradient-to-r from-gray-900/95 via-black/95 to-gray-900/95 backdrop-blur-xl shadow-2xl shadow-blue-500/20'
-          : 'bg-gradient-to-r from-gray-900/90 via-black/90 to-gray-900/90 backdrop-blur-md shadow-xl'
-      }`}>
-        {/* Animated gradient border */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-rotate-gradient blur-sm opacity-70 -z-10"></div>
-
-        {/* Inner glow effect */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 animate-rotate-gradient -z-10" style={{ animationDelay: '1s' }}></div>
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400 rounded-full animate-float-particle"
-              style={{
-                left: `${15 + i * 15}%`,
-                top: '50%',
-                animationDelay: `${i * 0.5}s`,
-                opacity: 0.4
-              }}
+      <div className="container-page">
+        <div className="flex h-[4.25rem] items-center justify-between gap-8">
+          <Link href="/" aria-label="Engispider Infotech — home" className="shrink-0">
+            <Image
+              src="/images/EngiSpider-fnl.png"
+              alt="Engispider Infotech"
+              width={742}
+              height={404}
+              priority
+              /* 40/48px inside a 68px bar — 10px of breathing room top and
+                 bottom at the larger size, which is as big as the mark can go
+                 before it crowds the rule beneath it. */
+              className="h-10 w-auto md:h-12"
             />
-          ))}
-
-          {/* Shimmer effect */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute inset-0 w-1/3 h-[200%] bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between relative z-10">
-          <Link href="/" className="flex items-center">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center"
-            >
-              <img
-                src="/images/EngiSpider-Wht.png"
-                alt="Engispider Logo"
-                className="h-12 md:h-14 w-auto"
-              />
-            </motion.div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => {
-              const isActive = isLinkActive(link.href, link.submenu);
-              return (
-                <div key={link.href} className="relative group">
+          <nav className="hidden items-center gap-7 lg:flex" aria-label="Main">
+            {navItems.map((item) =>
+              item.mega ? (
+                <div key={item.href} onMouseEnter={openMega} onMouseLeave={scheduleClose}>
                   <Link
-                    href={link.href}
-                    className={`font-medium transition-colors flex items-center gap-1 py-2 ${
-                      isActive ? 'text-blue-400' : 'text-gray-200 hover:text-blue-400'
+                    href={item.href}
+                    aria-expanded={megaOpen}
+                    aria-haspopup="true"
+                    onFocus={openMega}
+                    aria-current={productsActive ? 'page' : undefined}
+                    className={`relative flex items-center gap-1 py-2 text-[0.9rem] font-medium transition-colors ${
+                      productsActive ? 'text-accent-ink' : 'text-body hover:text-ink'
                     }`}
                   >
-                    {link.label}
-                    {link.submenu && (
-                      <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                    {item.label}
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`}
+                      aria-hidden
+                    />
+                    {/* A rule under the active item. Colour alone was doing
+                        the work, and #C2520A against slate grey is not a
+                        difference anyone notices in a nav bar. */}
+                    {productsActive && (
+                      <span
+                        aria-hidden
+                        className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-accent-500"
+                      />
                     )}
                   </Link>
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  className={`relative py-2 text-[0.9rem] font-medium transition-colors ${
+                    isActive(item.href) ? 'text-accent-ink' : 'text-body hover:text-ink'
+                  }`}
+                >
+                  {item.label}
+                  {isActive(item.href) && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-accent-500"
                     />
                   )}
-                {link.submenu && (
-                  <div className="absolute left-1/2 -translate-x-1/2 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-                    <div className="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-xl overflow-hidden">
-                      <div className="p-1.5">
-                        {link.submenu.map((sublink, index) => {
-                          const Icon = sublink.icon;
-                          const isSubActive = path === sublink.href || path.startsWith(sublink.href + '/');
-                          return (
-                            <Link
-                              key={sublink.href}
-                              href={sublink.href}
-                              className={`group/item relative block p-2.5 rounded-lg transition-all duration-200 ${
-                                isSubActive ? 'bg-blue-50 border border-blue-200' : 'hover:bg-gray-50 border border-transparent'
-                              }`}
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className={`flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${sublink.color} flex items-center justify-center shadow-lg group-hover/item:scale-110 transition-transform duration-200`}>
-                                  <Icon className="w-4 h-4 text-white" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h3 className={`text-sm font-semibold transition-colors truncate ${
-                                    isSubActive ? 'text-blue-600' : 'text-gray-900 group-hover/item:text-blue-600'
-                                  }`}>
-                                    {sublink.label}
-                                  </h3>
-                                  <p className="text-xs text-gray-500 truncate">
-                                    {sublink.description}
-                                  </p>
-                                </div>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 px-3 py-2.5 border-t border-gray-200">
-                        <Link
-                          href="/solutions"
-                          className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1 group/view"
-                        >
-                          View All Solutions
-                          <ChevronDown className="w-3 h-3 -rotate-90 group-hover/view:translate-x-1 transition-transform" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                </div>
-              );
-            })}
-            <Link
-              href="/contact"
-              className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-blue-500 hover:to-purple-500 transition-all hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 flex items-center gap-2 group overflow-hidden"
-            >
-              <span className="relative z-10">Contact Us</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </Link>
+              )
+            )}
+          </nav>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <Link href="/contact" className="btn btn-primary h-10 px-5 text-[0.9rem]">
+              Book a demo
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            className="-mr-2 inline-flex h-11 w-11 items-center justify-center text-ink lg:hidden"
           >
-            {isMobileMenuOpen ? (
-              <X className="text-white w-6 h-6" />
-            ) : (
-              <Menu className="text-white w-6 h-6" />
-            )}
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
-      </nav>
+      </div>
 
-      {/* Mobile Menu */}
+      {/* --------------------------------------------------- mega panel */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {megaOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden mt-4 relative"
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={openMega}
+            onMouseLeave={scheduleClose}
+            className="absolute inset-x-0 top-full hidden border-b border-hairline bg-white lg:block"
           >
-              {/* Gradient glow for mobile menu */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/40 via-purple-500/40 to-pink-500/40 animate-rotate-gradient blur-md -z-10"></div>
+            <div className="container-page grid grid-cols-12 gap-10 py-10">
+              <MegaColumn label="By industry" items={pick(BY_INDUSTRY)} path={path} className="col-span-4" />
+              <MegaColumn label="By function" items={pick(BY_FUNCTION)} path={path} className="col-span-4" />
 
-              <div className="mobile-nav-panel bg-gradient-to-br from-blue-50 via-white to-purple-50 backdrop-blur-2xl border border-blue-200/50 rounded-2xl shadow-2xl p-3 space-y-2">
-                {navLinks.map((link, index) => {
-                  const isActive = isLinkActive(link.href, link.submenu);
-                  const hasSubmenu = link.submenu;
-                  const NavIcon = link.icon;
-
-                  return (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      {!hasSubmenu ? (
-                        <Link
-                          href={link.href}
-                          className={`flex items-center gap-3 px-4 py-3.5 rounded-xl font-medium transition-all ${
-                            isActive
-                              ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'
-                              : 'text-gray-700 hover:bg-blue-100/50 hover:text-gray-900'
-                          }`}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          <NavIcon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-600'}`} />
-                          <span>{link.label}</span>
-                          {isActive && (
-                            <motion.div
-                              layoutId="mobileBubble"
-                              className="ml-auto"
-                            >
-                              <div className="w-2 h-2 rounded-full bg-white" />
-                            </motion.div>
-                          )}
-                        </Link>
-                      ) : (
-                        <div>
-                          <button
-                            onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
-                            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl font-medium transition-all ${
-                              isActive
-                                ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'
-                                : 'text-gray-700 hover:bg-blue-100/50 hover:text-gray-900'
-                            }`}
-                          >
-                            <NavIcon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-600'}`} />
-                            <span className="flex-1 text-left">{link.label}</span>
-                            <ChevronDown className={`w-4 h-4 transition-transform ${isSolutionsOpen ? 'rotate-180' : ''}`} />
-                          </button>
-
-                          <AnimatePresence>
-                            {isSolutionsOpen && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="mt-2 space-y-1.5 overflow-hidden"
-                              >
-                                {link.submenu.map((sublink, subIndex) => {
-                                  const Icon = sublink.icon;
-                                  const isSubActive = path === sublink.href || path.startsWith(sublink.href + '/');
-                                  return (
-                                    <motion.div
-                                      key={sublink.href}
-                                      initial={{ opacity: 0, x: -10 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: subIndex * 0.05 }}
-                                    >
-                                      <Link
-                                        href={sublink.href}
-                                        className={`flex items-center gap-3 pl-12 pr-4 py-3 rounded-xl transition-all group ${
-                                          isSubActive
-                                            ? 'bg-blue-100 border border-blue-300'
-                                            : 'hover:bg-blue-50/50 border border-transparent'
-                                        }`}
-                                        onClick={() => {
-                                          setIsMobileMenuOpen(false);
-                                          setIsSolutionsOpen(false);
-                                        }}
-                                      >
-                                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br ${sublink.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                                          <Icon className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                          <div className={`text-sm font-semibold ${
-                                            isSubActive ? 'text-blue-600' : 'text-gray-800 group-hover:text-blue-600'
-                                          }`}>
-                                            {sublink.label}
-                                          </div>
-                                          <div className="text-xs text-gray-600 truncate">
-                                            {sublink.description}
-                                          </div>
-                                        </div>
-                                        {isSubActive && (
-                                          <div className="w-2 h-2 rounded-full bg-blue-600" />
-                                        )}
-                                      </Link>
-                                    </motion.div>
-                                  );
-                                })}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-
-                {/* CTA Button */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: navLinks.length * 0.05 }}
-                  className="pt-2 mt-2 border-t border-blue-200"
-                >
-                  <Link
-                    href="/contact"
-                    className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 hover:scale-[1.02]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    Get Started Now
-                  </Link>
-                </motion.div>
+              <div className="col-span-3 col-start-10 border-l border-hairline pl-8">
+                <p className="mono text-faint">Certified</p>
+                <Image
+                  src="/images/iso-9001-2015.webp"
+                  alt=""
+                  width={256}
+                  height={256}
+                  className="mt-4 h-20 w-20"
+                />
+                <p className="mt-3 font-display text-[0.95rem] font-bold text-ink">
+                  ISO certified
+                </p>
+                <p className="mt-1 text-f-xs leading-relaxed text-muted">
+                  Independently audited against an international standard.
+                </p>
+                <Link href="/about" className="link-arrow mono mt-4">
+                  About us <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-    </motion.header>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ------------------------------------------------- mobile sheet */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-nav"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="border-t border-hairline bg-white lg:hidden"
+          >
+            <div className="mobile-nav-panel container-page py-4" data-lenis-prevent>
+              <ul>
+                {navItems.map((item) =>
+                  item.mega ? (
+                    <li key={item.href} className="border-b border-hairline">
+                      <button
+                        type="button"
+                        onClick={() => setMobileProductsOpen((v) => !v)}
+                        aria-expanded={mobileProductsOpen}
+                        className={`flex w-full items-center justify-between py-4 text-left text-f-lg font-semibold ${
+                          productsActive ? 'text-accent-ink' : 'text-ink'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2.5">
+                          {productsActive && (
+                            <span aria-hidden className="h-4 w-0.5 rounded-full bg-accent-500" />
+                          )}
+                          Products
+                        </span>
+                        <ChevronDown
+                          className={`h-4 w-4 text-muted transition-transform ${
+                            mobileProductsOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {mobileProductsOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <ul className="pb-3">
+                              {PRODUCTS.map((p, i) => {
+                                const here = path === p.href;
+                                return (
+                                <li key={p.slug}>
+                                  <Link
+                                    href={p.href}
+                                    aria-current={here ? 'page' : undefined}
+                                    className={`grid grid-cols-[2rem_1fr] gap-x-3 border-t border-hairline py-3 ${
+                                      here ? 'bg-accent-50' : ''
+                                    }`}
+                                  >
+                                    <span
+                                      className={`mono pt-1 ${here ? 'text-accent-700' : 'text-faint'}`}
+                                    >
+                                      {String(i + 1).padStart(2, '0')}
+                                    </span>
+                                    <span>
+                                      <span
+                                        className={`block font-semibold ${
+                                          here ? 'text-accent-ink' : 'text-ink'
+                                        }`}
+                                      >
+                                        {p.name}
+                                      </span>
+                                      <span className="block text-f-xs text-muted">{p.category}</span>
+                                    </span>
+                                  </Link>
+                                </li>
+                                );
+                              })}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  ) : (
+                    <li key={item.href} className="border-b border-hairline">
+                      <Link
+                        href={item.href}
+                        aria-current={isActive(item.href) ? 'page' : undefined}
+                        className={`flex items-center gap-2.5 py-4 text-f-lg font-semibold ${
+                          isActive(item.href) ? 'text-accent-ink' : 'text-ink'
+                        }`}
+                      >
+                        {isActive(item.href) && (
+                          <span aria-hidden className="h-4 w-0.5 rounded-full bg-accent-500" />
+                        )}
+                        {item.label}
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+
+              <div className="mt-5">
+                <Link href="/contact" className="btn btn-primary w-full">
+                  Book a demo
+                </Link>
+                <div className="mt-4 flex items-center gap-3">
+                  <Image
+                    src="/images/iso-9001-2015.webp"
+                    alt=""
+                    width={256}
+                    height={256}
+                    className="h-12 w-12 shrink-0"
+                  />
+                  <p className="mono text-muted">ISO certified</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+function MegaColumn({
+  label,
+  items,
+  path,
+  className = '',
+}: {
+  label: string;
+  items: typeof PRODUCTS;
+  /** Current route, trailing slash already stripped. */
+  path: string;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <p className="mono mb-4 text-faint">{label}</p>
+      <ul className="border-t border-hairline">
+        {items.map((p, i) => {
+          /*
+           * The product you are already reading is marked.
+           *
+           * Highlighting the "Products" button told you which SECTION you
+           * were in but not which of the fourteen — so opening the menu
+           * from /solutions/restaurant gave no clue where you were
+           * standing, and the row you wanted to avoid clicking looked like
+           * every other row.
+           */
+          const here = path === p.href;
+          return (
+          /*
+           * Rows arrive one after another rather than all at once.
+           *
+           * The panel holds fourteen products; appearing as a single block
+           * gives the eye nowhere to start. 22ms apart is quick enough
+           * that the whole column is settled in under a third of a second
+           * — a sense of order, not a wait.
+           *
+           * Safe to animate from opacity:0 here: the panel only mounts on
+           * open, so none of this is ever in the static HTML.
+           */
+          <motion.li
+            key={p.slug}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22, delay: i * 0.022, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/*
+              Name over category, not beside it.
+
+              Side by side worked while names were short and varied.
+              Now that all fourteen begin "Engispider ",
+              the name column needs ~170px before the distinguishing word
+              even starts, and the two halves no longer share a line: fixing
+              the category column broke names across three lines mid-brand,
+              and fixing the name truncated eight of the fourteen categories
+              to an ellipsis. Stacked, both read in full at every width.
+            */}
+            <Link
+              href={p.href}
+              aria-current={here ? 'page' : undefined}
+              className={`group relative block border-b border-hairline py-2.5 pl-3 transition-colors hover:text-accent-ink ${
+                here ? 'bg-accent-50' : ''
+              }`}
+            >
+              {here && (
+                <span
+                  aria-hidden
+                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-accent-500"
+                />
+              )}
+              <span
+                className={`block text-[0.9rem] font-semibold transition-colors group-hover:text-accent-ink ${
+                  here ? 'text-accent-ink' : 'text-ink'
+                }`}
+              >
+                {p.name}
+              </span>
+              <span className="mt-0.5 block text-f-2xs text-muted">{p.category}</span>
+            </Link>
+          </motion.li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

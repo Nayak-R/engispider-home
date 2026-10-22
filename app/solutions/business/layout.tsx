@@ -22,7 +22,7 @@ export default function BusinessLayout({ children }: { children: React.ReactNode
       <BreadcrumbJsonLd
         trail={[
           { name: 'Solutions', path: '/solutions' },
-          { name: 'Business Solutions', path: '/solutions/business' },
+          { name: 'Engispider Custom Software', path: '/solutions/business' },
         ]}
       />
       {children}

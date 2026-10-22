@@ -1,275 +1,463 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import InnovationIllustration from '@/components/svg/InnovationIllustration';
-import { FaUsers, FaChartLine, FaBox, FaCapsules, FaUtensils, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import SectionBackdrop from '@/components/SectionBackdrop';
+import { Reveal, MaskText, MaskWords } from '@/components/motion/Reveal';
+import { RestaurantScreen, CampusScreen } from '@/components/home/Screens';
 
+import { COMPANY } from '@/data/company';
+import {
+  PRODUCTS,
+  FLAGSHIPS,
+  CATALOGUE,
+  INDUSTRIES,
+  PRODUCT_COUNT_WORD_CAP,
+  type Product,
+} from '@/data/products';
+import { SITE_URL } from '@/lib/seo';
+
+/**
+ * The catalogue index.
+ *
+ * The previous version of this page listed seven products while the company
+ * ships fourteen, and asserted "24/7 technical assistance" on a site whose
+ * opening-hours schema says Mon–Fri 9–18 and Sat 9–14. Both are fixed here by
+ * construction: the list is rendered from data/products.ts, so it cannot fall
+ * behind the catalogue again, and the only support claim on the page is the
+ * one in data/company.ts that the schema is generated from.
+ *
+ * A server component. No state, so the page is static HTML and the full
+ * catalogue is in the source for crawlers and AI engines — which matters more
+ * here than anywhere else on the site, because this is the page that answers
+ * "what does this company sell".
+ */
 export default function SolutionsPage() {
-  const solutions = [
-    {
-      title: 'Campus360 — School & College ERP',
-      description: 'Complete school & college management: online admissions, fees, automatic accounting, online fee payment, examinations, hostel, transport, library and staff payroll — one platform for your whole education group',
-      href: '/solutions/education',
-      gradient: 'from-violet-600 via-indigo-500 to-blue-500',
-      Icon: FaGraduationCap
-    },
-    {
-      title: 'HRMS Software',
-      description: 'Complete HR management system for efficient workforce management, payroll, attendance, and employee performance tracking across your organization',
-      href: '/solutions/hrms',
-      gradient: 'from-blue-600 via-blue-500 to-cyan-500',
-      Icon: FaUsers
-    },
-    {
-      title: 'CRM System',
-      description: 'Customer relationship management for business growth, lead tracking, sales pipeline management, and improved customer satisfaction',
-      href: '/solutions/crm',
-      gradient: 'from-purple-600 via-purple-500 to-pink-500',
-      Icon: FaChartLine
-    },
-    {
-      title: 'Inventory Manager',
-      description: 'Smart inventory tracking and management solution with real-time stock monitoring, automated alerts, and seamless stock control',
-      href: '/solutions/inventory',
-      gradient: 'from-green-600 via-green-500 to-emerald-500',
-      Icon: FaBox
-    },
-    {
-      title: 'Pharmacy Manager',
-      description: 'Specialized software for pharmacy operations with billing, prescription management, inventory tracking, and regulatory compliance',
-      href: '/solutions/pharmacy',
-      gradient: 'from-red-600 via-red-500 to-orange-500',
-      Icon: FaCapsules
-    },
-    {
-      title: 'Restaurant Manager',
-      description: 'Complete POS and management system for restaurants with order management, kitchen display, billing, and table reservations',
-      href: '/solutions/restaurant',
-      gradient: 'from-yellow-600 via-yellow-500 to-amber-500',
-      Icon: FaUtensils
-    },
-    {
-      title: 'Business Solutions',
-      description: 'Custom enterprise software solutions tailored to your specific business needs, workflows, and industry requirements',
-      href: '/solutions/business',
-      gradient: 'from-indigo-600 via-indigo-500 to-blue-500',
-      Icon: FaBriefcase
-    }
-  ];
-
   return (
-    <div className="min-h-screen overflow-x-hidden bg-black">
+    <>
       <BreadcrumbJsonLd trail={[{ name: 'Solutions', path: '/solutions' }]} />
+      <CatalogueJsonLd />
 
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black pt-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/20 via-transparent to-transparent"></div>
-
-        <div className="container mx-auto px-4 z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="min-w-0 text-left lg:pl-12 px-4 py-10"
-            >
-              {/* <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-block mb-6 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full mt-16"
-              >
-                <span className="text-indigo-400 text-sm font-semibold">Our Solutions</span>
-              </motion.div> */}
-
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 break-words bg-gradient-to-r from-white via-indigo-100 to-white bg-clip-text text-transparent">
-                Industry-Specific Solutions
-              </h1>
-
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                Streamline operations and drive growth with our <span className="text-indigo-400 font-semibold">tailored software solutions</span>
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 mt-8 mb-16">
-                {[
-                  { label: 'HRMS', value: 'Workforce' },
-                  { label: 'CRM', value: 'Sales' },
-                  { label: 'Inventory', value: 'Stock' },
-                  { label: 'Custom', value: 'Solutions' }
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4 + index * 0.1, duration: 0.5 }}
-                    className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-center"
-                  >
-                    <div className="text-lg font-bold text-indigo-400">{item.label}</div>
-                    <div className="text-sm text-gray-400 mt-1">{item.value}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-[500px]"
-            >
-              <InnovationIllustration />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Solutions Grid Section */}
-      <section className="py-32 px-4 bg-white">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Explore Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Solutions</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Industry-specific software solutions designed to meet your unique business needs
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {solutions.map((solution, index) => (
-              <motion.div
-                key={solution.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Link href={solution.href} className="block h-full">
-                  <div className={`relative h-full p-8 bg-gradient-to-br ${solution.gradient} rounded-2xl shadow-xl hover:shadow-2xl transition-all overflow-hidden group`}>
-                    {/* Background pattern */}
-                    <div className="absolute inset-0 opacity-10">
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.8)_0%,_transparent_50%)]"></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6"
-                      >
-                        <solution.Icon className="w-10 h-10 text-white" />
-                      </motion.div>
-
-                      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
-                        {solution.title}
-                      </h3>
-
-                      <p className="text-white/90 mb-6 leading-relaxed">
-                        {solution.description}
-                      </p>
-
-                      <div className="flex items-center text-white font-semibold group-hover:gap-3 gap-2 transition-all">
-                        Learn More
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          →
-                        </motion.span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-32 bg-gradient-to-b from-gray-900 via-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Why Choose Our <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Solutions</span>
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Built with cutting-edge technology and industry best practices
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: 'Customizable', description: 'Tailored to your specific needs', color: 'from-blue-500 to-cyan-500' },
-              { title: 'Scalable', description: 'Grows with your business', color: 'from-purple-500 to-pink-500' },
-              { title: 'Secure', description: 'Enterprise-grade security', color: 'from-green-500 to-emerald-500' },
-              { title: 'Support', description: '24/7 technical assistance', color: 'from-orange-500 to-red-500' }
-            ].map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className={`inline-flex items-center justify-center w-20 h-20 mb-6 bg-gradient-to-br ${feature.color} rounded-2xl`}>
-                  <span className="text-3xl font-bold text-white">{index + 1}</span>
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-32 px-4 bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Ready to Transform Your Business?
-            </h2>
-            <p className="text-xl mb-10 text-white/90">
-              Choose the right solution for your industry and start your digital transformation journey today
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl"
-            >
-              Request a Demo
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      <main id="main">
+        <Hero />
+        <Flagships />
+        <Catalogue />
+        <Industries />
+        <CustomBand />
+        <CtaBand />
+      </main>
 
       <Footer />
+    </>
+  );
+}
+
+/* ===================================================================== HERO */
+
+function Hero() {
+  return (
+    <section className="relative overflow-hidden pb-4">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          className="grid-rule absolute inset-0"
+          style={{
+            maskImage: 'radial-gradient(ellipse 90% 60% at 50% 0%, #000 25%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 90% 60% at 50% 0%, #000 25%, transparent 80%)',
+          }}
+        />
+        <div
+          className="absolute -top-52 right-0 h-[620px] w-[620px] rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(251,124,31,0.18), transparent 70%)' }}
+        />
+      </div>
+
+      <div className="container-page pt-28 md:pt-32">
+        <div className="grid items-end gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="marker mono">Catalogue</p>
+            {/* LCP element — only the inner spans are masked. */}
+            <h1 className="display mt-5 text-f-7xl">
+              <MaskWords className="block" step={70}>
+                {`${PRODUCT_COUNT_WORD_CAP} systems,`}
+              </MaskWords>{' '}
+              <MaskWords className="block" step={70} delay={280}>
+                already built.
+              </MaskWords>
+            </h1>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={420}>
+              <p className="text-f-lg leading-relaxed text-body">
+                Every one of these is in production with paying customers. Run
+                one, or several on a single login — and where none of them fit
+                the way you work, we build the system instead.
+              </p>
+            </Reveal>
+            <Reveal delay={540}>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/contact" className="btn btn-primary">
+                  Book a demo <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/solutions/business" className="btn btn-line">
+                  Custom software
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+
+        <dl className="mt-16 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            [`${PRODUCTS.length}`, 'products in production'],
+            [`${INDUSTRIES.length}`, 'industries served'],
+            ['1', 'stack across all of them'],
+            [COMPANY.certification.label, 'independently audited'],
+          ].map(([value, label], i) => (
+            <Reveal key={label} delay={660 + i * 70} className="bg-canvas">
+              <div className="h-full p-6">
+                <dt className="font-display text-f-xl font-extrabold leading-none text-ink">
+                  {value}
+                </dt>
+                <dd className="mono mt-2.5 text-faint">{label}</dd>
+              </div>
+            </Reveal>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================ FLAGSHIPS */
+
+/** The two products with the deepest feature set, each shown as it looks. */
+function Flagships() {
+  return (
+    <section className="section relative">
+      <SectionBackdrop side="right" tone="warm" />
+      <div className="container-page">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="marker mono">Flagships</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>The two we are</>
+              <>
+                <span className="accent-word">known</span> for.
+              </>
+            </MaskText>
+          </div>
+          <div className="flex items-end lg:col-span-5 lg:col-start-8">
+            <Reveal delay={120}>
+              <p className="text-body">
+                A restaurant group and a college run very little in common —
+                except that both need the money to reconcile at the end of the
+                day. These two do that for their trade, completely.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        <div className="mt-16 space-y-20 lg:space-y-28">
+          {FLAGSHIPS.map((p, i) => (
+            <FlagshipRow key={p.slug} product={p} reverse={i % 2 === 1} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FlagshipRow({ product, reverse }: { product: Product; reverse: boolean }) {
+  const Screen = product.slug === 'restro360' ? RestaurantScreen : CampusScreen;
+
+  return (
+    <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+      <div className={`lg:col-span-5 ${reverse ? 'lg:order-2 lg:col-start-8' : ''}`}>
+        <p className="mono text-accent-700">{product.chip}</p>
+        <MaskText as="h3" className="display mt-4 text-f-4xl">
+          <>{product.name}</>
+        </MaskText>
+        <Reveal delay={100}>
+          <p className="mt-4 text-f-lg leading-tight text-accent-ink">{product.tagline}</p>
+        </Reveal>
+        <Reveal delay={160}>
+          <p className="measure mt-5 leading-relaxed text-body">{product.summary}</p>
+        </Reveal>
+
+        <ul className="mt-7 space-y-2.5">
+          {product.features.slice(0, 5).map((f, i) => (
+            <Reveal as="li" key={f} delay={220 + i * 50} className="flex items-start gap-3">
+              <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-accent-500" aria-hidden />
+              <span className="text-f-xs leading-relaxed text-body">{f}</span>
+            </Reveal>
+          ))}
+        </ul>
+
+        <Reveal delay={480}>
+          <Link href={product.href} className="link-arrow mt-8">
+            All {product.features.length} capabilities <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Reveal>
+      </div>
+
+      <Reveal
+        direction="scale"
+        delay={120}
+        className={`lg:col-span-6 ${reverse ? 'lg:order-1 lg:col-start-1' : 'lg:col-start-7'}`}
+      >
+        <Screen />
+      </Reveal>
     </div>
+  );
+}
+
+/* ================================================================ CATALOGUE */
+
+/** Everything that is not a flagship, as a numbered index. */
+function Catalogue() {
+  return (
+    <section className="section border-y border-hairline bg-band">
+      <div className="container-page">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="marker mono">The rest of the catalogue</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>{CATALOGUE.length} more, each</>
+              <>
+                doing <span className="accent-word">one</span> job.
+              </>
+            </MaskText>
+          </div>
+          <div className="flex items-end lg:col-span-5 lg:col-start-8">
+            <Reveal delay={120}>
+              <p className="text-body">
+                Narrower than the flagships and deliberately so — a pharmacy
+                does not need a kitchen display, and a laboratory does not need
+                a fee ledger.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        <ul className="mt-14 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline md:grid-cols-2 lg:grid-cols-3">
+          {CATALOGUE.map((p, i) => (
+            <Reveal as="li" key={p.slug} delay={(i % 3) * 60} className="bg-canvas">
+              <Link
+                href={p.href}
+                className="group relative flex h-full flex-col overflow-hidden p-7 transition-colors hover:bg-accent-50"
+              >
+                {/* Oversized ghosted index figure, as on the Method cards.
+                    Positive insets on both axes so it is never clipped. */}
+                <span
+                  aria-hidden
+                  className="mono-num pointer-events-none absolute right-3 top-1 select-none font-display text-[4.5rem] font-extrabold leading-none text-hairline transition-colors group-hover:text-accent-200"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                <span className="relative mono text-accent-700">{p.chip}</span>
+                <span className="relative mt-4 font-display text-f-lg font-bold text-ink">
+                  {p.name}
+                </span>
+                <span className="relative mt-1.5 text-f-2xs text-muted">{p.category}</span>
+                <span className="relative mt-3 flex-1 text-f-xs leading-relaxed text-body">
+                  {p.tagline}
+                </span>
+
+                <span className="relative mt-6 inline-flex items-center gap-2 text-f-xs font-medium text-ink transition-colors group-hover:text-accent-ink">
+                  {p.status === 'draft' ? 'Ask us about it' : 'Open'}
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* =============================================================== INDUSTRIES */
+
+function Industries() {
+  return (
+    <section className="section relative">
+      <SectionBackdrop side="left" tone="cool" />
+      <div className="container-page">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="marker mono">By industry</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>Start from what</>
+              <>
+                you <span className="accent-word">run</span>.
+              </>
+            </MaskText>
+          </div>
+          <div className="flex items-end lg:col-span-5 lg:col-start-8">
+            <Reveal delay={120}>
+              <p className="text-body">
+                Each line names the product that serves it, so the claim is
+                something you can check rather than a stock industry list.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        <ul className="mt-14 border-t border-hairline">
+          {INDUSTRIES.map((industry, i) => (
+            <Reveal as="li" key={industry.name} delay={Math.min(i, 5) * 50}>
+              <Link
+                href={industry.href}
+                className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 border-b border-hairline py-4 transition-colors hover:bg-accent-50 md:grid-cols-[4rem_minmax(0,22rem)_minmax(0,1fr)_2rem] md:gap-x-6 md:py-5"
+              >
+                <span className="mono text-faint transition-colors group-hover:text-accent-700">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="font-display text-f-lg font-bold tracking-tight text-ink transition-colors group-hover:text-accent-ink md:text-f-xl">
+                  {industry.name}
+                </span>
+                <span className="col-start-2 text-f-xs text-muted md:col-start-3">
+                  {industry.product}
+                </span>
+                <ArrowUpRight
+                  className="col-start-3 row-start-1 h-5 w-5 self-center text-hairline-strong transition-colors group-hover:text-accent-700 md:col-start-4"
+                  aria-hidden
+                />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================== CUSTOM BAND */
+
+function CustomBand() {
+  return (
+    <section className="section border-y border-hairline bg-accent-50">
+      <div className="container-page">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-5">
+            <p className="marker mono">None of them fit?</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>Then we build</>
+              <>
+                the <span className="accent-word">other</span> one.
+              </>
+            </MaskText>
+            <Reveal delay={120}>
+              <p className="measure mt-6 text-body">
+                The same engineers who build these products build yours — one
+                stack, one set of conventions, no hand-off to a junior bench.
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
+              <Link href="/services" className="link-arrow mt-8">
+                How we work <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Reveal>
+          </div>
+
+          <div className="lg:col-span-6 lg:col-start-7">
+            <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2">
+              {[
+                ['Configured', 'A product set up to your process — faster and cheaper wherever one genuinely fits.'],
+                ['Extended', 'A product plus the module you actually need, built onto the same codebase.'],
+                ['Built', 'A system designed around your workflow, on the stack we maintain everything else on.'],
+                ['Integrated', 'Payments, WhatsApp, SMS, biometrics and accounting wired into whichever you choose.'],
+              ].map(([title, body], i) => (
+                <Reveal key={title} delay={i * 60} className="bg-white">
+                  <div className="h-full p-6">
+                    <h3 className="mono text-accent-700">{title}</h3>
+                    <p className="mt-3 text-f-xs leading-relaxed text-body">{body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================ CTA BAND */
+
+function CtaBand() {
+  return (
+    <section className="bg-accent-500">
+      <div className="container-page">
+        <div className="grid items-center gap-8 py-16 lg:grid-cols-12 lg:py-20">
+          <div className="lg:col-span-7">
+            <MaskText as="h2" className="display text-f-6xl text-ink">
+              <>Tell us what breaks,</>
+              <>and we’ll show you</>
+              <>what fixes it.</>
+            </MaskText>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={120}>
+              <p className="text-[1.02rem] leading-relaxed text-ink/80">
+                A guided demo on a live system, using your own scenarios —
+                usually within two working days.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/contact" className="btn btn-ink">
+                  Book a demo <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a
+                  href={`tel:${COMPANY.contact.sales.tel}`}
+                  className="btn border border-ink/25 text-ink hover:border-ink"
+                >
+                  {COMPANY.contact.sales.display}
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================= JSON-LD */
+
+/**
+ * The catalogue as an ItemList.
+ *
+ * This is the page that answers "what does Engispider sell", so it is worth
+ * saying in a form a machine can read without inferring it from fourteen
+ * cards. Each entry points at the product's own page, which carries the
+ * SoftwareApplication markup — this list does not duplicate it.
+ */
+function CatalogueJsonLd() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          '@id': `${SITE_URL}/solutions/#catalogue`,
+          name: `${COMPANY.name} product catalogue`,
+          numberOfItems: PRODUCTS.length,
+          itemListOrder: 'https://schema.org/ItemListUnordered',
+          itemListElement: PRODUCTS.map((p, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: p.name,
+            description: p.tagline,
+            url: `${SITE_URL}${p.href}/`,
+          })),
+        }),
+      }}
+    />
   );
 }

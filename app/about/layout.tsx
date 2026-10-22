@@ -2,13 +2,17 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'About Us | Software Company in Bhubaneswar',
+  title: 'About Us | ISO Certified Software Company in Bhubaneswar',
+  // "10+ years of delivery" was here and nobody can evidence it — the
+  // founding year is still an open placeholder in data/company.ts. The
+  // product and customer counts are countable, so they are what we say.
   description:
-    'Engispider Infotech is a software development company in Bhubaneswar building HRMS, CRM and custom business systems, with 10+ years of delivery behind us.',
+    'Engispider Infotech is an ISO certified software product and development company in Bhubaneswar, Odisha — fourteen products in production, one engineering stack, and customers you can check.',
   path: '/about',
   keywords: [
-    'About Engispider',
+    'About Engispider Infotech',
     'Software Company Bhubaneswar',
+    'ISO certified software company',
     'IT Company Odisha',
     'Software Development Company',
   ],

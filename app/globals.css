@@ -2,210 +2,560 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* ===========================================================================
+   ENGISPIDER — DESIGN SYSTEM
+   ---------------------------------------------------------------------------
+   Direction: TECHNICAL EDITORIAL.
 
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
+   The company sells operational software — point of sale, campus ERP, a LIMS.
+   Systems that must balance to the rupee and survive an audit. So the surface
+   is built like an engineering drawing rather than a landing page:
 
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
+     · a visible hairline grid as the structural motif
+     · oversized display type, very tight, left-aligned — no centred columns
+     · monospace for labels, section numbers and data, which is what makes a
+       technical document read as precise rather than decorative
+     · product UI shown LARGE and real, never shrunk into a rounded card
+     · orange as a scalpel: one deliberate accent per screen
+
+   Explicitly rejected: rounded-card grids, soft drop shadows everywhere,
+   eyebrow-heading-three-cards repetition, gradient fills.
+
+   CONTRAST — measured, not guessed:
+     #FB7C1F on white ........ 2.62  FAIL   → never text, never white-on-it
+     ink on #FB7C1F .......... 6.80  AA     → the only orange button that works
+     #C2520A on white ........ 4.66  AA     → accent text
+   =========================================================================== */
+
+:root {
+  /* --- Accent ------------------------------------------------------------ */
+  --accent-50:  #FFF6ED;
+  --accent-100: #FFE8D1;
+  --accent-200: #FECFA6;
+  --accent-300: #FDB36F;
+  --accent-400: #FB923C;
+  --accent-500: #FB7C1F;   /* the logo orange — fills and graphics only */
+  --accent-600: #EA6A0C;
+  --accent-700: #C2520A;   /* text-safe on white */
+  --accent-800: #9A4110;
+  --accent-900: #7C3710;
+
+  --accent:     var(--accent-500);
+  --accent-ink: var(--accent-700);
+  --on-accent:  #0A0F1A;
+
+  /* --- Neutrals ----------------------------------------------------------
+     Ink is pushed darker than slate-900 so the big display type lands with
+     real weight. The hairline is the most-used colour in the system. */
+  --canvas:      #FFFFFF;
+  --band:        #F7F9FC;
+  --well:        #EFF3F8;
+  --hairline:    #E4EAF2;
+  --hairline-mid:#D3DCE8;
+  --hairline-str:#B9C5D6;
+
+  --ink:   #0A0F1A;   /* 19.3:1 on white */
+  --body:  #475569;   /*  7.58:1 */
+  --muted: #64748B;   /*  4.76:1 */
+  --faint: #94A3B8;   /* decorative / disabled only — never body copy */
+
+  /* --- Type --------------------------------------------------------------
+     A wide display range: the hero is meant to be genuinely large.
+
+     The display steps were re-solved so a phone is not handed desktop-sized
+     headings: each curve is fitted through a sane 390px value and its
+     existing 1440px value, so mobile shrinks and desktop is untouched. The
+     hero goes from 54px to 44px at 390px. Lowering the clamp MINIMUM alone
+     did nothing — at these widths the preferred term governs, not the
+     floor. */
+  --step--2: clamp(0.70rem, 0.69rem + 0.06vw, 0.74rem);
+  --step--1: clamp(0.81rem, 0.78rem + 0.12vw, 0.88rem);
+  --step-0:  clamp(0.98rem, 0.95rem + 0.16vw, 1.06rem);
+  --step-1:  clamp(1.13rem, 1.07rem + 0.28vw, 1.31rem);
+  --step-2:  clamp(1.31rem, 1.21rem + 0.49vw, 1.63rem);
+  --step-3:  clamp(1.52rem, 1.36rem + 0.79vw, 2.03rem);
+  --step-4:  clamp(1.76rem, 1.51rem + 1.21vw, 2.53rem);
+  --step-5:  clamp(1.82rem, 1.67rem + 1.82vw, 3.16rem);
+  --step-6:  clamp(2.00rem, 1.45rem + 2.78vw, 3.95rem);
+  --step-7:  clamp(2.20rem, 1.42rem + 3.90vw, 4.94rem);
+  --step-8:  clamp(2.45rem, 1.48rem + 5.21vw, 6.17rem);
+  --step-9:  clamp(2.70rem, 1.42rem + 6.99vw, 7.71rem);
+
+  /* --- Shape -------------------------------------------------------------
+     Small radii only. The old build's 24px pills were a large part of why it
+     read as a template. */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r:    6px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+
+  /* Shadows are rare and tight — reserved for product UI that genuinely
+     floats above the page. Everything else uses a hairline. */
+  --shadow-sm: 0 1px 2px rgba(10, 15, 26, 0.05);
+  --shadow:    0 2px 8px rgba(10, 15, 26, 0.06);
+  --shadow-lg: 0 18px 40px -12px rgba(10, 15, 26, 0.16), 0 4px 12px rgba(10, 15, 26, 0.05);
+  --shadow-xl: 0 40px 80px -24px rgba(10, 15, 26, 0.22), 0 8px 24px rgba(10, 15, 26, 0.06);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io:   cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:  140ms;
+  --dur:       260ms;
+  --dur-slow:  620ms;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --container: 82.5rem;  /* 1320px — wide, editorial */
+  --measure:   38rem;    /* readable prose column */
+  --gutter:    1.25rem;
 }
 
+@media (min-width: 640px)  { :root { --gutter: 2rem; } }
+@media (min-width: 1024px) { :root { --gutter: 3rem; } }
+@media (min-width: 1440px) { :root { --gutter: 4.5rem; } }
+
+/* ===========================================================================
+   BASE
+   =========================================================================== */
+
 html {
+  /* Lenis owns scrolling when it is active (see the .lenis rules below);
+     this stays as the fallback for reduced-motion and no-JS. */
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Helvetica Neue', sans-serif;
+  background: var(--canvas);
+  color: var(--body);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #000;
+  overflow-x: hidden;
+  font-feature-settings: 'cv05' 1, 'cv08' 1, 'ss01' 1;
 }
 
-/* Headings use the Sora display font for a more distinctive, modern feel */
-h1, h2, h3, h4, .font-display {
-  font-family: var(--font-sora), var(--font-inter), sans-serif;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), var(--font-inter), sans-serif;
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 1.04;
+  text-wrap: balance;
 }
 
-/* Branded text selection */
-::selection {
-  background: rgba(99, 102, 241, 0.35);
+/* The hero and section leads run tighter still — at 60px+ the default
+   tracking opens up and the line loses its authority. */
+.display {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.038em;
+  line-height: 0.95;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/*
+ * A whole display line set in the accent face.
+ *
+ * Used for the second line of the hero: the grotesque carries the weight,
+ * the serif italic takes the turn. Sized up ~12% because Instrument Serif
+ * runs optically smaller than Bricolage at the same point size, and tracked
+ * in slightly, which a high-contrast italic needs at display scale.
+ */
+.display-serif {
+  display: block;
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+
+  /*
+   * Always one line.
+   *
+   * Measured: this string occupies about 6.1x its own font-size in
+   * Instrument Serif italic. The sizes below keep it inside the hero column
+   * at every width, so `nowrap` can be guaranteed without ever pushing the
+   * page sideways.
+   *
+   * Below lg the hero is a single column, so the limit is the viewport less
+   * its gutters; 1.12em (the optical match to the grotesque above) wins
+   * wherever it is the smaller of the two.
+   */
+  white-space: nowrap;
+  font-size: min(1.12em, 14vw);
+}
+
+/*
+ * At lg the hero splits in two and the text column is at its narrowest —
+ * 444px at exactly 1024px wide, which is the binding constraint for the
+ * whole page. 6.9vw keeps it inside that, capped at 90px once the container
+ * stops growing.
+ */
+@media (min-width: 1024px) {
+  .display-serif {
+    font-size: min(6.9vw, 90px);
+  }
+}
+
+/* Single accent face, for one emphasised word in a headline.
+   The serif italic against the grotesque is the contrast that stops a page
+   of one typeface reading as generic. Used sparingly — more than once or
+   twice per page and it becomes the decoration rather than the emphasis. */
+.accent-word {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  /* Instrument Serif runs optically small beside a bold grotesque. */
+  font-size: 1.08em;
+}
+
+p { text-wrap: pretty; }
+
+::selection { background: var(--accent-200); color: var(--ink); }
+
+:focus-visible {
+  outline: 2px solid var(--accent-700);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem; top: -4rem;
+  z-index: 100;
+  padding: 0.7rem 1.1rem;
+  background: var(--ink);
   color: #fff;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  transition: top var(--dur) var(--ease);
 }
+.skip-link:focus { top: 1rem; }
 
-section {
-  padding-left: 1.5rem !important;   /* 24px on phones */
-  padding-right: 1.5rem !important;
+/* ---------------------------------------------------------------------------
+   Lenis. Its own classes land on <html> once it initialises.
+
+   `scroll-behavior: auto` is essential: native smooth scrolling and Lenis
+   both try to own the scroll position on the same frame, and the result
+   judders. `[data-lenis-prevent]` marks inner scrollers (the mobile nav
+   panel) that should keep their own native scrolling.
+   --------------------------------------------------------------------------- */
+
+html.lenis,
+html.lenis body { height: auto; }
+
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ===========================================================================
+   MOTION PRIMITIVES
+   ---------------------------------------------------------------------------
+   Default state is VISIBLE. A blocking inline script in <head> adds `.js` to
+   <html> before first paint, and only then does anything hide. That keeps the
+   static HTML readable to crawlers and keeps Largest Contentful Paint off the
+   hydration path — the previous build shipped 116 nodes at opacity:0,
+   including the <h1>'s parent.
+   =========================================================================== */
+
+.reveal { opacity: 1; }
+
+.js .reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--rv-y, 14px), 0);
+  transition:
+    opacity var(--dur-slow) var(--ease) var(--rv-delay, 0ms),
+    transform var(--dur-slow) var(--ease) var(--rv-delay, 0ms);
 }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 
-@media (min-width: 768px) {
-  section {
-    padding-left: 2.5rem !important;  /* 40px on tablets */
-    padding-right: 2.5rem !important;
-  }
+.js .reveal--left  { transform: translate3d(-18px, 0, 0); }
+.js .reveal--right { transform: translate3d(18px, 0, 0); }
+.js .reveal--scale { transform: scale(0.985) translate3d(0, 10px, 0); }
+.js .reveal--left.is-visible,
+.js .reveal--right.is-visible,
+.js .reveal--scale.is-visible { transform: none; }
+
+/*  Mask-up reveal for display type.
+    The line sits inside an overflow:hidden block and slides up from beneath
+    its own baseline. It reads as deliberate typesetting rather than a fade,
+    and it is the single biggest difference between "animated" and "crafted". */
+.mask-line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
+.mask-line > * { display: block; }
+.js .mask-line > * {
+  transform: translate3d(0, 105%, 0);
+  transition: transform 900ms var(--ease) var(--rv-delay, 0ms);
 }
+.js .mask-line.is-visible > * { transform: none; }
 
-@media (min-width: 1280px) {
-  section {
-    padding-left: 4rem !important;    /* 64px on desktop — more breathing room */
-    padding-right: 4rem !important;
-  }
+/*  Word-level variant of the line mask.
+    inline-block so words still wrap normally — the spaces between them are
+    real text nodes outside the masks, which is what keeps the line breakable
+    at display size. */
+.mask-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
-
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
+.mask-word > * { display: inline-block; }
+.js .mask-word > * {
+  transform: translate3d(0, 110%, 0);
+  transition: transform 820ms var(--ease) var(--rv-delay, 0ms);
 }
+.js .mask-word.is-visible > * { transform: none; }
 
-.animate-blob {
-  animation: blob 7s infinite;
-}
+/*  A hairline that draws itself in. Used to separate sections. */
+.js .rule-draw { transform: scaleX(0); transform-origin: 0 50%; transition: transform 900ms var(--ease) var(--rv-delay, 0ms); }
+.js .rule-draw.is-visible { transform: scaleX(1); }
 
-@keyframes gradient {
-  0%, 100% {
-    background-size: 200% 200%;
-    background-position: left center;
-  }
-  50% {
-    background-size: 200% 200%;
-    background-position: right center;
-  }
-}
+@keyframes float-y   { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-12px,0); } }
+@keyframes dash-flow { to { stroke-dashoffset: -1000; } }
+@keyframes blink     { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+/* Halo breathing behind the walkthrough's scroll marker, so the leading edge
+   of the rail is findable in peripheral vision. */
+@keyframes pulse-ring { 0%,100% { transform: translateX(-50%) scale(0.85); opacity: 0.55; }
+                        50%     { transform: translateX(-50%) scale(1.15); opacity: 0.15; } }
+@keyframes marquee   { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
 
-.animate-gradient {
-  animation: gradient 8s ease infinite;
-}
+/* ---- hero backdrop -------------------------------------------------------
+   Two colour fields breathing past each other, and a wave sheet drifting
+   slowly beneath them. Long durations on purpose: this should be something
+   noticed on second look, never something competing with the headline on
+   top of it. All transform-only, so they run on the compositor, and the
+   global prefers-reduced-motion rule stops them dead with no extra code. */
+@keyframes aurora-a   { 0%,100% { transform: translate3d(0,0,0) scale(1); }
+                        50%     { transform: translate3d(4%,-5%,0) scale(1.12); } }
+@keyframes aurora-b   { 0%,100% { transform: translate3d(0,0,0) scale(1.08); }
+                        50%     { transform: translate3d(-5%,4%,0) scale(1); } }
+@keyframes wave-drift { 0%,100% { transform: translate3d(0,0,0); }
+                        50%     { transform: translate3d(-2.2%,1.4%,0); } }
+@keyframes sheen     { from { transform: translateX(-120%); } to { transform: translateX(220%); } }
 
-/* Smooth scrolling (scoped to the document root, not every element) */
+.animate-float   { animation: float-y 7s ease-in-out infinite; }
+.animate-dash    { animation: dash-flow 16s linear infinite; }
+.animate-blink   { animation: blink 2.4s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.8s ease-in-out infinite; }
+.animate-marquee { animation: marquee 48s linear infinite; }
+.animate-aurora-a { animation: aurora-a 19s ease-in-out infinite; }
+.animate-aurora-b { animation: aurora-b 24s ease-in-out infinite; }
+.animate-wave     { animation: wave-drift 28s ease-in-out infinite; }
 
-/* Rotating gradient animation for header */
-@keyframes rotate-gradient {
-  0% {
-    background-position: 0% 50%;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal, .js .reveal.is-visible,
+  .js .mask-line > *, .js .mask-line.is-visible > *,
+  .js .rule-draw, .js .rule-draw.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    opacity: 0.5;
-    filter: blur(20px);
-  }
-  50% {
-    opacity: 0.8;
-    filter: blur(25px);
-  }
-}
-
-.animate-rotate-gradient {
-  background-size: 200% 200%;
-  animation: rotate-gradient 6s ease infinite;
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 4s ease-in-out infinite;
-}
-
-/* Floating particles animation */
-@keyframes float-particle {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translateY(-10px) translateX(5px);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-5px) translateX(-5px);
-    opacity: 0.4;
-  }
-  75% {
-    transform: translateY(-15px) translateX(3px);
-    opacity: 0.7;
-  }
-}
-
-.animate-float-particle {
-  animation: float-particle 8s ease-in-out infinite;
-}
-
-/* Shimmer effect for header */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(45deg);
-  }
-  50% {
-    transform: translateX(200%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(-100%) rotate(45deg);
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 6s ease-in-out infinite;
-}
-
-/* Footer outline text with gradient */
-@keyframes gradient-text-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
 
-.footer-outline-text {
-  color: transparent;
-  background: linear-gradient(90deg,
-    rgba(59, 130, 246, 0.3) 0%,
-    rgba(168, 85, 247, 0.3) 25%,
-    rgba(236, 72, 153, 0.3) 50%,
-    rgba(251, 146, 60, 0.3) 75%,
-    rgba(59, 130, 246, 0.3) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: rgba(59, 130, 246, 0.3);
-  paint-order: stroke fill;
-  animation: gradient-text-shift 10s ease infinite;
+/* ===========================================================================
+   COMPONENTS
+   =========================================================================== */
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section       { padding-block: clamp(4.5rem, 3rem + 6.5vw, 9rem); }
+  .section-tight { padding-block: clamp(2.75rem, 2rem + 3vw, 4.5rem); }
+
+  /* --- Monospace label: the system's signature detail -------------------
+     Section numbers, data labels, meta. This is what makes the page read as
+     an instrument rather than a brochure. */
+  .mono {
+    font-family: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: var(--step--2);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+  .mono-num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Section marker: 01 — LABEL, with a short orange rule. */
+  .marker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+  }
+  .marker::before {
+    content: '';
+    width: 1.75rem;
+    height: 2px;
+    background: var(--accent-500);
+    flex: none;
+  }
+
+  /* --- Buttons: squared, precise, no pill ------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.875rem;
+    padding-inline: 1.3rem;
+    border-radius: var(--r-sm);
+    font-weight: 600;
+    font-size: var(--step-0);
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color var(--dur) var(--ease),
+                border-color var(--dur) var(--ease),
+                color var(--dur) var(--ease),
+                transform var(--dur-fast) var(--ease);
+  }
+  .btn:active { transform: translateY(1px); }
+
+  /* Orange fill + ink text — 6.80:1, the only vivid-orange button that passes. */
+  .btn-primary { background: var(--accent-500); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-400); }
+
+  .btn-ink { background: var(--ink); color: #fff; }
+  .btn-ink:hover { background: #1B2333; }
+
+  .btn-line {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--hairline-mid);
+  }
+  .btn-line:hover { border-color: var(--ink); }
+
+  /* --- Link with a rule that extends on hover --------------------------- */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: color var(--dur) var(--ease);
+    /* Hit area grown to ~41px for touch without moving the text: the
+       padding is cancelled by an equal negative margin. */
+    padding-block: 0.6rem;
+    margin-block: -0.6rem;
+  }
+  .link-arrow svg { transition: transform var(--dur) var(--ease); }
+  .link-arrow:hover { color: var(--accent-ink); }
+  .link-arrow:hover svg { transform: translateX(3px); }
+
+  /* --- Hairline frame: replaces the card ---------------------------------
+     A bordered cell with no radius drama and no shadow. Depth comes from the
+     grid, not from elevation. */
+  .cell {
+    position: relative;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r);
+    transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  }
+  .cell-hover:hover { border-color: var(--hairline-str); }
+
+  /* A cell whose top edge lights up orange on hover. */
+  .cell-mark::after {
+    content: '';
+    position: absolute;
+    inset-inline: -1px;
+    top: -1px;
+    height: 2px;
+    background: var(--accent-500);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform var(--dur) var(--ease);
+  }
+  .cell-mark:hover::after { transform: scaleX(1); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .measure      { max-width: var(--measure); }
+
+  /* The structural motif: a faint square grid. */
+  .grid-rule {
+    background-image:
+      linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+  .grid-rule-sm {
+    background-image:
+      linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .mask-edges {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  }
+
+  /* Vertical hairlines marking the content column, like a drawing sheet. */
+  .edge-x {
+    border-inline: 1px solid var(--hairline);
+  }
 }
 
 /* ---------------------------------------------------------------------------
-   Route transition loader  —  components/RouteTransitionLoader.tsx
+   Hero console — components/home/LiveConsole.tsx
 
-   Everything below animates `transform` / `opacity` only, so frames are produced
-   by the compositor. That is the point: a route change mounts a large client
-   page and blocks the main thread, and a main-thread animation would freeze
-   during exactly the wait this loader exists to cover.
+   Each swap remounts the screen, so these replay every time: the table rows
+   stagger in as though the view had just pulled fresh data. Combined with
+   the pointer, the panel reads as something being operated rather than a
+   screenshot sitting there.
    --------------------------------------------------------------------------- */
+
+.live-screen tbody tr {
+  animation: live-row-in 440ms var(--ease) backwards;
+}
+.live-screen tbody tr:nth-child(1) { animation-delay: 220ms; }
+.live-screen tbody tr:nth-child(2) { animation-delay: 310ms; }
+.live-screen tbody tr:nth-child(3) { animation-delay: 400ms; }
+.live-screen tbody tr:nth-child(4) { animation-delay: 490ms; }
+
+@keyframes live-row-in {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ===========================================================================
+   ROUTE TRANSITION LOADER  —  components/RouteTransitionLoader.tsx
+
+   The original overlay, recoloured for the light theme: a near-white veil
+   with warm brand washes instead of #05070f, and rings in the accent ramp
+   instead of blue/purple/pink.
+
+   Everything below animates `transform` / `opacity` only, so frames are
+   produced by the compositor. That is the point: a route change mounts the
+   next page and blocks the main thread, and a main-thread animation would
+   freeze during exactly the wait this exists to cover.
+   =========================================================================== */
 
 .route-loader {
   position: fixed;
@@ -215,9 +565,15 @@ section {
 }
 
 /* display:none also drops it out of the accessibility tree when idle. */
-.route-loader[data-state='idle'] {
-  display: none;
-}
+.route-loader[data-state='idle'] { display: none; }
+
+/*
+ * First load. Hidden by default so a crawler — or anyone with JS off —
+ * never meets a fixed overlay they cannot dismiss; the pre-paint `.js` flag
+ * on <html> is what switches it on. Same inversion as the scroll reveals.
+ */
+.route-loader[data-state='boot'] { display: none; }
+.js .route-loader[data-state='boot'] { display: block; }
 
 /* --- Instant feedback: the top progress bar ------------------------------- */
 
@@ -229,22 +585,23 @@ section {
   height: 3px;
   transform: scaleX(0);
   transform-origin: 0 50%;
-  background: linear-gradient(90deg, #3b82f6, #a855f7, #ec4899);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.7);
+  background: linear-gradient(90deg, var(--accent-600), var(--accent-400), var(--accent-300));
 }
 
-.route-loader[data-state='busy'] .route-loader__bar {
+.route-loader[data-state='busy'] .route-loader__bar,
+.route-loader[data-state='boot'] .route-loader__bar,
+.route-loader[data-state='leaving'] .route-loader__bar {
   animation: route-loader-bar 12s cubic-bezier(0.12, 0.78, 0.2, 1) forwards;
 }
 
 /* Eases towards — never reaches — the end: arriving is what ends it. */
 @keyframes route-loader-bar {
-  0% { transform: scaleX(0); }
-  30% { transform: scaleX(0.62); }
+  0%   { transform: scaleX(0); }
+  30%  { transform: scaleX(0.62); }
   100% { transform: scaleX(0.97); }
 }
 
-/* --- The branded overlay, delayed in CSS so quick routes don't flash ------- */
+/* --- The veil, delayed in CSS so quick routes don't flash ----------------- */
 
 .route-loader__veil {
   position: absolute;
@@ -256,9 +613,9 @@ section {
   gap: 1.75rem;
   opacity: 0;
   background:
-    radial-gradient(120% 90% at 50% 0%, rgba(59, 130, 246, 0.18), transparent 60%),
-    radial-gradient(100% 80% at 50% 100%, rgba(168, 85, 247, 0.16), transparent 60%),
-    #05070f;
+    radial-gradient(120% 90% at 50% 0%, rgba(251, 124, 31, 0.10), transparent 60%),
+    radial-gradient(100% 80% at 50% 100%, rgba(100, 116, 139, 0.07), transparent 60%),
+    #FBFCFE;
 }
 
 .route-loader[data-state='busy'] .route-loader__veil {
@@ -266,9 +623,26 @@ section {
   animation: route-loader-veil-in 260ms ease 150ms forwards;
 }
 
+/* On first load there is nothing to wait and see about — the page is
+   genuinely loading — so it is opaque from the first frame, with no delay. */
+.route-loader[data-state='boot'] .route-loader__veil {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.route-loader[data-state='leaving'] .route-loader__veil {
+  pointer-events: none;
+  animation: route-loader-veil-out 340ms ease forwards;
+}
+
 @keyframes route-loader-veil-in {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
+}
+
+@keyframes route-loader-veil-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 /* --- Counter-rotating rings around the mark ------------------------------- */
@@ -289,28 +663,26 @@ section {
 
 .route-loader__ring--outer {
   inset: 0;
-  border-top-color: #3b82f6;
-  border-right-color: rgba(59, 130, 246, 0.25);
+  border-top-color: var(--accent-500);
+  border-right-color: var(--accent-200);
   animation: route-loader-spin 1.6s linear infinite;
 }
 
 .route-loader__ring--mid {
   inset: 21px;
-  border-bottom-color: #a855f7;
-  border-left-color: rgba(168, 85, 247, 0.25);
+  border-bottom-color: var(--accent-600);
+  border-left-color: var(--accent-200);
   animation: route-loader-spin 2.1s linear infinite reverse;
 }
 
 .route-loader__ring--inner {
   inset: 42px;
-  border-top-color: #ec4899;
-  border-left-color: rgba(236, 72, 153, 0.25);
+  border-top-color: var(--hairline-str);
+  border-left-color: var(--hairline);
   animation: route-loader-spin 1.1s linear infinite;
 }
 
-@keyframes route-loader-spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes route-loader-spin { to { transform: rotate(360deg); } }
 
 .route-loader__core {
   display: grid;
@@ -318,18 +690,15 @@ section {
   width: 64px;
   height: 64px;
   border-radius: 9999px;
-  background: radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.35), rgba(5, 7, 15, 0.9) 70%);
+  background: radial-gradient(circle at 50% 40%, rgba(251, 124, 31, 0.16), rgba(255, 255, 255, 0.95) 70%);
   animation: route-loader-pulse 1.8s ease-in-out infinite;
 }
 
-.route-loader__mark {
-  width: 36px;
-  height: auto;
-}
+.route-loader__mark { width: 36px; height: auto; }
 
 @keyframes route-loader-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.88; }
-  50% { transform: scale(1.08); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.08); opacity: 1; }
 }
 
 /* --- Destination name + indeterminate sweep ------------------------------- */
@@ -343,23 +712,20 @@ section {
 }
 
 .route-loader__kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(148, 163, 184, 0.85);
+  color: var(--muted);
 }
 
 .route-loader__name {
-  font-family: var(--font-sora), system-ui, sans-serif;
+  font-family: var(--font-display), system-ui, sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
-  color: transparent;
-  background: linear-gradient(90deg, #93c5fd, #d8b4fe, #f9a8d4, #93c5fd);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text-shift 3s ease infinite;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .route-loader__track {
@@ -368,20 +734,20 @@ section {
   height: 3px;
   overflow: hidden;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--well);
 }
 
 .route-loader__track span {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent, #3b82f6, #a855f7, #ec4899, transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-500), var(--accent-300), transparent);
   transform: translateX(-100%);
   animation: route-loader-sweep 1.25s ease-in-out infinite;
 }
 
 @keyframes route-loader-sweep {
-  0% { transform: translateX(-100%); }
+  0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
@@ -399,33 +765,20 @@ section {
   .route-loader__ring--outer { animation-duration: 3s; }
   .route-loader__ring--mid,
   .route-loader__ring--inner { animation: none; opacity: 0.3; }
-  .route-loader__core,
-  .route-loader__name { animation: none; }
+  .route-loader__core { animation: none; }
   .route-loader__track span { animation-duration: 2.4s; }
 }
 
-/* ---------------------------------------------------------------------------
-   Mobile nav panel — components/Header.tsx
-
-   The header is position:fixed, so an expanded menu simply overflows the
-   viewport and the items past the fold become unreachable (most visibly once
-   the seven-item Solutions submenu is open). Cap it to the space actually
-   below the bar and let it scroll.
-
-   dvh is used where supported so the cap tracks mobile browser chrome as it
-   collapses; the vh rule stays as the fallback.
-   --------------------------------------------------------------------------- */
+/* ===========================================================================
+   MOBILE NAV
+   =========================================================================== */
 
 .mobile-nav-panel {
-  max-height: calc(100vh - 7.5rem);
+  max-height: calc(100vh - 4.5rem);
   overflow-y: auto;
-  /* Don't let an over-scroll at either end start scrolling the page behind. */
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
-
 @supports (height: 100dvh) {
-  .mobile-nav-panel {
-    max-height: calc(100dvh - 7.5rem);
-  }
+  .mobile-nav-panel { max-height: calc(100dvh - 4.5rem); }
 }

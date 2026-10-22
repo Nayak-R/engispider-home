@@ -1,200 +1,541 @@
-/*
- * Realistic in-browser UI mockups of Campus360 — the Engispider Academic Suite
- * (School & College ERP). Pure presentational components (no hooks), styled to
- * resemble the real product (indigo primary, light cards) and reusing the
- * browser / phone chrome from the Restro360 mockups so they read as screenshots.
- */
+'use client';
+
+import { motion } from 'framer-motion';
 import {
   LayoutDashboard, GraduationCap, Wallet, BookOpen, BedDouble, BarChart3,
-  IndianRupee, Users, TrendingUp, AlertTriangle, CheckCircle2, Clock,
-  Landmark, Search, Bell,
+  IndianRupee, Users, TrendingUp, CheckCircle2, Clock, Landmark, Bus,
 } from 'lucide-react';
-import { BrowserFrame, PhoneFrame } from '@/components/restro/Mockups';
+import {
+  BrowserFrame,
+  PhoneFrame,
+  StatusBar,
+  MockShell,
+  MockStat,
+  LiveDot,
+  Live,
+  useLiveTick,
+  useMounted,
+  type NavItem,
+} from '@/components/mock/Chrome';
+
+/*
+ * Engispider Campus — product screens.
+ *
+ * Drawn in HTML rather than exported as images: crisp at any density, a
+ * couple of KB each instead of ~150KB, no network request, no layout
+ * shift, and nothing goes stale when the product UI moves.
+ *
+ * Chrome, liveness and proportions come from components/mock/Chrome, so
+ * these behave exactly like the restaurant screens: a 112px rail rather
+ * than a 176px one, one timer at a time, and no inline opacity:0 in the
+ * static HTML.
+ *
+ * Indigo, not the site's orange — that is the colour of the real product,
+ * and recolouring it would misrepresent what an administrator logs into.
+ *
+ * Figures are illustrative demo-tenant data. They assert nothing about any
+ * institution.
+ */
+
+const ACCENT = '#4F46E5';
+const TINT = '#EEF2FF';
+
+const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+const lakh = (n: number) => `₹${(n / 100000).toFixed(2)}L`;
+
+const NAV: NavItem[] = [
+  { key: 'dashboard', label: 'Dashboard', Icon: LayoutDashboard },
+  { key: 'students', label: 'Students', Icon: GraduationCap },
+  { key: 'fees', label: 'Fees', Icon: Wallet },
+  { key: 'accounting', label: 'Accounting', Icon: Landmark },
+  { key: 'hostel', label: 'Hostel', Icon: BedDouble },
+  { key: 'transport', label: 'Transport', Icon: Bus },
+  { key: 'reports', label: 'Reports', Icon: BarChart3 },
+];
+
+const pill = (t: string, c: string) => (
+  <span className={`rounded px-1.5 py-0.5 text-[9px] font-semibold ${c}`}>{t}</span>
+);
 
 export { BrowserFrame, PhoneFrame };
 
-const PRIMARY = '#4f46e5';
-
-function Sidebar({ active }: { active: string }) {
-  const items = [
-    { k: 'dashboard', label: 'Dashboard', Icon: LayoutDashboard },
-    { k: 'students', label: 'Students', Icon: GraduationCap },
-    { k: 'fees', label: 'Fees', Icon: Wallet },
-    { k: 'accounting', label: 'Accounting', Icon: Landmark },
-    { k: 'hostel', label: 'Hostel', Icon: BedDouble },
-    { k: 'library', label: 'Library', Icon: BookOpen },
-    { k: 'reports', label: 'Reports', Icon: BarChart3 },
-  ];
-  return (
-    <div className="hidden sm:flex w-44 flex-col bg-white border-r border-gray-200 py-3 shrink-0">
-      <div className="px-4 pb-3 mb-2 flex items-center gap-2 border-b border-gray-100">
-        <div className="w-7 h-7 rounded-lg" style={{ background: PRIMARY }} />
-        <span className="font-extrabold text-gray-800 text-xs">Campus360</span>
-      </div>
-      {items.map((i) => (
-        <div key={i.k} className={`flex items-center gap-2.5 px-4 py-2 text-[12px] ${active === i.k ? 'text-indigo-700 font-semibold bg-indigo-50 border-r-2 border-indigo-600' : 'text-gray-500'}`}>
-          <i.Icon className="w-4 h-4" /> {i.label}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Shell({ active, title, children }: { active: string; title: string; children: React.ReactNode }) {
-  return (
-    <div className="flex h-[360px] text-gray-800">
-      <Sidebar active={active} />
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex items-center justify-between px-4 h-11 bg-white border-b border-gray-200">
-          <span className="font-bold text-xs">{title}</span>
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-1.5 h-7 px-2 rounded-md bg-gray-100 text-[11px] text-gray-400 w-40"><Search className="w-3.5 h-3.5" /> Search…</div>
-            <Bell className="w-4 h-4 text-gray-400" />
-            <div className="w-6 h-6 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center font-bold">R</div>
-          </div>
-        </div>
-        <div className="p-3 overflow-hidden bg-gray-50 flex-1">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value, sub, Icon, tone = PRIMARY }: { label: string; value: string; sub?: string; Icon: any; tone?: string }) {
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 p-3">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wide text-gray-400">{label}</span>
-        <span className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: tone + '18' }}><Icon className="w-3.5 h-3.5" style={{ color: tone }} /></span>
-      </div>
-      <div className="text-sm font-extrabold mt-1 text-gray-800">{value}</div>
-      {sub && <div className="text-[10px] mt-0.5" style={{ color: tone }}>{sub}</div>}
-    </div>
-  );
-}
-
-const pill = (t: string, c: string) => <span className={`px-1.5 py-0.5 rounded text-[9px] font-semibold ${c}`}>{t}</span>;
+/* ============================================================== dashboard */
 
 export function CampusDashboardMock() {
+  const [ref, t] = useLiveTick(2600);
+  const collected = 1842000 + t * 7400;
+  const receipts = 214 + t;
+  const pending = Math.max(2, 9 - (t % 8));
+
   return (
-    <Shell active="dashboard" title="Dashboard">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-        <Stat label="Today's Collection" value="₹3,84,500" sub="▲ net of refunds" Icon={IndianRupee} tone="#16a34a" />
-        <Stat label="Students" value="2,461" Icon={Users} tone={PRIMARY} />
-        <Stat label="Outstanding" value="₹41.2L" Icon={TrendingUp} tone="#dc2626" />
-        <Stat label="Pending approvals" value="7" Icon={Clock} tone="#d97706" />
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Dashboard"
+      nav={NAV}
+      active="dashboard"
+      accent={ACCENT}
+      tint={TINT}
+      search
+      badge={<LiveDot />}
+    >
+      <div className="mb-2.5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <MockStat label="Collected today" value={lakh(collected)} Icon={IndianRupee} tone="#16a34a" />
+        <MockStat label="Receipts" value={String(receipts)} Icon={CheckCircle2} tone={ACCENT} />
+        <MockStat label="Awaiting approval" value={String(pending)} Icon={Clock} tone="#d97706" />
+        <MockStat label="Outstanding" value="₹11.4L" Icon={TrendingUp} tone="#dc2626" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="sm:col-span-2 bg-white rounded-xl border border-gray-200 p-3">
-          <div className="flex items-center justify-between mb-3"><span className="text-xs font-semibold text-gray-700">Collection · last 7 days</span><span className="text-[10px] text-gray-400">₹19.4L total</span></div>
-          <div className="flex items-end gap-2 h-24">
-            {[48, 62, 40, 75, 58, 90, 70].map((h, i) => (<div key={i} className="flex-1 rounded-t-md" style={{ height: `${h}%`, background: i === 5 ? PRIMARY : '#c7d2fe' }} />))}
+
+      <div className="grid grid-cols-[1.5fr_1fr] gap-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[11px] font-bold text-gray-800">Collection vs target</span>
+            <span className="text-[9px] text-gray-400">This month</span>
+          </div>
+          <div className="flex h-20 items-end gap-1.5">
+            {Array.from({ length: 12 }).map((_, i) => {
+              const base = [32, 48, 40, 66, 84, 58, 44, 72, 90, 62, 76, 54][i];
+              const grown = i === 11 ? Math.min(100, base + ((t * 6) % 24)) : base;
+              return (
+                <motion.span
+                  key={i}
+                  className="flex-1 rounded-sm"
+                  style={{ background: i > 8 ? ACCENT : '#C7D2FE' }}
+                  animate={{ height: `${grown}%` }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-1.5 flex justify-between text-[9px] text-gray-400">
+            <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-3">
-          <span className="text-xs font-semibold text-gray-700">Fees by mode</span>
-          <div className="mt-2 space-y-2">
-            {[['Online / UPI', '₹1.6L', '#16a34a'], ['Cash', '₹1.1L', '#4f46e5'], ['Cheque', '₹68k', '#0891b2'], ['Bank', '₹40k', '#d97706']].map(([n, v, c]) => (
-              <div key={n} className="flex items-center justify-between text-[11px]"><span className="flex items-center gap-1.5 text-gray-600"><span className="w-2 h-2 rounded-full" style={{ background: c }} />{n}</span><span className="font-semibold text-gray-800">{v}</span></div>
-            ))}
-          </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-1.5 block text-[11px] font-bold text-gray-800">By institute</span>
+          {[
+            ['Science College', 62],
+            ['Polytechnic', 48],
+            ['Nursing Institute', 35],
+          ].map(([name, pct]) => (
+            <div key={name as string} className="mb-2">
+              <div className="mb-1 flex items-center justify-between text-[9.5px]">
+                <span className="truncate text-gray-600">{name}</span>
+                <span className="mono-num text-gray-800">{pct}%</span>
+              </div>
+              <span className="block h-1.5 overflow-hidden rounded-full bg-gray-100">
+                <motion.span
+                  className="block h-full rounded-full"
+                  style={{ background: ACCENT }}
+                  animate={{ width: `${pct}%` }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </span>
+            </div>
+          ))}
         </div>
       </div>
-    </Shell>
+    </MockShell>
   );
 }
+
+/* ============================================================ fee receipt */
 
 export function FeeCollectMock() {
+  const [ref, t] = useLiveTick(2400);
+  const mounted = useMounted();
+
+  const rows = [
+    { no: 'RC-004218', name: 'A. Mohanty', course: 'B.Pharm · 2', head: 'Tuition', amt: 18000 },
+    { no: 'RC-004219', name: 'S. Behera', course: 'Nursing · 1', head: 'Hostel', amt: 22500 },
+    { no: 'RC-004220', name: 'R. Das', course: 'Polytechnic · 3', head: 'Tuition', amt: 15750 },
+    { no: 'RC-004221', name: 'P. Sahoo', course: 'B.Sc · 1', head: 'Transport', amt: 8400 },
+  ].map((r, i) => {
+    // Cashier raises, accounts verifies: rows walk PENDING -> APPROVED.
+    const state = (t + i) % 5;
+    return {
+      ...r,
+      status: state < 2 ? 'PENDING' : state < 4 ? 'APPROVED' : 'POSTED',
+      tone:
+        state < 2
+          ? 'bg-amber-50 text-amber-700'
+          : state < 4
+            ? 'bg-emerald-50 text-emerald-700'
+            : 'bg-indigo-50 text-indigo-700',
+    };
+  });
+
+  const approved = rows.filter((r) => r.status !== 'PENDING').length;
+
   return (
-    <Shell active="fees" title="Fee Ledger · 24/CS/018 · Ananya Sahoo">
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="grid grid-cols-12 px-3 py-2 bg-gray-50 text-[10px] uppercase tracking-wide text-gray-400 font-semibold"><div className="col-span-5">Head</div><div className="col-span-2 text-right">Amount</div><div className="col-span-2 text-right">Paid</div><div className="col-span-2 text-right">Balance</div><div className="col-span-1"></div></div>
-        {[
-          ['Year 1 · Course Fee', '40,000', '40,000', '0', 'PAID', 'bg-green-100 text-green-700'],
-          ['Year 1 · Exam Fee', '3,000', '3,000', '0', 'PAID', 'bg-green-100 text-green-700'],
-          ['Year 2 · Course Fee', '40,000', '25,000', '15,000', 'PARTIAL', 'bg-amber-100 text-amber-700'],
-          ['Hostel · Bed A-14', '55,000', '0', '55,000', 'DUE', 'bg-red-100 text-red-700'],
-        ].map(([h, a, p, b, s, c]) => (
-          <div key={h} className="grid grid-cols-12 px-3 py-2 text-[11px] border-t border-gray-100 items-center">
-            <div className="col-span-5 text-gray-700">{h}</div><div className="col-span-2 text-right tabular-nums text-gray-600">₹{a}</div><div className="col-span-2 text-right tabular-nums text-green-600">₹{p}</div><div className="col-span-2 text-right tabular-nums text-gray-800 font-semibold">₹{b}</div><div className="col-span-1 text-right">{pill(s as string, c as string)}</div>
-          </div>
-        ))}
-        <div className="flex items-center justify-between px-3 py-2.5 bg-indigo-50 border-t border-indigo-100">
-          <span className="text-[11px] text-gray-500">Balance <b className="text-gray-800">₹70,000</b></span>
-          <span className="text-[11px] font-bold text-white bg-indigo-600 rounded-md px-3 py-1.5">Collect fee</span>
-        </div>
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Fees · Receipt approvals"
+      nav={NAV}
+      active="fees"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label={`${approved}/4 verified`} />}
+    >
+      <div className="mb-2.5 grid grid-cols-3 gap-2">
+        <MockStat label="Collected today" value={inr(284500 + t * 1250)} Icon={IndianRupee} tone="#16a34a" />
+        <MockStat label="Receipts" value={String(63 + t)} Icon={CheckCircle2} tone={ACCENT} />
+        <MockStat label="Awaiting check" value={String(4 - approved)} Icon={Clock} tone="#d97706" />
       </div>
-      <div className="mt-2 text-[10px] text-gray-400">Course fee tracked as year installments · every other head kept as its own charge, posted to its own income account.</div>
-    </Shell>
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.1fr_1.1fr_1fr_0.8fr_0.9fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Receipt</span><span>Student</span><span>Course</span><span>Amount</span>
+          <span className="text-right">Status</span>
+        </div>
+        {rows.map((r, i) => (
+          <motion.div
+            key={r.no}
+            initial={mounted ? { opacity: 0, x: 6 } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.26, delay: i * 0.03 }}
+            className="grid grid-cols-[1.1fr_1.1fr_1fr_0.8fr_0.9fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+          >
+            <span className="mono-num truncate text-gray-500">{r.no}</span>
+            <span className="truncate font-medium text-gray-800">{r.name}</span>
+            <span className="truncate text-gray-600">{r.course}</span>
+            <span className="mono-num text-gray-800">{inr(r.amt)}</span>
+            <span className="text-right">{pill(r.status, r.tone)}</span>
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="mt-2 text-[9px] text-gray-400">
+        Cashier raises · Accounts verifies · Posts to the ledger
+      </p>
+    </MockShell>
   );
 }
+
+/* ========================================================== online payment */
 
 export function OnlinePayMock() {
+  const [ref, t] = useLiveTick(2500);
+  const collected = 962400 + t * 3100;
+  const reconciled = collected - 18600;
+
   return (
-    <Shell active="accounting" title="Online Payments">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-        <Stat label="Collected (net)" value="₹1,62,000" Icon={IndianRupee} tone="#16a34a" />
-        <Stat label="Reconciled" value="98%" sub="with bank" Icon={CheckCircle2} tone={PRIMARY} />
-        <Stat label="On hold" value="₹4,000" Icon={Clock} tone="#d97706" />
-        <Stat label="Refunded" value="₹2,000" Icon={AlertTriangle} tone="#7c3aed" />
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Online payments"
+      nav={NAV}
+      active="accounting"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label="bank sync" />}
+    >
+      <div className="mb-2.5 grid grid-cols-4 gap-2">
+        <MockStat label="Collected" value={lakh(collected)} Icon={IndianRupee} tone="#16a34a" />
+        <MockStat label="Reconciled" value={lakh(reconciled)} Icon={CheckCircle2} tone={ACCENT} />
+        <MockStat label="On hold" value="₹18.6K" Icon={Clock} tone="#d97706" />
+        <MockStat label="Refunded" value="₹4.2K" Icon={TrendingUp} tone="#dc2626" />
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.2fr_1fr_0.9fr_1fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Student</span><span>Mode</span><span>Amount</span>
+          <span className="text-right">Bank status</span>
+        </div>
         {[
-          ['Ananya Sahoo', '24/CS/018', '₹40,000', 'UPI', 'SUCCESS', 'bg-green-100 text-green-700'],
-          ['Rohit Das', '24/EE/041', '₹25,000', 'CARD', 'SUCCESS', 'bg-green-100 text-green-700'],
-          ['Isha Panda', '24/CV/007', '₹5,000', 'UPI', 'REFUNDED', 'bg-violet-100 text-violet-700'],
-        ].map(([n, r, a, m, s, c]) => (
-          <div key={r} className="grid grid-cols-12 px-3 py-2.5 text-[11px] border-t border-gray-100 first:border-t-0 items-center">
-            <div className="col-span-4"><div className="font-medium text-gray-700">{n}</div><div className="text-gray-400 text-[10px]">{r}</div></div>
-            <div className="col-span-3 text-gray-600">{m}</div><div className="col-span-3 text-right tabular-nums font-semibold text-gray-800">{a}</div><div className="col-span-2 text-right">{pill(s as string, c as string)}</div>
+          ['A. Mohanty', 'UPI', 18000, 'SETTLED', 'bg-emerald-50 text-emerald-700'],
+          ['S. Behera', 'Net banking', 22500, 'SETTLED', 'bg-emerald-50 text-emerald-700'],
+          ['R. Das', 'Card', 15750, 'PENDING', 'bg-amber-50 text-amber-700'],
+          ['P. Sahoo', 'UPI', 8400, 'SETTLED', 'bg-emerald-50 text-emerald-700'],
+        ].map(([n, mode, amt, st, tone], i) => (
+          <div
+            key={n as string}
+            className="grid grid-cols-[1.2fr_1fr_0.9fr_1fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+          >
+            <span className="truncate font-medium text-gray-800">{n as string}</span>
+            <span className="truncate text-gray-600">{mode as string}</span>
+            <span className="mono-num text-gray-800">
+              {i === 0 ? <Live value={inr(amt as number)} /> : inr(amt as number)}
+            </span>
+            <span className="text-right">{pill(st as string, tone as string)}</span>
           </div>
         ))}
       </div>
-    </Shell>
+
+      <p className="mt-2 text-[9px] text-gray-400">
+        Status comes from the bank — never typed in by hand.
+      </p>
+    </MockShell>
   );
 }
+
+/* ============================================================ outstanding */
 
 export function OutstandingMock() {
+  const [ref, t] = useLiveTick(2800);
+
+  const rows = [
+    { name: 'K. Patra', course: 'B.Sc · 2', due: 24500, days: 41 },
+    { name: 'M. Jena', course: 'B.Pharm · 1', due: 18200, days: 28 },
+    { name: 'T. Rout', course: 'Polytechnic · 3', due: 12750, days: 17 },
+    { name: 'N. Swain', course: 'Nursing · 2', due: 9400, days: 9 },
+  ].map((r) => {
+    const days = r.days + t;
+    return {
+      ...r,
+      days,
+      tone:
+        days > 45
+          ? 'bg-red-50 text-red-600'
+          : days > 25
+            ? 'bg-amber-50 text-amber-700'
+            : 'bg-gray-100 text-gray-500',
+    };
+  });
+
+  const total = rows.reduce((n, r) => n + r.due, 0);
+
   return (
-    <Shell active="reports" title="Outstanding Dues">
-      <div className="flex gap-2 mb-3">
-        {['All institutes', 'B.Tech CSE', '2024', 'Section A'].map((f, i) => (<span key={f} className={`text-[10px] px-2.5 py-1 rounded-full border ${i === 0 ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-500 border-gray-200'}`}>{f}</span>))}
-        <span className="ml-auto text-[10px] px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-500">Export ▾</span>
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Reports · Outstanding"
+      nav={NAV}
+      active="reports"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label="ageing" />}
+    >
+      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+        {['All institutes', 'B.Sc', 'Year 2', 'Section A'].map((f, i) => (
+          <span
+            key={f}
+            className="rounded-full px-2 py-0.5 text-[9px] font-medium"
+            style={i === 0 ? { background: TINT, color: ACCENT } : { background: '#F3F4F6', color: '#6B7280' }}
+          >
+            {f}
+          </span>
+        ))}
+        <span className="ml-auto rounded-md border border-gray-200 px-2 py-0.5 text-[9px] text-gray-500">
+          Export ▾
+        </span>
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="grid grid-cols-12 px-3 py-2 bg-gray-50 text-[10px] uppercase tracking-wide text-gray-400 font-semibold"><div className="col-span-4">Student</div><div className="col-span-3">Course · Year</div><div className="col-span-3">Guardian</div><div className="col-span-2 text-right">Due</div></div>
-        {[
-          ['24/CS/018 · Ananya Sahoo', 'CSE · Year 2', '98xxxxxx01', '70,000'],
-          ['24/EE/041 · Rohit Das', 'EEE · Year 2', '98xxxxxx55', '38,500'],
-          ['24/ME/112 · Sameer Roy', 'MECH · Year 1', '90xxxxxx12', '12,000'],
-          ['24/CV/007 · Isha Panda', 'CIVIL · Year 2', '87xxxxxx90', '9,000'],
-        ].map(([s, c, g, d]) => (
-          <div key={s} className="grid grid-cols-12 px-3 py-2 text-[11px] border-t border-gray-100 items-center">
-            <div className="col-span-4 text-gray-700">{s}</div><div className="col-span-3 text-gray-500">{c}</div><div className="col-span-3 text-gray-500 tabular-nums">{g}</div><div className="col-span-2 text-right tabular-nums font-semibold text-red-600">₹{d}</div>
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.2fr_1fr_0.9fr_0.9fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Student</span><span>Course</span><span>Due</span>
+          <span className="text-right">Overdue</span>
+        </div>
+        {rows.map((r) => (
+          <div
+            key={r.name}
+            className="grid grid-cols-[1.2fr_1fr_0.9fr_0.9fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+          >
+            <span className="truncate font-medium text-gray-800">{r.name}</span>
+            <span className="truncate text-gray-600">{r.course}</span>
+            <span className="mono-num text-gray-800">{inr(r.due)}</span>
+            <span className="text-right">
+              {pill(`${r.days}d`, r.tone)}
+            </span>
           </div>
         ))}
+        <div className="flex items-center justify-between bg-gray-50 px-2.5 py-1.5 text-[10px] font-bold text-gray-800">
+          <span>Total outstanding</span>
+          <span className="mono-num">{inr(total)}</span>
+        </div>
       </div>
-    </Shell>
+    </MockShell>
   );
 }
 
-export function PhonePortalMock() {
+/* ============================================================== accounting */
+
+/**
+ * The ledger posting itself.
+ *
+ * This is the claim the page makes that is hardest to believe — that a
+ * receipt becomes a double entry with no bookkeeping step — so the screen
+ * shows the entry rather than another KPI row.
+ */
+export function AccountingMock() {
+  const [ref, t] = useLiveTick(2600);
+  const mounted = useMounted();
+  const amount = 18000 + ((t * 137) % 9) * 500;
+
   return (
-    <div className="bg-gray-50 h-[440px] flex flex-col">
-      <div className="px-4 pt-8 pb-4 bg-indigo-600 text-white">
-        <div className="text-[11px] opacity-80">My Fees</div>
-        <div className="text-lg font-extrabold mt-1">₹70,000 <span className="text-xs font-medium opacity-80">due</span></div>
-        <div className="mt-3 h-2 rounded-full bg-white/25"><div className="h-2 rounded-full bg-white w-3/5" /></div>
-        <div className="text-[10px] mt-1 opacity-80">Paid ₹1,06,000 of ₹1,76,000</div>
-      </div>
-      <div className="p-4 space-y-2 flex-1">
-        {[['Year 2 · Course Fee', '₹15,000', 'PARTIAL', 'text-amber-600'], ['Hostel · Bed A-14', '₹55,000', 'DUE', 'text-red-600'], ['Year 1 · Course Fee', '₹0', 'PAID', 'text-green-600']].map(([n, a, s, c]) => (
-          <div key={n as string} className="flex items-center justify-between bg-white rounded-xl border border-gray-200 px-3 py-2.5">
-            <div><div className="text-[12px] font-medium text-gray-700">{n}</div><div className={`text-[10px] font-semibold ${c}`}>{s}</div></div>
-            <div className="text-[12px] font-bold text-gray-800 tabular-nums">{a}</div>
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Accounting · Day book"
+      nav={NAV}
+      active="accounting"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label="auto-posting" />}
+    >
+      <div className="grid grid-cols-[1fr_1.2fr] gap-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-2 block text-[11px] font-bold text-gray-800">
+            Receipt RC-00{4218 + (t % 9)}
+          </span>
+          {[
+            ['Student', 'A. Mohanty'],
+            ['Head', 'Tuition · Year 2'],
+            ['Mode', 'UPI'],
+          ].map(([k, v]) => (
+            <div key={k} className="flex justify-between border-b border-gray-50 py-1 text-[10px] last:border-0">
+              <span className="text-gray-500">{k}</span>
+              <span className="font-medium text-gray-800">{v}</span>
+            </div>
+          ))}
+          <div className="mt-2 flex justify-between border-t border-gray-200 pt-1.5 text-[11px] font-bold text-gray-900">
+            <span>Amount</span>
+            <Live value={inr(amount)} />
           </div>
-        ))}
+          <div className="mt-2 flex items-center gap-1 text-[9px] font-semibold text-emerald-700">
+            <CheckCircle2 size={10} /> Approved · posted
+          </div>
+        </div>
+
+        <motion.div
+          key={amount}
+          initial={mounted ? { opacity: 0, y: 6 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="rounded-xl border border-gray-200 bg-white p-2.5"
+        >
+          <span className="mb-2 block text-[11px] font-bold text-gray-800">
+            Journal entry · auto
+          </span>
+          <div className="grid grid-cols-[1.6fr_0.8fr_0.8fr] border-b border-gray-100 pb-1 text-[9px] font-semibold uppercase text-gray-400">
+            <span>Account</span>
+            <span className="text-right">Debit</span>
+            <span className="text-right">Credit</span>
+          </div>
+          {[
+            ['Bank · UPI', inr(amount), ''],
+            ['Tuition income', '', inr(amount)],
+          ].map(([acc, dr, cr]) => (
+            <div key={acc} className="grid grid-cols-[1.6fr_0.8fr_0.8fr] border-b border-gray-50 py-1.5 text-[10px]">
+              <span className="truncate text-gray-700">{acc}</span>
+              <span className="mono-num text-right text-gray-800">{dr}</span>
+              <span className="mono-num text-right text-gray-800">{cr}</span>
+            </div>
+          ))}
+          <div className="mt-1.5 flex items-center justify-between text-[10px] font-bold text-gray-900">
+            <span>Balanced</span>
+            <span className="flex items-center gap-1 text-emerald-700">
+              <CheckCircle2 size={11} /> Dr = Cr
+            </span>
+          </div>
+          <p className="mt-2 text-[9px] text-gray-400">
+            Trial balance and P&amp;L update with it.
+          </p>
+        </motion.div>
       </div>
-      <div className="p-4"><div className="bg-indigo-600 text-white text-center text-[13px] font-bold rounded-xl py-3">Pay ₹70,000 online</div></div>
+    </MockShell>
+  );
+}
+
+/* ====================================================== phone — parent app */
+
+export function PhonePortalMock() {
+  const [ref, t] = useLiveTick(2400);
+  const mounted = useMounted();
+  const due = Math.max(0, 24500 - (t % 5) * 6125);
+  const paid = 24500 - due;
+
+  return (
+    <div ref={ref} aria-hidden="true" className="bg-gray-50">
+      <StatusBar />
+      <div className="flex items-center justify-between bg-white px-4 pb-2">
+        <span className="text-xs font-extrabold text-gray-800">Parent portal</span>
+        <span
+          className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+          style={{ background: TINT, color: ACCENT }}
+        >
+          A. Mohanty
+        </span>
+      </div>
+
+      <div className="h-[340px] space-y-2.5 overflow-hidden p-3">
+        <div className="rounded-2xl p-3.5 text-white" style={{ background: ACCENT }}>
+          <div className="text-[10px] font-semibold uppercase tracking-wide text-white/70">
+            Fees due
+          </div>
+          <Live value={inr(due)} className="block text-2xl font-extrabold" />
+          <div className="mt-1 text-[10px] text-white/80">
+            B.Pharm · Year 2 · Science College
+          </div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25">
+            <motion.span
+              className="block h-full rounded-full bg-white"
+              animate={{ width: `${(paid / 24500) * 100}%` }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </div>
+        </div>
+
+        <button
+          type="button"
+          tabIndex={-1}
+          className="w-full rounded-xl py-2.5 text-xs font-bold text-white"
+          style={{ background: '#16a34a' }}
+        >
+          Pay now · {inr(due)}
+        </button>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-1.5 block text-[11px] font-bold text-gray-800">Recent receipts</span>
+          {[
+            ['RC-004218', 'Tuition', 6125],
+            ['RC-004201', 'Transport', 4200],
+            ['RC-004177', 'Hostel', 8000],
+          ].map(([no, head, amt], i) => (
+            <motion.div
+              key={no as string}
+              initial={mounted ? { opacity: 0, y: -4 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.28, delay: i * 0.04 }}
+              className="flex items-center justify-between border-b border-gray-50 py-1.5 text-[10px] last:border-0"
+            >
+              <span className="min-w-0">
+                <span className="block truncate font-medium text-gray-700">{head as string}</span>
+                <span className="mono-num block text-[9px] text-gray-400">{no as string}</span>
+              </span>
+              <span className="mono-num font-semibold text-gray-800">{inr(amt as number)}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-3 gap-1.5">
+          {[
+            [Users, 'Attendance'],
+            [BookOpen, 'Results'],
+            [Clock, 'Leave'],
+          ].map(([Icon, label]) => {
+            const I = Icon as typeof Users;
+            return (
+              <div
+                key={label as string}
+                className="rounded-xl border border-gray-200 bg-white px-1.5 py-2 text-center"
+              >
+                <I size={13} className="mx-auto" style={{ color: ACCENT }} />
+                <span className="mt-1 block text-[9px] font-medium text-gray-600">
+                  {label as string}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

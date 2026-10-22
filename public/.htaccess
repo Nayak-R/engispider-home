@@ -1,0 +1,64 @@
+# Engispider — static export (Apache / Hostinger)
+#
+# Lives in public/ so every `npm run build` copies it into out/. Nothing
+# here rewrites URLs: `trailingSlash: true` means every page is a real
+# directory with an index.html, which Apache already serves via
+# DirectoryIndex. Adding rewrite rules on top of that is how static
+# exports usually get broken, so this file only sets the three things
+# Apache cannot infer.
+
+# ---------------------------------------------------------------- 404 ---
+# Without this a bad URL gets Apache's default page instead of the
+# branded one Next.js exported.
+ErrorDocument 404 /404.html
+
+# ------------------------------------------------------------ caching ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Next.js fingerprints everything under /_next/static/, so these can be
+  # cached permanently — a change ships under a new filename.
+  <FilesMatch "\.(js|css|woff2)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+  </FilesMatch>
+
+  # Images are not fingerprinted; a month is long enough to help and
+  # short enough that replacing a logo is not a support call.
+  ExpiresByType image/webp  "access plus 1 month"
+  ExpiresByType image/png   "access plus 1 month"
+  ExpiresByType image/jpeg  "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+
+  # HTML must revalidate or a deploy is invisible to anyone who has
+  # already visited.
+  ExpiresByType text/html "access plus 0 seconds"
+
+  # robots.txt, sitemap.xml and the llms.txt family: short, so a crawler
+  # that caches them still picks up a change within the day.
+  ExpiresByType text/plain "access plus 1 hour"
+  ExpiresByType application/xml "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ---------------------------------------------------------- compression ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# ------------------------------------------------------------ mime types ---
+# Some shared hosts do not know these, and a wrong Content-Type on
+# llms.txt or a font is a silent failure.
+<IfModule mod_mime.c>
+  AddType text/plain .txt
+  AddType application/xml .xml
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>

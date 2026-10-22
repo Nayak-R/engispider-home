@@ -23,7 +23,7 @@ export default function CRMLayout({ children }: { children: React.ReactNode }) {
       <BreadcrumbJsonLd
         trail={[
           { name: 'Solutions', path: '/solutions' },
-          { name: 'CRM System', path: '/solutions/crm' },
+          { name: 'Engispider CRM', path: '/solutions/crm' },
         ]}
       />
       {children}

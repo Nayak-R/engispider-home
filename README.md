@@ -6,13 +6,25 @@ Modern, SEO-optimized website for Engispider Infotech built with Next.js 16, Tai
 
 - Modern, responsive design with premium animations
 - SEO-optimized with meta tags, structured data, and sitemap
-- Dedicated pages for all products/solutions:
-  - HRMS Software India
-  - CRM System for Businesses
-  - Inventory Manager Software
-  - Pharmacy Manager System
-  - Restaurant Manager Software
-  - Business Software Solutions
+- Dedicated pages for all fourteen products:
+  - Engispider Restro — restaurant management & POS
+  - Engispider Campus — school & college ERP
+  - Engispider HRMS — HR & payroll management
+  - Engispider CRM — customer relationship management
+  - Engispider Retail — retail POS & item master
+  - Engispider Inventory — stock & warehouse management
+  - Engispider Site Manager — multi-site inventory & asset management
+  - Engispider Pharmacy — pharmacy & medical store software
+  - Engispider LIMS — laboratory information management
+  - Engispider Clinic — clinic & practice management
+  - Engispider Comms — WhatsApp, SMS & email messaging API
+  - Engispider Face Attendance — face recognition attendance kiosk
+  - Engispider Monitoring — temperature & equipment monitoring
+  - Engispider Custom Software — bespoke development
+
+  The catalogue lives in `data/products.ts`. Seven products render from the
+  shared template at `app/solutions/[slug]`; the rest still have hand-built
+  pages. Adding a product is a data edit.
 - About, Services, and Contact pages
 - Static export ready for Hostinger deployment
 - Framer Motion scroll animations
@@ -145,10 +157,14 @@ The website is optimized for the following keywords:
 - Website making agency
 - HRMS Software India / HRMS Solutions
 - CRM System for Businesses
-- Inventory Manager Software
-- Pharmacy Manager System
-- Restaurant Manager Software
+- Inventory Management Software
+- Pharmacy Software India / Medical Store Billing
+- Restaurant POS Software India
 - Business Software Solutions
+
+Search phrases stay generic here on purpose — they are what a buyer types,
+which is rarely a brand they have not met yet. Product names lead the second
+half of a title, not the first.
 
 All pages include:
 - Meta descriptions

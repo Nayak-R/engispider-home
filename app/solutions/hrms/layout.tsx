@@ -26,7 +26,7 @@ export default function HRMSLayout({ children }: { children: React.ReactNode }) 
       <BreadcrumbJsonLd
         trail={[
           { name: 'Solutions', path: '/solutions' },
-          { name: 'HRMS Software', path: '/solutions/hrms' },
+          { name: 'Engispider HRMS', path: '/solutions/hrms' },
         ]}
       />
       {children}

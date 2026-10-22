@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { PRODUCTS } from '@/data/products';
 
 /**
  * Static, client-side search index. Each entry is one indexable destination on
@@ -20,69 +21,59 @@ interface SearchEntry {
   keywords: string;
 }
 
+/**
+ * Query terms a buyer might use that are not in the product's own name,
+ * tagline or category — the words people type instead of the words we print.
+ */
+const PRODUCT_TERMS: Record<string, string> = {
+  restro360: 'restaurant cafe cloud kitchen kot qr ordering menu food dining takeaway',
+  campus360:
+    'school college student fees online fee payment admission examination hostel transport library education academic institute',
+  hrms: 'hr human resource payroll salary attendance leave employee onboarding recruitment',
+  crm: 'lead sales pipeline marketing deals follow up contacts calls',
+  retail360: 'shop store billing catalogue barcode apparel grocery electronics chain',
+  inventory: 'stock warehouse purchase order supplier barcode reorder godown',
+  'site-manager':
+    'construction project plant grn issue transfer gate pass asset custody material',
+  pharmacy: 'medical store batch expiry drug medicine chemist prescription',
+  lims: 'laboratory sample testing calibration work order job card equipment test report nabl',
+  clinic: 'opd doctor appointment patient practice records consultation',
+  whatsapp: 'notification template delivery otp bulk gateway transactional integration',
+  'face-recognition':
+    'biometric kiosk liveness touchless staff punch in out fingerprint alternative',
+  monitoring: 'cold storage cold chain boiler alarm iot sensor data logger temperature',
+  business: 'erp enterprise bespoke integration migration dashboard internal tool',
+};
+
+/**
+ * Products come from the catalogue, pages are listed.
+ *
+ * The product half used to be written out here by hand, which meant it held
+ * names that were a rename behind the rest of the site AND had no entry at
+ * all for seven of the fourteen products — a search for "LIMS" or "retail"
+ * returned nothing for pages that exist. Derived, it cannot drift again.
+ */
 const INDEX: SearchEntry[] = [
+  ...PRODUCTS.map((p) => ({
+    title: p.name,
+    description: p.tagline,
+    href: p.href,
+    category: 'Product',
+    keywords: `${p.category} ${PRODUCT_TERMS[p.slug] ?? ''}`.toLowerCase(),
+  })),
   {
-    title: 'School & College ERP',
-    description: 'Admissions, fees, accounting, online fee payment, exams, hostel, transport, library and payroll for schools and colleges.',
-    href: '/solutions/education',
-    category: 'Solution',
-    keywords: 'school management software college erp student fees online fee payment admission examination hostel transport library education campus academic',
-  },
-  {
-    title: 'HRMS Software',
-    description: 'Workforce management, payroll, attendance, leave and employee self-service.',
-    href: '/solutions/hrms',
-    category: 'Solution',
-    keywords: 'hr human resource payroll salary attendance leave employee onboarding hrms',
-  },
-  {
-    title: 'CRM System',
-    description: 'Manage leads, sales pipelines and customer relationships to grow revenue.',
-    href: '/solutions/crm',
-    category: 'Solution',
-    keywords: 'crm customer relationship sales leads pipeline marketing deals',
-  },
-  {
-    title: 'Inventory Manager',
-    description: 'Smart stock control, warehouses, purchase orders and low-stock alerts.',
-    href: '/solutions/inventory',
-    category: 'Solution',
-    keywords: 'inventory stock warehouse purchase order supplier barcode',
-  },
-  {
-    title: 'Pharmacy Manager',
-    description: 'Pharmacy billing, batch & expiry tracking and medical store management.',
-    href: '/solutions/pharmacy',
-    category: 'Solution',
-    keywords: 'pharmacy medical store billing batch expiry drug medicine pos',
-  },
-  {
-    title: 'Restro360 — Restaurant Management',
-    description: 'POS, QR ordering, kitchen display, inventory, recipes, P&L and loyalty.',
-    href: '/solutions/restaurant',
-    category: 'Solution',
-    keywords: 'restaurant pos restro360 cafe cloud kitchen kot billing qr ordering menu food',
-  },
-  {
-    title: 'Restro360 Training Guide',
+    title: 'Engispider Restro Training Guide',
     description: 'Step-by-step guide to using the restaurant app — for staff and owners.',
     href: '/solutions/restaurant/guide',
     category: 'Guide',
-    keywords: 'restaurant guide training manual how to use restro360 pos kot',
+    keywords: 'restaurant guide training manual how to use pos kot',
   },
   {
-    title: 'Business Solutions',
-    description: 'Custom ERP and business management software tailored to your operations.',
-    href: '/solutions/business',
-    category: 'Solution',
-    keywords: 'erp business custom software enterprise management',
-  },
-  {
-    title: 'All Solutions',
-    description: 'Explore every industry solution Engispider builds.',
+    title: 'All Products',
+    description: 'Every product Engispider builds, plus custom software.',
     href: '/solutions',
     category: 'Page',
-    keywords: 'solutions products software industries',
+    keywords: 'solutions products software industries catalogue',
   },
   {
     title: 'Services',
@@ -92,11 +83,25 @@ const INDEX: SearchEntry[] = [
     keywords: 'services web development mobile app cloud api design custom software',
   },
   {
+    title: 'Customers',
+    description: 'The organisations running Engispider software today.',
+    href: '/customers',
+    category: 'Page',
+    keywords: 'customers clients references who uses case study',
+  },
+  {
+    title: 'FAQ',
+    description: 'Pricing, demos, data migration, deployment time and support, answered.',
+    href: '/faq',
+    category: 'Page',
+    keywords: 'faq questions pricing cost demo migration support deployment time',
+  },
+  {
     title: 'About Us',
     description: 'Who we are — a software company in Bhubaneswar building business software.',
     href: '/about',
     category: 'Page',
-    keywords: 'about company team bhubaneswar engispider story',
+    keywords: 'about company team bhubaneswar engispider story iso certified',
   },
   {
     title: 'Contact',
@@ -125,8 +130,14 @@ export default function SearchClient() {
   const initialQ = searchParams.get('q') || '';
   const [query, setQuery] = useState(initialQ);
 
-  // Keep the input in sync when arriving via ?q= (e.g. Google sitelinks search).
+  /*
+   * Keep the input in sync when arriving via ?q= — a Google sitelinks
+   * search, a shared link, or the back button. The field has to stay
+   * editable, so the URL cannot simply be the source of truth; this is a
+   * one-way sync from an external store into local state.
+   */
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setQuery(searchParams.get('q') || '');
   }, [searchParams]);
 
@@ -146,75 +157,93 @@ export default function SearchClient() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <>
       <Header />
 
-      <section className="pt-32 pb-20 max-w-4xl mx-auto w-full">
-        <h1 className="text-4xl md:text-5xl font-bold mb-3">
-          Search<span className="text-indigo-400">.</span>
-        </h1>
-        <p className="text-gray-400 mb-8">Find solutions, services and resources across Engispider.</p>
+      <main id="main" className="section pt-28 md:pt-32">
+        <div className="container-page">
+          <div className="mx-auto max-w-3xl">
+            <p className="marker mono">Search</p>
+            <h1 className="display mt-5 text-f-6xl">Find it.</h1>
+            <p className="mt-6 max-w-xl text-f-lg leading-relaxed text-body">
+              Every product, service and page on this site — fourteen systems
+              and everything around them.
+            </p>
 
-        <form onSubmit={onSubmit} className="relative mb-10">
-          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            autoFocus
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Try “restaurant POS”, “payroll”, “inventory”…"
-            className="w-full pl-12 pr-28 py-4 rounded-2xl bg-white/5 border border-white/15 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/30 transition"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 font-semibold hover:scale-105 transition-transform"
-          >
-            Search
-          </button>
-        </form>
+            <form onSubmit={onSubmit} className="relative mt-10">
+              <SearchIcon
+                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-faint"
+                aria-hidden
+              />
+              <label htmlFor="site-search" className="sr-only">
+                Search Engispider
+              </label>
+              <input
+                id="site-search"
+                autoFocus
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Try “restaurant POS”, “payroll”, “LIMS”…"
+                className="w-full rounded-lg border border-hairline bg-canvas py-4 pl-11 pr-28 text-f-xs text-ink outline-none transition-colors placeholder:text-faint focus:border-accent-400 focus:ring-2 focus:ring-accent-200"
+              />
+              <button
+                type="submit"
+                className="btn btn-primary absolute right-2 top-1/2 h-10 -translate-y-1/2 px-5"
+              >
+                Search
+              </button>
+            </form>
 
-        <p className="text-sm text-gray-500 mb-5">
-          {query.trim()
-            ? `${results.length} result${results.length === 1 ? '' : 's'} for “${query.trim()}”`
-            : `Showing all ${results.length} destinations`}
-        </p>
+            <p className="mono mt-6 text-faint" aria-live="polite">
+              {query.trim()
+                ? `${results.length} result${results.length === 1 ? '' : 's'} for “${query.trim()}”`
+                : `All ${results.length} destinations`}
+            </p>
 
-        <div className="space-y-3">
-          {results.map((r) => (
-            <Link
-              key={r.href}
-              href={r.href}
-              className="group block p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-indigo-400/50 hover:bg-white/[0.06] transition-all"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <span className="text-xs uppercase tracking-wide text-indigo-300/80">{r.category}</span>
-                  <h2 className="text-lg font-semibold mt-1 group-hover:text-indigo-300 transition-colors">
-                    {r.title}
-                  </h2>
-                  <p className="text-gray-400 text-sm mt-1">{r.description}</p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-indigo-300 group-hover:translate-x-1 transition-all shrink-0" />
+            <ul className="mt-6 overflow-hidden rounded-lg border border-hairline">
+              {results.map((r) => (
+                <li key={r.href} className="border-b border-hairline last:border-0">
+                  <Link
+                    href={r.href}
+                    className="group flex items-center justify-between gap-4 p-5 transition-colors hover:bg-accent-50"
+                  >
+                    <span className="min-w-0">
+                      <span className="mono block text-accent-700">{r.category}</span>
+                      <span className="mt-1.5 block font-display text-f-lg font-bold text-ink transition-colors group-hover:text-accent-ink">
+                        {r.title}
+                      </span>
+                      <span className="mt-1 block text-f-xs leading-relaxed text-body">
+                        {r.description}
+                      </span>
+                    </span>
+                    <ArrowRight
+                      className="h-5 w-5 shrink-0 text-hairline-strong transition-all group-hover:translate-x-1 group-hover:text-accent-700"
+                      aria-hidden
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {results.length === 0 && (
+              <div className="rounded-lg border border-hairline bg-band p-10 text-center">
+                <p className="font-display text-f-lg font-bold text-ink">
+                  Nothing matches “{query.trim()}”.
+                </p>
+                <p className="mt-2 text-f-xs leading-relaxed text-body">
+                  Try a broader term, or tell us what you are looking for.
+                </p>
+                <Link href="/contact" className="link-arrow mt-6 justify-center">
+                  Contact us <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
-            </Link>
-          ))}
-
-          {results.length === 0 && (
-            <div className="text-center py-16 text-gray-400">
-              <p className="text-lg mb-2">No results for “{query.trim()}”.</p>
-              <p className="text-sm">
-                Try a broader term, or{' '}
-                <Link href="/contact" className="text-indigo-300 underline">
-                  contact us
-                </Link>{' '}
-                directly.
-              </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </section>
+      </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

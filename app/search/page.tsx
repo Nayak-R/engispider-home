@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+    <Suspense fallback={<div className="min-h-screen bg-canvas" />}>
       <SearchClient />
     </Suspense>
   );

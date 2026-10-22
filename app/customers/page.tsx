@@ -1,20 +1,26 @@
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { pageMetadata } from '@/lib/seo';
-import { ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import CustomersHero from '@/components/CustomersHero';
+import PageHero from '@/components/PageHero';
+import SectionBackdrop from '@/components/SectionBackdrop';
 import ClientLogoGrid from '@/components/ClientLogoGrid';
-import { CLIENTS } from '@/data/clients';
+import { Reveal, MaskText, CountUp } from '@/components/motion/Reveal';
 
-// Deliberately a server component: the only interactive part is the hero, which
-// is its own client component. That keeps this page light and — unlike the
-// 'use client' pages elsewhere in the app — lets it export real page metadata.
+import { CLIENTS } from '@/data/clients';
+import { COMPANY } from '@/data/company';
+import { INDUSTRIES } from '@/data/products';
+
+// Deliberately a server component: nothing here is interactive, so the
+// page costs no client JS beyond the reveal observer — and, unlike the
+// 'use client' pages elsewhere in the app, it can export real metadata.
 export const metadata = pageMetadata({
   title: 'Our Customers',
   description:
-    'The businesses and institutes we build software for — across education, healthcare, logistics, infrastructure and hospitality.',
+    'The businesses and institutes we build software for — across education, healthcare, logistics, infrastructure and hospitality. Named, with their own sites linked.',
   path: '/customers',
   keywords: [
     'Engispider customers',
@@ -24,65 +30,202 @@ export const metadata = pageMetadata({
   ],
 });
 
+/**
+ * Customers.
+ *
+ * The page's whole argument is that the list is short and real. Every
+ * organisation is named, every mark links to their own site, and the
+ * count is derived from data/clients.ts — so it can never become the
+ * "500+ clients" that used to sit on the About page.
+ *
+ * The previous version was black with a purple gradient CTA; the logo
+ * wall was the only part worth keeping, and it is unchanged.
+ */
 export default function CustomersPage() {
-  return (
-    <div className="min-h-screen overflow-x-hidden bg-black">
-      <BreadcrumbJsonLd trail={[{ name: 'Our Customers', path: '/customers' }]} />
+  const sectors = [...new Set(CLIENTS.map((c) => c.sector))];
 
+  return (
+    <>
+      <BreadcrumbJsonLd trail={[{ name: 'Our Customers', path: '/customers' }]} />
       <Header />
 
-      <CustomersHero />
+      <main id="main">
+        <PageHero
+          marker="Customers"
+          title="Every one of them, by name."
+          lede={`${CLIENTS.length} organisations run software we built. Not a logo wall of companies that once bought a licence — these are the people who ring us when something is wrong, and each mark below links to their own site so you can check.`}
+          cta={{ href: '/contact', label: 'Become the next one' }}
+          secondary={{ href: '/solutions', label: 'See the products' }}
+          spec={[
+            ['Customers', `${CLIENTS.length}, all named on this page`],
+            ['Sectors', sectors.length > 0 ? `${sectors.length} — education to hospitality` : '—'],
+            ['Support', COMPANY.hoursDisplay],
+          ]}
+        />
 
-      {/* The wall */}
-      <section className="bg-black py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
-              Who we work{' '}
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                with
-              </span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-gray-400">
-              Grouped by the sectors they work in. Names and marks belong to their respective
-              owners.
-            </p>
+        <Numbers sectors={sectors.length} />
+
+        <section className="section relative">
+          <SectionBackdrop side="right" tone="warm" />
+          <div className="container-page">
+            <div className="grid gap-8 lg:grid-cols-12">
+              <div className="lg:col-span-6">
+                <p className="marker mono">The list</p>
+                <MaskText as="h2" className="display mt-5 text-f-5xl">
+                  <>Who we work</>
+                  <>
+                    <span className="accent-word">with</span>.
+                  </>
+                </MaskText>
+              </div>
+              <div className="flex items-end lg:col-span-5 lg:col-start-8">
+                <Reveal delay={120}>
+                  <p className="text-body">
+                    Grouped by the sector they work in. Names and marks belong
+                    to their respective owners, and each one opens their site
+                    in a new tab.
+                  </p>
+                </Reveal>
+              </div>
+            </div>
+
+            <div className="mt-14">
+              <ClientLogoGrid clients={CLIENTS} detailed />
+            </div>
           </div>
+        </section>
 
-          <ClientLogoGrid clients={CLIENTS} detailed />
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black py-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-purple-900/25 via-transparent to-transparent" />
-
-        <div className="container relative z-10 mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white md:text-4xl">Ready to be the next one?</h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-400">
-            Tell us what you are trying to build. We will tell you honestly whether we are the
-            right team for it.
-          </p>
-
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg hover:shadow-blue-500/40"
-            >
-              Start a conversation
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/solutions"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-3.5 font-semibold text-white transition-all hover:border-blue-400/60 hover:bg-white/5"
-            >
-              Explore our solutions
-            </Link>
-          </div>
-        </div>
-      </section>
+        <Industries />
+        <Cta />
+      </main>
 
       <Footer />
-    </div>
+    </>
+  );
+}
+
+/* ================================================================= NUMBERS */
+
+function Numbers({ sectors }: { sectors: number }) {
+  return (
+    <section className="border-y border-hairline bg-band">
+      <div className="container-page">
+        <dl className="grid gap-x-10 gap-y-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { count: CLIENTS.length, label: 'organisations, all named' },
+            { count: sectors, label: 'sectors served' },
+            { value: 'Linked', label: 'every mark goes to their site' },
+            { value: 'No logos', label: 'we have not earned' },
+          ].map((item, i) => (
+            <Reveal key={item.label} delay={i * 70} className="relative">
+              <span
+                aria-hidden
+                className="absolute -left-5 top-1/2 hidden h-10 w-px -translate-y-1/2 bg-hairline lg:block"
+              />
+              <dt className="font-display text-f-2xl font-extrabold leading-none text-ink">
+                {item.count !== undefined ? <CountUp value={item.count} duration={1100} /> : item.value}
+              </dt>
+              <dd className="mono mt-2.5 text-faint">{item.label}</dd>
+            </Reveal>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================== INDUSTRIES */
+
+/** What each sector actually runs — so the list is useful, not decorative. */
+function Industries() {
+  return (
+    <section className="section relative border-t border-hairline">
+      <SectionBackdrop side="left" tone="cool" />
+      <div className="container-page">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="marker mono">By industry</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>And what each</>
+              <>
+                of them <span className="accent-word">runs</span>.
+              </>
+            </MaskText>
+          </div>
+          <div className="flex items-end lg:col-span-5 lg:col-start-8">
+            <Reveal delay={120}>
+              <p className="text-body">
+                Each line names the product that serves it, so the claim is
+                something you can open and read rather than a stock industry
+                list.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        <ul className="mt-14 border-t border-hairline">
+          {INDUSTRIES.map((industry, i) => (
+            <Reveal as="li" key={industry.name} delay={Math.min(i, 5) * 50}>
+              <Link
+                href={industry.href}
+                className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 border-b border-hairline py-4 transition-colors hover:bg-accent-50 md:grid-cols-[4rem_minmax(0,22rem)_minmax(0,1fr)_2rem] md:gap-x-6 md:py-5"
+              >
+                <span className="mono text-faint transition-colors group-hover:text-accent-700">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="font-display text-f-lg font-bold tracking-tight text-ink transition-colors group-hover:text-accent-ink md:text-f-xl">
+                  {industry.name}
+                </span>
+                <span className="col-start-2 text-f-xs text-muted md:col-start-3">
+                  {industry.product}
+                </span>
+                <ArrowRight
+                  className="col-start-3 row-start-1 h-4 w-4 self-center text-hairline-strong transition-colors group-hover:text-accent-700 md:col-start-4"
+                  aria-hidden
+                />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ===================================================================== CTA */
+
+function Cta() {
+  return (
+    <section className="bg-accent-500">
+      <div className="container-page">
+        <div className="grid items-center gap-8 py-16 lg:grid-cols-12 lg:py-20">
+          <div className="lg:col-span-7">
+            <MaskText as="h2" className="display text-f-6xl text-ink">
+              <>Ready to be</>
+              <>the next one?</>
+            </MaskText>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={120}>
+              <p className="text-[1.02rem] leading-relaxed text-ink/80">
+                Tell us what you are trying to build. We will tell you
+                honestly whether we are the right team for it.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/contact" className="btn btn-ink">
+                  Start a conversation <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a
+                  href={`tel:${COMPANY.contact.sales.tel}`}
+                  className="btn border border-ink/25 text-ink hover:border-ink"
+                >
+                  {COMPANY.contact.sales.display}
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

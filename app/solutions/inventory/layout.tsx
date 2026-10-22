@@ -2,12 +2,12 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'Inventory Manager | Stock Management System',
+  title: 'Inventory Management Software | Stock Control',
   description:
     'Inventory management software with real-time stock tracking, barcode scanning and multi-warehouse support for businesses across India.',
   path: '/solutions/inventory',
   keywords: [
-    'Inventory Manager Software',
+    'Inventory Management Software',
     'Stock Management System',
     'Inventory Tracking',
     'Warehouse Management',
@@ -21,7 +21,7 @@ export default function InventoryLayout({ children }: { children: React.ReactNod
       <BreadcrumbJsonLd
         trail={[
           { name: 'Solutions', path: '/solutions' },
-          { name: 'Inventory Manager', path: '/solutions/inventory' },
+          { name: 'Engispider Inventory', path: '/solutions/inventory' },
         ]}
       />
       {children}

@@ -1,14 +1,14 @@
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'Restaurant Manager | POS System India',
+  title: 'Restaurant POS Software India | Engispider Restro',
   description:
-    'Restro360 is restaurant management software with POS, table booking, KOT, billing and inventory — built for Indian restaurants and cafes.',
+    'Engispider Restro is restaurant management software with POS, table booking, KOT, billing and inventory — built for Indian restaurants and cafes.',
   path: '/solutions/restaurant',
   // /solutions/restaurant/guide sits below this one and needs the suffix too.
   childTitleTemplate: '%s | Engispider',
   keywords: [
-    'Restaurant Manager Software',
+    'Restaurant Management Software',
     'Restaurant POS System',
     'KOT Software',
     'Restaurant Billing',

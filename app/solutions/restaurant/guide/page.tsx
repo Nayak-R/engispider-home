@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -10,7 +11,7 @@ import {
 } from 'lucide-react';
 
 type Feature = { id: string; name: string; roles: string[]; what: string; steps: string[]; tips?: string[] };
-type Section = { id: string; title: string; Icon: any; intro: string; features: Feature[] };
+type Section = { id: string; title: string; Icon: LucideIcon; intro: string; features: Feature[] };
 
 const SECTIONS: Section[] = [
   {
@@ -213,11 +214,11 @@ export default function GuidePage() {
       <section className="pt-32 pb-10 bg-gradient-to-b from-amber-50 to-white border-b border-gray-100 print:pt-6">
         <div className="container mx-auto px-4">
           <Link href="/solutions/restaurant" className="inline-flex items-center gap-1.5 text-sm text-amber-600 font-medium mb-4 print:hidden">
-            <ArrowLeft className="w-4 h-4" /> Back to Restro360
+            <ArrowLeft className="w-4 h-4" /> Back to Engispider Restro
           </Link>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900">Restro360 — Training Guide</h1>
+              <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900">Engispider Restro — Training Guide</h1>
               <p className="text-gray-600 mt-3 max-w-2xl">A simple, step-by-step guide to every feature. Share it with your team — each section says what the feature is, who uses it, and exactly how to use it.</p>
             </div>
             <button onClick={() => window.print()} className="inline-flex items-center gap-2 bg-amber-500 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-amber-600 transition-colors print:hidden">

@@ -1,346 +1,409 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight, Check, Clock, Mail, MapPin, Phone, Loader2 } from 'lucide-react';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ContactIllustration from '@/components/svg/ContactIllustration';
+import PageHero from '@/components/PageHero';
+import SectionBackdrop from '@/components/SectionBackdrop';
+import { Reveal, MaskText } from '@/components/motion/Reveal';
 import { submitContact } from '@/lib/contactApi';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaShoppingBag, FaQuestionCircle, FaHeadset, FaClock } from 'react-icons/fa';
+import { COMPANY } from '@/data/company';
+import { PRODUCTS } from '@/data/products';
+
+/**
+ * Contact.
+ *
+ * The form posts to the live CRM public endpoint (lib/contactApi) with the
+ * same field mapping as before — name, email, mobile, company, message.
+ * That part is untouched on purpose: it is wired to a real inbox.
+ *
+ * ── What changed ─────────────────────────────────────────────────────────
+ *  · Light, in the site's own type, with the shared hero.
+ *  · No `alert()`. Success and failure are rendered inline, where the
+ *    person is already looking, and the form keeps what they typed when a
+ *    send fails — the old version threw a browser dialog and, on error,
+ *    left them re-reading a modal instead of their own words.
+ *  · A real submitting state. The button was previously clickable during
+ *    the request, so a slow network produced duplicate enquiries.
+ *  · Labels are real <label> elements tied to inputs, and the status
+ *    message is a live region, so a screen reader is told what happened.
+ */
+
+type Status =
+  | { kind: 'idle' }
+  | { kind: 'sending' }
+  | { kind: 'sent'; message: string }
+  | { kind: 'error'; message: string };
+
+const EMPTY = { name: '', email: '', phone: '', company: '', message: '' };
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    message: ''
-  });
+  const [form, setForm] = useState(EMPTY);
+  const [status, setStatus] = useState<Status>({ kind: 'idle' });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (status.kind === 'sending') return;
+    setStatus({ kind: 'sending' });
+
     try {
       const res = await submitContact({
-        name: formData.name,
-        email: formData.email,
-        mobile: formData.phone,
-        company: formData.company,
-        message: formData.message,
+        name: form.name,
+        email: form.email,
+        mobile: form.phone,
+        company: form.company,
+        message: form.message,
       });
-      alert(res.message || 'Thank you for your message! We will get back to you soon.');
-      setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+      setStatus({
+        kind: 'sent',
+        message: res?.message || 'Thanks — your message is with us. We usually reply within one working day.',
+      });
+      // Only clear on success. A failed send must not eat what they wrote.
+      setForm(EMPTY);
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Could not send your message. Please try again.');
+      setStatus({
+        kind: 'error',
+        message:
+          err instanceof Error
+            ? err.message
+            : 'Could not send your message. Please try again, or call us on the number below.',
+      });
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const contactMethods = [
-    {
-      icon: FaShoppingBag,
-      title: 'Sales',
-      description: 'For new projects and business inquiries',
-      phone: '+91 95833 15151',
-      phoneLink: 'tel:+919583315151',
-      email: 'accounts@engispider.com',
-      emailLink: 'mailto:accounts@engispider.com',
-      color: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: FaQuestionCircle,
-      title: 'Inquiry',
-      description: 'General questions and information',
-      phone: '+91 95833 15151',
-      phoneLink: 'tel:+919583315151',
-      email: 'info@engispider.com',
-      emailLink: 'mailto:info@engispider.com',
-      color: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: FaHeadset,
-      title: 'Support',
-      description: 'Technical assistance and help',
-      phone: '+91 73777 99937',
-      phoneLink: 'tel:+917377799937',
-      email: 'support@engispider.com',
-      emailLink: 'mailto:support@engispider.com',
-      color: 'from-green-500 to-emerald-500'
-    }
-  ];
+  }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-black">
+    <>
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black pt-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-900/20 via-transparent to-transparent"></div>
+      <main id="main">
+        <PageHero
+          marker="Contact"
+          title="Tell us what breaks."
+          lede="A guided demo on a live system using your own scenarios, or a scoping conversation if none of the products fit. Either way you will speak to someone who builds the software, not a call centre."
+          spec={[
+            ['Response', 'Usually within one working day'],
+            ['Demo', 'Usually within two working days'],
+            ['Hours', COMPANY.hoursDisplay],
+          ]}
+        />
 
-        <div className="container mx-auto px-4 z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="min-w-0 text-left lg:pl-12 px-4 py-10"
-            >
-              {/* <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-block mb-6 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mt-16"
-              >
-                <span className="text-green-400 text-sm font-semibold">Contact Us</span>
-              </motion.div> */}
+        <section className="section relative">
+          <SectionBackdrop side="right" tone="warm" />
+          <div className="container-page">
+            <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+              {/* ------------------------------------------------ form --- */}
+              <div className="lg:col-span-7">
+                <p className="marker mono">Send a message</p>
+                <MaskText as="h2" className="display mt-5 text-f-4xl">
+                  <>Start a</>
+                  <>
+                    <span className="accent-word">conversation</span>.
+                  </>
+                </MaskText>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 break-words bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
-                Let's Start a Conversation
-              </h1>
+                <Reveal delay={120}>
+                  <form onSubmit={onSubmit} className="mt-10 space-y-5" noValidate={false}>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <Field
+                        label="Your name"
+                        name="name"
+                        value={form.name}
+                        onChange={change}
+                        placeholder="Rahul Nayak"
+                        required
+                        autoComplete="name"
+                      />
+                      <Field
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={form.email}
+                        onChange={change}
+                        placeholder="you@company.com"
+                        required
+                        autoComplete="email"
+                      />
+                      <Field
+                        label="Phone"
+                        name="phone"
+                        type="tel"
+                        value={form.phone}
+                        onChange={change}
+                        placeholder="+91 00000 00000"
+                        autoComplete="tel"
+                      />
+                      <Field
+                        label="Organisation"
+                        name="company"
+                        value={form.company}
+                        onChange={change}
+                        placeholder="Your restaurant, college or company"
+                        autoComplete="organization"
+                      />
+                    </div>
 
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                Have a project in mind? We'd love to hear from you. <span className="text-green-400 font-semibold">Get in touch</span> with our team
-              </p>
-
-              <div className="flex flex-wrap gap-4 mt-8 mb-16">
-                {[
-                  { icon: FaClock, text: 'Quick Response' },
-                  { icon: FaHeadset, text: '24/7 Support' },
-                  { icon: FaMapMarkerAlt, text: 'Bhubaneswar, India' }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + index * 0.1 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-gray-300"
-                  >
-                    <item.icon className="w-4 h-4 text-green-400" />
-                    <span className="text-sm">{item.text}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-[500px]"
-            >
-              <ContactIllustration />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Methods Section */}
-      <section className="py-32 px-4 bg-white">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Get in <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Touch</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose the best way to reach us based on your needs
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {contactMethods.map((method, index) => (
-              <motion.div
-                key={method.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-                className="group"
-              >
-                <div className="relative p-8 bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl hover:border-gray-300 hover:shadow-2xl transition-all h-full">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br ${method.color} rounded-xl`}>
-                    <method.icon className="w-8 h-8 text-white" />
-                  </div>
-
-                  <h3 className="text-2xl font-bold mb-3 text-gray-900">{method.title}</h3>
-                  <p className="text-gray-600 mb-6">{method.description}</p>
-
-                  <div className="space-y-4">
-                    <a href={method.phoneLink} className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors">
-                      <FaPhone className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium">{method.phone}</span>
-                    </a>
-
-                    <a href={method.emailLink} className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors break-all">
-                      <FaEnvelope className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium">{method.email}</span>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Contact Form and Info */}
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl font-bold mb-6 text-gray-900">Visit Our Office</h3>
-              <p className="text-lg text-gray-600 mb-8">
-                We're located in the heart of Bhubaneswar, Odisha. Feel free to visit us or schedule a meeting.
-              </p>
-
-              <div className="space-y-6 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                    <FaMapMarkerAlt className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Address</h4>
-                    <p className="text-gray-600">Bhubaneswar, Odisha, India</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                    <FaPhone className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Phone</h4>
-                    <p className="text-gray-600">Sales: +91 95833 15151</p>
-                    <p className="text-gray-600">Support: +91 73777 99937</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                    <FaEnvelope className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                    <p className="text-gray-600">info@engispider.com</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <form onSubmit={handleSubmit} className="p-8 bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl shadow-xl">
-                <h3 className="text-2xl font-bold mb-6 text-gray-900">Send us a Message</h3>
-
-                <div className="space-y-5">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white text-gray-900"
-                      placeholder="John Doe"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white text-gray-900"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white text-gray-900"
-                      placeholder="+91 XXXXX XXXXX"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white text-gray-900"
-                      placeholder="Your Company"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Your Message *
-                    </label>
-                    <textarea
-                      id="message"
+                    <Field
+                      label="What are you trying to solve?"
                       name="message"
-                      value={formData.message}
-                      onChange={handleChange}
+                      value={form.message}
+                      onChange={change}
+                      placeholder="What you run today, and what goes wrong with it."
                       required
-                      rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none bg-white text-gray-900"
-                      placeholder="Tell us about your project..."
+                      textarea
                     />
-                  </div>
 
-                  <button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg"
-                  >
-                    <FaPaperPlane />
-                    Send Message
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <button
+                        type="submit"
+                        disabled={status.kind === 'sending'}
+                        className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-70"
+                      >
+                        {status.kind === 'sending' ? (
+                          <>
+                            <Loader2 className="h-4 w-4 motion-safe:animate-spin" aria-hidden />
+                            Sending…
+                          </>
+                        ) : (
+                          <>
+                            Send message <ArrowRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </button>
+                      <p className="text-f-2xs text-muted">
+                        We reply from a real address. No newsletter, no list.
+                      </p>
+                    </div>
+
+                    {/*
+                      Announced to assistive tech the moment it appears,
+                      rather than thrown as a browser dialog the user has
+                      to dismiss before they can see their own form again.
+                    */}
+                    <div aria-live="polite">
+                      {status.kind === 'sent' && (
+                        <p className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4 text-f-xs leading-relaxed text-emerald-900">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
+                          {status.message}
+                        </p>
+                      )}
+                      {status.kind === 'error' && (
+                        <p className="rounded-lg border border-red-200 bg-red-50 px-5 py-4 text-f-xs leading-relaxed text-red-900">
+                          {status.message}
+                        </p>
+                      )}
+                    </div>
+                  </form>
+                </Reveal>
+              </div>
+
+              {/* --------------------------------------------- details --- */}
+              <div className="lg:col-span-4 lg:col-start-9">
+                <Reveal delay={160}>
+                  <div className="overflow-hidden rounded-lg border border-hairline">
+                    <Detail
+                      Icon={Phone}
+                      label="Sales"
+                      value={COMPANY.contact.sales.display}
+                      href={`tel:${COMPANY.contact.sales.tel}`}
+                    />
+                    <Detail
+                      Icon={Phone}
+                      label="Support"
+                      value={COMPANY.contact.support.display}
+                      href={`tel:${COMPANY.contact.support.tel}`}
+                    />
+                    <Detail
+                      Icon={Mail}
+                      label="Email"
+                      value={COMPANY.contact.email}
+                      href={`mailto:${COMPANY.contact.email}`}
+                    />
+                    <Detail
+                      Icon={MapPin}
+                      label="Office"
+                      value={`${COMPANY.address.locality}, ${COMPANY.address.region} ${COMPANY.address.postalCode}`}
+                    />
+                    <Detail Icon={Clock} label="Hours" value={COMPANY.hoursDisplay} last />
+                  </div>
+                </Reveal>
+
+                <Reveal delay={240}>
+                  <div className="mt-8 rounded-lg border border-accent-200 bg-accent-50 p-6">
+                    <p className="mono text-accent-700">Before you write</p>
+                    <p className="mt-3 text-f-xs leading-relaxed text-body">
+                      If you already know which product you want, say so and we
+                      will bring that demo. There are {PRODUCTS.length} of them.
+                    </p>
+                    <Link href="/solutions" className="link-arrow mt-5">
+                      Browse the catalogue <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        <Expect />
+      </main>
 
       <Footer />
+    </>
+  );
+}
+
+/* =================================================================== parts */
+
+function Field({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  type = 'text',
+  required = false,
+  textarea = false,
+  autoComplete,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  placeholder?: string;
+  type?: string;
+  required?: boolean;
+  textarea?: boolean;
+  autoComplete?: string;
+}) {
+  const id = `f-${name}`;
+  const cls =
+    'mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 text-f-xs text-ink outline-none transition-colors placeholder:text-faint focus:border-accent-400 focus:ring-2 focus:ring-accent-200';
+
+  return (
+    <div className={textarea ? '' : 'min-w-0'}>
+      <label htmlFor={id} className="mono block text-faint">
+        {label}
+        {required && <span className="text-accent-700"> *</span>}
+      </label>
+      {textarea ? (
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          rows={5}
+          className={`${cls} resize-y`}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          autoComplete={autoComplete}
+          className={cls}
+        />
+      )}
     </div>
+  );
+}
+
+function Detail({
+  Icon,
+  label,
+  value,
+  href,
+  last = false,
+}: {
+  Icon: typeof Phone;
+  label: string;
+  value: string;
+  href?: string;
+  last?: boolean;
+}) {
+  const inner = (
+    <span className="flex items-start gap-4">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-accent-600" aria-hidden />
+      <span className="min-w-0">
+        <span className="mono block text-faint">{label}</span>
+        <span className="mono-num mt-1 block break-words text-f-xs text-ink">{value}</span>
+      </span>
+    </span>
+  );
+
+  const cls = `block p-5 ${last ? '' : 'border-b border-hairline'}`;
+
+  return href ? (
+    <a href={href} className={`${cls} transition-colors hover:bg-accent-50`}>
+      {inner}
+    </a>
+  ) : (
+    <div className={cls}>{inner}</div>
+  );
+}
+
+/* ================================================================== EXPECT */
+
+function Expect() {
+  return (
+    <section className="section relative border-t border-hairline">
+      <SectionBackdrop side="left" tone="cool" />
+      <div className="container-page">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="marker mono">What happens next</p>
+            <MaskText as="h2" className="display mt-5 text-f-5xl">
+              <>No sales sequence.</>
+              <>
+                Just a <span className="accent-word">reply</span>.
+              </>
+            </MaskText>
+          </div>
+          <div className="flex items-end lg:col-span-5 lg:col-start-8">
+            <Reveal delay={120}>
+              <p className="text-body">
+                Your message reaches the people who build the software. You
+                will not be added to a list, and nobody will ring you four
+                times about a whitepaper.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        <ol className="mt-14 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline md:grid-cols-3">
+          {[
+            ['We read it', 'A person reads what you wrote and replies — usually within one working day.'],
+            ['We show you', 'A guided demo on a live system with your own scenarios, usually within two working days.'],
+            ['We scope it', 'If a product fits, we configure it. If none do, discovery ends with a scope and a fixed-price estimate.'],
+          ].map(([t, d], i) => (
+            <Reveal as="li" key={t} delay={i * 70} className="bg-canvas">
+              <div className="group relative h-full overflow-hidden p-7 transition-colors hover:bg-accent-50">
+                <span
+                  aria-hidden
+                  className="mono-num pointer-events-none absolute right-3 top-1 select-none font-display text-[4.5rem] font-extrabold leading-none text-hairline transition-colors group-hover:text-accent-200"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="relative">
+                  <h3 className="font-display text-f-lg font-bold text-ink">{t}</h3>
+                  <p className="mt-3 text-f-xs leading-relaxed text-body">{d}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </ol>
+      </div>
+    </section>
   );
 }

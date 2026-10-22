@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
         <h1 className="text-4xl font-bold text-gray-900 mb-8 pt-8">Privacy Policy</h1>
 
         <p className="text-gray-700 mb-6">
-          This privacy policy applies to the Restro360 app for mobile devices and web browsers, together with any related services operated by Engispider (collectively, the &quot;Application&quot;). Engispider is hereby referred to as the &quot;Service Provider&quot;.
+          This privacy policy applies to the Engispider Restro app for mobile devices and web browsers, together with any related services operated by Engispider (collectively, the &quot;Application&quot;). Engispider is hereby referred to as the &quot;Service Provider&quot;.
         </p>
 
         <Section title="Information Collection and Use">

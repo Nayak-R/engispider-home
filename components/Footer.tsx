@@ -1,376 +1,343 @@
 'use client';
 
 import Link from 'next/link';
-import { FaFacebookF, FaLinkedinIn, FaTwitter, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt, FaRocket, FaUsers, FaAward, FaCheckCircle } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import {
+  FaLinkedinIn,
+  FaInstagram,
+  FaYoutube,
+  FaThreads,
+  FaXTwitter,
+} from 'react-icons/fa6';
+import { COMPANY } from '@/data/company';
+import { PRODUCTS } from '@/data/products';
+
+/**
+ * Site footer.
+ *
+ * Built as a specification sheet rather than a link dump: four columns
+ * divided by vertical hairlines, monospace labels, tabular figures for the
+ * phone numbers, and the brand set once at full size as a closing signature.
+ *
+ * ── On a phone it is a different object ───────────────────────────────────
+ * The desktop layout collapsed into one 2,216px column — nearly three
+ * screens of footer, most of it a fourteen-item product list set one per
+ * line. Four changes, all of them scoped below lg:
+ *
+ *   · Products and Company run two-up. Halving the rows is what pays for
+ *     44px touch targets, so the lists got shorter AND more tappable.
+ *   · Each block carries a top hairline. The dividing rules are vertical
+ *     and `lg:` only, so stacked there was nothing separating the sections
+ *     at all and the four blocks read as one undifferentiated column.
+ *   · The two phone numbers and the email address become bordered cells.
+ *     They are the actions someone actually takes from a phone, and as bare
+ *     text lines they were the least tappable things on the page.
+ *   · The bottom bar reserves space for the scroll-to-top button, which was
+ *     sitting directly on top of the Privacy link.
+ *
+ * Corrections carried from the previous build:
+ *
+ *  1. Every social URL here was verified to resolve. The old footer linked
+ *     Facebook, LinkedIn and Twitter URLs that 404'd, and the same dead URLs
+ *     were duplicated into Organization.sameAs. (x.com is the one exception
+ *     — see the `x-handle` note in data/company.ts.)
+ *  2. Opening hours are stated and match openingHoursSpecification. The old
+ *     site advertised "24/7 Support" on four pages while its own markup said
+ *     Mon–Fri 09:00–18:00.
+ *  3. No stat band. The old one asserted 1000+ projects / 500+ clients / 99%
+ *     success beside a customers page listing fifteen.
+ */
+
+const SOCIAL_ICON = {
+  LinkedIn: FaLinkedinIn,
+  Instagram: FaInstagram,
+  YouTube: FaYoutube,
+  Threads: FaThreads,
+  X: FaXTwitter,
+} as const;
+
+const COMPANY_LINKS = [
+  { name: 'About', href: '/about' },
+  { name: 'Services', href: '/services' },
+  { name: 'All products', href: '/solutions' },
+  { name: 'Customers', href: '/customers' },
+  { name: 'FAQ', href: '/faq' },
+  { name: 'Contact', href: '/contact' },
+];
+
+/**
+ * Routes that already end in their own call to action. Stacking the footer's
+ * CTA under one of those gave two consecutive panels asking for the same
+ * thing in the same words.
+ */
+const PAGES_WITH_OWN_CTA = ['/', '/contact'];
+
+function ColumnLabel({ children }: { children: React.ReactNode }) {
+  return <p className="mono mb-5 text-faint">{children}</p>;
+}
+
+/**
+ * Separates stacked blocks on a phone and disappears at lg, where the
+ * vertical hairlines between columns take the job over.
+ */
+const BLOCK = 'mt-10 border-t border-hairline pt-10 lg:mt-0 lg:border-t-0 lg:pt-0';
+
+/** Links sized to the 44px minimum rather than to their own text. */
+const LINK =
+  'flex min-h-[44px] items-center text-f-xs text-body transition-colors hover:text-accent-ink lg:min-h-0 lg:py-1';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
   const pathname = usePathname();
 
-  const solutions = [
-    { name: 'School & College ERP', href: '/solutions/education' },
-    { name: 'HRMS Software', href: '/solutions/hrms' },
-    { name: 'CRM System', href: '/solutions/crm' },
-    { name: 'Inventory Manager', href: '/solutions/inventory' },
-    { name: 'Pharmacy Manager', href: '/solutions/pharmacy' },
-    { name: 'Restaurant Manager', href: '/solutions/restaurant' },
-    { name: 'Business Solutions', href: '/solutions/business' },
-  ];
+  const path = (pathname || '/').replace(/\/+$/, '') || '/';
+  const showCta = !PAGES_WITH_OWN_CTA.includes(path);
 
-  const company = [
-    { name: 'About Us', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Solutions', href: '/solutions' },
-    { name: 'Our Customers', href: '/customers' },
-    { name: 'Contact', href: '/contact' },
-  ];
-
-  const socialLinks = [
-    { icon: FaFacebookF, href: 'https://facebook.com/engispider', label: 'Facebook', color: 'hover:bg-blue-600' },
-    { icon: FaLinkedinIn, href: 'https://linkedin.com/company/engispider', label: 'LinkedIn', color: 'hover:bg-blue-700' },
-    { icon: FaTwitter, href: 'https://twitter.com/engispidertech', label: 'Twitter', color: 'hover:bg-sky-500' },
-    { icon: FaInstagram, href: 'https://instagram.com/engispider', label: 'Instagram', color: 'hover:bg-pink-600' },
-  ];
-
-  const stats = [
-    { icon: FaRocket, value: '1000+', label: 'Projects' },
-    { icon: FaUsers, value: '500+', label: 'Clients' },
-    { icon: FaAward, value: '10+', label: 'Years' },
-    { icon: FaCheckCircle, value: '99%', label: 'Success' },
-  ];
+  const half = Math.ceil(PRODUCTS.length / 2);
 
   return (
-    <footer className="relative bg-black text-white overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900">
-        {/* Animated gradient orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
-
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: 'linear-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.3) 1px, transparent 1px)',
-          backgroundSize: '50px 50px'
-        }}></div>
-      </div>
-
-      {/* Border top with gradient */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-
-      <div className="container mx-auto px-6 py-16 relative z-10">
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="relative group"
-            >
-              <div className="relative p-6 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/10 hover:border-blue-500/50 transition-all">
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10 rounded-2xl transition-all"></div>
-
-                <div className="relative z-10 text-center">
-                  <stat.icon className="w-8 h-8 text-blue-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+    <footer className="border-t border-hairline bg-canvas">
+      {showCta && (
+        <div className="border-b border-hairline">
+          <div className="container-page">
+            <div className="grid items-end gap-8 py-16 lg:grid-cols-12 lg:py-20">
+              <div className="lg:col-span-7">
+                <p className="marker mono">Next step</p>
+                <h2 className="display mt-5 text-f-6xl">
+                  Let’s scope
+                  <br />
+                  your system.
+                </h2>
+              </div>
+              <div className="lg:col-span-5">
+                <p className="text-body">
+                  Tell us what you run today and what breaks. We’ll point you at
+                  the closest product or quote the build — usually within two
+                  working days.
+                </p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Link href="/contact" className="btn btn-primary">
+                    Book a demo <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <a href={`tel:${COMPANY.contact.sales.tel}`} className="btn btn-line">
+                    {COMPANY.contact.sales.display}
+                  </a>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Contact CTA Section - Hidden on contact page */}
-        {!pathname?.startsWith('/contact') && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-16 relative"
-          >
-            <div className="relative p-8 md:p-12 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-3xl border border-white/20 overflow-hidden">
-              {/* Animated background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 animate-rotate-gradient"></div>
-
-              <div className="relative z-10 text-center max-w-2xl mx-auto">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-                  Ready to Transform Your Business?
-                </h3>
-                <p className="text-gray-300 mb-6">
-                  Get in touch with us today and discover how our innovative software solutions can drive your business growth.
-                </p>
-                <Link href="/contact">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full font-semibold hover:from-blue-500 hover:to-purple-500 transition-all shadow-lg shadow-blue-500/30 text-white"
-                  >
-                    Contact Us
-                  </motion.button>
-                </Link>
-              </div>
             </div>
-          </motion.div>
-        )}
-
-        {/* Top Section with Logo */}
-        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
-          {/* Large Background Text - Only for this section - Hidden on mobile */}
-          <div className="hidden lg:flex absolute inset-0 items-center justify-center overflow-hidden pointer-events-none">
-            <h2
-              className="text-[9rem] lg:text-[12rem] font-bold select-none tracking-tight leading-none"
-              style={{
-                color: 'transparent',
-                WebkitTextStroke: '2px rgba(59, 130, 246, 0.15)',
-              } as React.CSSProperties}
-            >
-              EngiSpider
-            </h2>
           </div>
+        </div>
+      )}
 
-          {/* Logo and Description */}
-          <div className="lg:col-span-4 relative z-10">
-            <Link href="/" className="inline-block mb-6">
-              <motion.img
-                src="/images/EngiSpider-Wht.png"
-                alt="Engispider Logo"
-                className="h-16 md:h-20 w-auto"
-                whileHover={{ scale: 1.05 }}
+      {/* ------------------------------------------------- four columns --- */}
+      <div className="container-page">
+        <div className="grid py-14 sm:py-16 lg:grid-cols-12 lg:gap-x-0 lg:gap-y-12">
+          {/* Identity */}
+          <div className="lg:col-span-3 lg:pr-10">
+            <Link href="/" aria-label="Engispider Infotech — home" className="inline-block">
+              <Image
+                src="/images/EngiSpider-fnl.png"
+                alt="Engispider Infotech"
+                width={742}
+                height={404}
+                className="h-14 w-auto"
               />
             </Link>
-            <p className="text-gray-400 mb-6 leading-relaxed">
-              Leading software development company in Bhubaneswar, India. We deliver innovative HRMS, CRM, ERP, and custom business solutions that transform businesses.
+
+            <p className="mt-6 max-w-xs text-f-xs leading-relaxed text-body">
+              Software products and custom development from Bhubaneswar, Odisha
+              — for restaurants, campuses, laboratories, retail and clinics
+              across India.
             </p>
-            <div className="flex space-x-3">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.15, y: -3, rotate: 360 }}
-                  className="relative group"
-                  aria-label={social.label}
-                >
-                  <div className={`relative p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 ${social.color} transition-all overflow-hidden`}>
-                    {/* Glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all"></div>
-                    <social.icon className="w-5 h-5 relative z-10" />
-                  </div>
-                </motion.a>
+
+            {COMPANY.social.length > 0 && (
+              <div className="mt-7 flex flex-wrap gap-2">
+                {COMPANY.social.map((s) => {
+                  const Icon = SOCIAL_ICON[s.name as keyof typeof SOCIAL_ICON];
+                  return (
+                    <a
+                      key={s.name}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Engispider on ${s.name}`}
+                      className="inline-flex h-11 w-11 items-center justify-center rounded border border-hairline text-muted transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-ink lg:h-10 lg:w-10"
+                    >
+                      {Icon ? <Icon className="h-[0.95rem] w-[0.95rem]" /> : s.name[0]}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Products — two sub-columns, fourteen entries is too many for one */}
+          <nav
+            aria-label="Products"
+            className={`${BLOCK} lg:col-span-4 lg:border-l lg:border-hairline lg:pl-10`}
+          >
+            <ColumnLabel>Products</ColumnLabel>
+            {/* Two-up from the narrowest screen. Fourteen products one per
+                line is 476px of plain links — the single biggest thing in
+                the footer, and the least worth that much of a phone. */}
+            <div className="grid grid-cols-2 gap-x-5 sm:gap-x-8">
+              {[PRODUCTS.slice(0, half), PRODUCTS.slice(half)].map((col, ci) => (
+                <ul key={ci} className="lg:space-y-2.5">
+                  {col.map((p) => (
+                    <li key={p.slug}>
+                      <Link href={p.href} className={LINK}>
+                        {p.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               ))}
             </div>
-          </div>
-
-          {/* Solutions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="lg:col-span-3 relative z-10"
-          >
-            <h4 className="text-xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Solutions
-            </h4>
-            <ul className="space-y-3">
-              {solutions.map((item, index) => (
-                <motion.li
-                  key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-gray-400 hover:text-blue-400 transition-all flex items-center group"
-                  >
-                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-all group-hover:scale-150"></span>
-                    <span className="group-hover:translate-x-1 transition-transform">{item.name}</span>
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          </nav>
 
           {/* Company */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2 relative z-10"
+          <nav
+            aria-label="Company"
+            className={`${BLOCK} lg:col-span-2 lg:border-l lg:border-hairline lg:pl-10`}
           >
-            <h4 className="text-xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {company.map((item, index) => (
-                <motion.li
-                  key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-gray-400 hover:text-blue-400 transition-all flex items-center group"
-                  >
-                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-all group-hover:scale-150"></span>
-                    <span className="group-hover:translate-x-1 transition-transform">{item.name}</span>
+            <ColumnLabel>Company</ColumnLabel>
+            <ul className="grid grid-cols-2 gap-x-5 lg:grid-cols-1 lg:gap-0 lg:space-y-2.5">
+              {COMPANY_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className={LINK}>
+                    {l.name}
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </nav>
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="lg:col-span-3 relative z-10"
-          >
-            <h4 className="text-xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Get in Touch
-            </h4>
-            <ul className="space-y-4">
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
-                viewport={{ once: true }}
-                className="flex items-start gap-3 text-gray-400 group hover:text-blue-400 transition-colors cursor-pointer"
-              >
-                <FaMapMarkerAlt className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span>Bhubaneswar, Odisha, India</span>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="flex items-start gap-3 text-gray-400"
-              >
-                <FaEnvelope className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-                <div className="space-y-1">
-                  <a href="mailto:info@engispider.com" className="hover:text-blue-400 transition-all block group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">info@engispider.com</span>
-                  </a>
-                  <a href="mailto:accounts@engispider.com" className="hover:text-blue-400 transition-all block text-sm group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">accounts@engispider.com</span>
-                  </a>
-                </div>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="flex items-start gap-3 text-gray-400"
-              >
-                <FaPhone className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-                <div className="space-y-1">
-                  <a href="tel:+919583315151" className="hover:text-blue-400 transition-all block group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 95833 15151</span>
-                  </a>
-                  <a href="tel:+917377799937" className="hover:text-blue-400 transition-all block text-sm group">
-                    <span className="group-hover:translate-x-1 inline-block transition-transform">+91 73777 99937</span>
-                  </a>
-                </div>
-              </motion.li>
-            </ul>
-          </motion.div>
-        </div>
+          {/* Contact */}
+          <div className={`${BLOCK} lg:col-span-3 lg:border-l lg:border-hairline lg:pl-10`}>
+            <ColumnLabel>Contact</ColumnLabel>
+            <address className="not-italic">
+              <p className="text-f-xs leading-relaxed text-body">
+                {COMPANY.address.locality}, {COMPANY.address.region}{' '}
+                <span className="mono-num">{COMPANY.address.postalCode}</span>
+                <br />
+                {COMPANY.address.countryName}
+              </p>
 
-        {/* Large Background Text - Mobile only - Between contact info and copyright */}
-        <div className="lg:hidden relative flex items-center justify-center overflow-hidden pointer-events-none py-8 mt-4">
-          <h2
-            className="text-[5rem] sm:text-[7rem] font-bold select-none tracking-tight leading-none"
-            style={{
-              color: 'transparent',
-              WebkitTextStroke: '2px rgba(59, 130, 246, 0.15)',
-            } as React.CSSProperties}
-          >
-            EngiSpider
-          </h2>
-        </div>
+              {/*
+                Bordered cells below lg, bare rows above it.
+                Tapping a phone number is the single most likely thing anyone
+                does with this footer on a phone, and as an unadorned line of
+                text it did not look like it did anything. On desktop the
+                borders would be four boxes nobody is going to click, so they
+                are dropped and the tabular figures carry the alignment.
+              */}
+              <div className="mt-5 grid grid-cols-2 gap-2 lg:mt-4 lg:grid-cols-1 lg:gap-1">
+                {[
+                  [COMPANY.contact.sales, 'Sales'],
+                  [COMPANY.contact.support, 'Support'],
+                ].map(([c, label]) => {
+                  const contact = c as { tel: string; display: string };
+                  return (
+                    <a
+                      key={label as string}
+                      href={`tel:${contact.tel}`}
+                      className="flex min-h-[54px] flex-col justify-center gap-1 rounded border border-hairline px-3 text-f-xs text-body transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-ink lg:min-h-0 lg:flex-row lg:items-baseline lg:gap-3 lg:rounded-none lg:border-0 lg:px-0 lg:hover:bg-transparent"
+                    >
+                      {/* Label over number on a phone — side by side it is
+                          183px of content in a 169px half-column. */}
+                      <span className="mono text-faint lg:w-14 lg:shrink-0">
+                        {label as string}
+                      </span>
+                      <span className="mono-num">{contact.display}</span>
+                    </a>
+                  );
+                })}
 
-        {/* Bottom Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="relative mt-8"
-        >
-          {/* Gradient border */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
+                <a
+                  href={`mailto:${COMPANY.contact.email}`}
+                  className="col-span-2 flex min-h-[48px] items-center gap-1 rounded border border-hairline px-3 text-f-xs text-body transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-ink lg:col-span-1 lg:mt-4 lg:min-h-0 lg:rounded-none lg:border-0 lg:px-0 lg:hover:bg-transparent"
+                >
+                  {COMPANY.contact.email}
+                  <ArrowUpRight className="h-3 w-3" />
+                </a>
+              </div>
 
-          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-gray-400 text-sm text-center md:text-left"
-            >
-              &copy; {currentYear} <span className="text-blue-400 font-semibold">Engispider Infotech Private Limited</span>. All rights reserved.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 text-sm"
-            >
-              <Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-colors">
-                Privacy Policy
-              </Link>
-              <span className="text-gray-600">|</span>
-              <Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-colors">
-                Terms &amp; Conditions
-              </Link>
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-gray-500 text-xs text-center md:text-right"
-            >
-              Best Software Company in Bhubaneswar | HRMS, CRM, ERP Solutions India
-            </motion.p>
+              <p className="mt-5 flex items-baseline gap-3 text-f-xs lg:mt-4">
+                <span className="mono w-14 shrink-0 text-faint">Hours</span>
+                <span className="text-muted">{COMPANY.hoursDisplay}</span>
+              </p>
+            </address>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Animated gradient bar at bottom */}
-      <div className="relative h-1 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-rotate-gradient"></div>
+      {/* ----------------------------------------------------- signature ---
+          The brand set once at full size and cropped by its own container.
+          A closing mark rather than a message — it carries no information
+          the page does not already state, so it is hidden from assistive
+          tech and sits at a tint that reads as texture, not text. */}
+      <div aria-hidden className="overflow-hidden border-t border-hairline py-8">
+        {/* leading-[1.12] rather than a tight line-height: the descenders on
+            'g' and 'p' need the room, and cropping them read as a rendering
+            fault rather than a deliberate crop. */}
+        <p
+          className="display container-page select-none whitespace-nowrap text-center text-[clamp(3rem,14vw,11.5rem)] leading-[1.12]"
+          style={{ color: '#EAEFF6' }}
+        >
+          Engispider
+        </p>
+      </div>
+
+      {/* ---------------------------------------------------- bottom bar --- */}
+      <div className="border-t border-hairline">
+        {/*
+          Clearance for the scroll-to-top button, which floats bottom-right
+          and was sitting directly on top of the legal links.
+
+          Two separate reservations, because the button collides differently
+          depending on the layout: stacked, it lands on the last row, so the
+          bar carries pb-20; in a row it lands on 'Terms' at the right edge,
+          and only stops doing so past ~1300px where the page gutters grow
+          wider than the button — so the row keeps a 64px lane free on the
+          right at every width that uses it.
+        */}
+        <div className="container-page flex flex-col gap-4 py-5 pb-28 lg:flex-row lg:items-center lg:justify-between lg:pb-5 lg:pr-[calc(var(--gutter)+4rem)]">
+          {/* The credential as a closing stamp. Ordered first on a phone so
+              the mark leads the bar instead of trailing a long legal name;
+              restored to the middle of the row from sm up. */}
+          <p className="order-1 flex items-center gap-2 lg:order-2">
+            <Image
+              src="/images/iso-9001-2015.webp"
+              alt=""
+              width={256}
+              height={256}
+              loading="lazy"
+              className="h-10 w-10"
+            />
+            <span className="mono text-muted">ISO certified</span>
+          </p>
+
+          <p className="order-3 mono text-faint lg:order-1">
+            © {year} {COMPANY.legalName}
+          </p>
+
+          <div className="order-2 flex gap-8 lg:order-3 lg:gap-6">
+            <Link
+              href="/privacy"
+              className="mono flex min-h-[44px] items-center text-faint transition-colors hover:text-accent-ink lg:min-h-0"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="mono flex min-h-[44px] items-center text-faint transition-colors hover:text-accent-ink lg:min-h-0"
+            >
+              Terms
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

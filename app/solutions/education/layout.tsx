@@ -2,9 +2,9 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'School & College ERP Software | Campus360',
+  title: 'School & College ERP Software | Engispider Campus',
   description:
-    'Campus360 is a complete school and college ERP — admissions, fees, online payments, exams, hostel, transport, library and staff payroll on one platform.',
+    'Engispider Campus is a complete school and college ERP — admissions, fees, online payments, exams, hostel, transport, library and staff payroll on one platform.',
   path: '/solutions/education',
   keywords: [
     'School Management Software',
@@ -31,7 +31,7 @@ export default function EducationLayout({ children }: { children: React.ReactNod
       <BreadcrumbJsonLd
         trail={[
           { name: 'Solutions', path: '/solutions' },
-          { name: 'School & College ERP', path: '/solutions/education' },
+          { name: 'Engispider Campus', path: '/solutions/education' },
         ]}
       />
       {children}
