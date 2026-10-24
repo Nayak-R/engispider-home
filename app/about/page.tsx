@@ -75,7 +75,7 @@ function Numbers() {
         <dl className="grid gap-x-10 gap-y-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { count: PRODUCTS.length, label: 'products in production' },
-            { count: CLIENTS.length, label: 'organisations served' },
+            { value: COMPANY.organisations.servedDisplay, label: 'organisations served' },
             { value: 'One', label: 'stack across all of them' },
             { count: PROCESS.length, label: 'stages, each with a deliverable' },
           ].map((item, i) => (
@@ -165,8 +165,8 @@ function Position() {
                   `${COMPANY.address.locality}-based. ${COMPANY.hoursDisplay}, on the phone, in your language — and on site when it matters.`,
                 ],
                 [
-                  'No numbers we cannot show you',
-                  `You will not find "500+ clients" here. The customer list is ${CLIENTS.length} names long and every one of them is on the site.`,
+                  'Numbers with a list behind them',
+                  `${COMPANY.organisations.servedDisplay} organisations run software we built. ${CLIENTS.length} of them have agreed to be named, and every one of those is on the customers page with a link to their own site.`,
                 ],
               ].map(([t, d], i) => (
                 <Reveal as="li" key={t} delay={i * 70} className="flex items-start gap-4">

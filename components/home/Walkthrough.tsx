@@ -7,11 +7,24 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { MaskText, Reveal } from '@/components/motion/Reveal';
 
 /**
- * "From one order to the P&L" — a traced example.
+ * The pattern every product shares, traced end to end.
  *
  * Abstract capability lists ("inventory management", "reporting") are
- * forgettable. One job followed end to end makes the whole system legible at
- * once, which is why this sits immediately after the industry screens.
+ * forgettable. One chain followed from the first action to the finished
+ * report makes the whole system legible at once, which is why this sits
+ * immediately after the industry screens.
+ *
+ * ── Why it is no longer a restaurant story ──────────────────────────────
+ * This said "From one order to the P&L" and walked through a guest
+ * scanning a QR code, a KOT printing, paneer leaving inventory and
+ * food-cost per dish — while its own lede claimed "every Engispider
+ * product works this way". One product was standing in for fourteen, on
+ * the homepage, directly after a deck of eight industries.
+ *
+ * Each step now states the general capability and grounds it in examples
+ * drawn from several products. That costs a little narrative momentum and
+ * buys the thing the section is actually for: showing that this is how
+ * the company builds, not how one of its products happens to work.
  *
  * The rail is scroll-linked: a fill grows down the track as the section
  * passes, with a marker riding its leading edge, and each step lights up as
@@ -28,27 +41,27 @@ import { MaskText, Reveal } from '@/components/motion/Reveal';
 const STEPS = [
   {
     n: '01',
-    t: 'The guest orders',
-    d: 'A table scans the QR code and orders, or a server rings it in on the POS. The bill is built with the right variant, add-on, HSN code and GST rate automatically.',
-    tag: 'POS · QR ordering',
+    t: 'Someone does their job',
+    d: 'A guest scans the code on the table. A parent pays a fee from their phone. A sample arrives at the lab counter. A face looks at the attendance camera. The action that was happening anyway is the only input the system needs.',
+    tag: 'POS · Portal · Kiosk',
   },
   {
     n: '02',
-    t: 'The kitchen sees it',
-    d: 'A KOT prints and the ticket lands on the kitchen display the same second, with bump timing so nobody has to shout across the pass.',
-    tag: 'Kitchen display',
+    t: 'It is captured once, correctly',
+    d: 'The document builds itself with the right tax, code and number — GST and HSN on a bill, gap-less audit-ready numbering on a fee receipt, a generated sample ID on an inward, statutory rates on a payslip. Nobody looks anything up.',
+    tag: 'Billing · Compliance',
   },
   {
     n: '03',
-    t: 'Stock moves itself',
-    d: 'Each dish is linked to its recipe, so the paneer, oil and gas behind that order come out of inventory the moment it is served. No stock-take required to know what you hold.',
-    tag: 'Recipes · Inventory',
+    t: 'Everything downstream moves itself',
+    d: 'Stock comes off the recipe as the dish is served. A hostel bed allotment raises its own fee. An approved receipt posts its own double entry. A biometric punch reaches the payroll run. No second system to update, and no re-keying.',
+    tag: 'Stock · Ledger · Payroll',
   },
   {
     n: '04',
-    t: 'The books are already done',
-    d: 'Sales, cost of goods and expenses land in a real profit-and-loss by outlet. You can see food-cost percentage per dish and find the items quietly losing money.',
-    tag: 'P&L · Menu profitability',
+    t: 'The report is already written',
+    d: 'Profit and loss by outlet, outstanding by course and year, food-cost per dish, headcount against payroll — live, because they are the same data rather than a monthly re-entry of it. Day-end summaries arrive without anyone running them.',
+    tag: 'Reports · P&L · Day-end',
   },
 ];
 
@@ -94,17 +107,19 @@ export default function Walkthrough() {
             <div className="lg:sticky lg:top-28">
               <p className="marker mono">How it works</p>
               <MaskText as="h2" className="display mt-5 text-f-6xl">
-                <>From one order</>
-                <>to the <span className="accent-word">P&amp;L</span>.</>
+                <>Enter it once.</>
+                <>It lands <span className="accent-word">everywhere</span>.</>
               </MaskText>
               <Reveal delay={140}>
                 <p className="mt-6 max-w-md leading-relaxed text-body">
-                  Every Engispider product works this way: the operational
-                  action a person already takes is the thing that updates
-                  stock, the ledger and the reports. Nobody re-keys anything.
+                  Every product here is built on the same chain. Whatever a
+                  person was already doing — taking an order, collecting a
+                  fee, booking in a sample — is the thing that moves stock,
+                  posts the ledger and writes the report. There is no second
+                  system to keep in step.
                 </p>
-                <Link href="/solutions/restaurant" className="btn btn-primary mt-8">
-                  See Engispider Restro in full <ArrowRight className="h-4 w-4" />
+                <Link href="/solutions" className="btn btn-primary mt-8">
+                  See all products <ArrowRight className="h-4 w-4" />
                 </Link>
               </Reveal>
             </div>

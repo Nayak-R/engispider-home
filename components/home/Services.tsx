@@ -142,7 +142,13 @@ export default function Services() {
             so pinning it leaves barely half a viewport for the list it is
             meant to be framing. Below lg it scrolls away like any heading.
           */}
-          <div className="bg-canvas pb-8 pt-4 lg:sticky lg:top-[4.25rem] lg:z-20">
+          {/*
+            The opaque background is scoped to lg, where this block is
+            actually sticky and rows scroll behind it. Below lg it is a
+            normal heading, so an opaque panel just painted a white box
+            over the section's shading.
+          */}
+          <div className="pb-8 pt-4 lg:sticky lg:top-[4.25rem] lg:bg-canvas lg:z-20">
             <div className="grid gap-8 lg:grid-cols-12">
               <div className="lg:col-span-6">
                 <p className="marker mono">Services</p>

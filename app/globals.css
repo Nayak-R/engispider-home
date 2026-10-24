@@ -107,6 +107,9 @@
   /* --- Layout ------------------------------------------------------------ */
   --container: 82.5rem;  /* 1320px — wide, editorial */
   --measure:   38rem;    /* readable prose column */
+  /* Height of the fixed site header. Anything that pins to the top of the
+     viewport has to clear it, or its first line renders behind the bar. */
+  --header-h:  4.25rem;
   --gutter:    1.25rem;
 }
 

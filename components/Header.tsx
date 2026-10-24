@@ -116,7 +116,7 @@ export default function Header() {
       }`}
     >
       <div className="container-page">
-        <div className="flex h-[4.25rem] items-center justify-between gap-8">
+        <div className="flex h-[var(--header-h)] items-center justify-between gap-8">
           <Link href="/" aria-label="Engispider Infotech — home" className="shrink-0">
             <Image
               src="/images/EngiSpider-fnl.png"

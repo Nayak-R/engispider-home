@@ -142,20 +142,20 @@ function Flagships() {
       <div className="container-page">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <p className="marker mono">Flagships</p>
+            <p className="marker mono">How deep these go</p>
             <MaskText as="h2" className="display mt-5 text-f-5xl">
-              <>The two we are</>
+              <>Whole operations,</>
               <>
-                <span className="accent-word">known</span> for.
+                not <span className="accent-word">modules</span>.
               </>
             </MaskText>
           </div>
           <div className="flex items-end lg:col-span-5 lg:col-start-8">
             <Reveal delay={120}>
               <p className="text-body">
-                A restaurant group and a college run very little in common —
-                except that both need the money to reconcile at the end of the
-                day. These two do that for their trade, completely.
+                Two worked examples of what we mean by a complete system —
+                front desk to ledger, with nothing left on a spreadsheet. Every
+                product below is built to the same depth for its own trade.
               </p>
             </Reveal>
           </div>
@@ -235,9 +235,9 @@ function Catalogue() {
           <div className="flex items-end lg:col-span-5 lg:col-start-8">
             <Reveal delay={120}>
               <p className="text-body">
-                Narrower than the flagships and deliberately so — a pharmacy
-                does not need a kitchen display, and a laboratory does not need
-                a fee ledger.
+                Narrower in scope and deliberately so — a pharmacy does not
+                need a kitchen display, and a laboratory does not need a fee
+                ledger. Same engineering, same stack, same support.
               </p>
             </Reveal>
           </div>

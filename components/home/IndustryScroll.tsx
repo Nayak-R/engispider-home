@@ -54,15 +54,17 @@ const COVER_THRESHOLD = 0.4;
 const STICKY_BASE = 104;
 const STICKY_STEP = 16;
 
+/*
+ * Order matters. Whatever sits first in this deck is what a visitor reads
+ * as the thing this company mainly does — and restaurants led it, while
+ * the restaurant product was also the first catalogue entry and the first
+ * hero slide. Fourteen systems were being represented by one trade.
+ *
+ * Education leads now (the deepest build), then widest market first.
+ * Restaurants keep their card; they just no longer speak for the company.
+ * Mirrors the order of INDUSTRIES in data/products.ts.
+ */
 const INDUSTRIES = [
-  {
-    slug: 'restaurants',
-    name: 'Restaurants & cafes',
-    product: 'Engispider Restro',
-    href: '/solutions/restaurant',
-    note: 'Billing and QR self-ordering at the front, kitchen display behind it, and ingredient stock that deducts itself from the recipe on every sale.',
-    Screen: RestaurantScreen,
-  },
   {
     slug: 'education',
     name: 'Schools & colleges',
@@ -70,22 +72,6 @@ const INDUSTRIES = [
     href: '/solutions/education',
     note: 'Admissions, fee plans by course and category, maker-checker approval on every collection, and gap-less audit-ready receipts.',
     Screen: CampusScreen,
-  },
-  {
-    slug: 'laboratories',
-    name: 'Laboratories',
-    product: 'Engispider LIMS',
-    href: '/solutions/lims',
-    note: 'Sample inward through preparation, equipment scheduling and test data capture, to a signed report and invoice — with the audit trail intact.',
-    Screen: LabScreen,
-  },
-  {
-    slug: 'pharmacies',
-    name: 'Pharmacies',
-    product: 'Engispider Pharmacy',
-    href: '/solutions/pharmacy',
-    note: 'Batch and expiry tracking, GST-compliant billing, prescription handling and automatic reorder alerts — built around what actually causes losses.',
-    Screen: PharmacyScreen,
   },
   {
     slug: 'retail',
@@ -96,12 +82,12 @@ const INDUSTRIES = [
     Screen: RetailScreen,
   },
   {
-    slug: 'sites',
-    name: 'Construction & plants',
-    product: 'Engispider Site Manager',
-    href: '/solutions/site-manager',
-    note: 'Receive, store, issue and transfer consumable stock and fixed assets across warehouses, project sites and plants — scoped per organisation.',
-    Screen: SiteScreen,
+    slug: 'laboratories',
+    name: 'Laboratories',
+    product: 'Engispider LIMS',
+    href: '/solutions/lims',
+    note: 'Sample inward through preparation, equipment scheduling and test data capture, to a signed report and invoice — with the audit trail intact.',
+    Screen: LabScreen,
   },
   {
     slug: 'clinics',
@@ -110,6 +96,30 @@ const INDUSTRIES = [
     href: '/solutions/clinic',
     note: 'Appointments, patient records and billing for outpatient practice.',
     Screen: ClinicScreen,
+  },
+  {
+    slug: 'pharmacies',
+    name: 'Pharmacies',
+    product: 'Engispider Pharmacy',
+    href: '/solutions/pharmacy',
+    note: 'Batch and expiry tracking, GST-compliant billing, prescription handling and automatic reorder alerts — built around what actually causes losses.',
+    Screen: PharmacyScreen,
+  },
+  {
+    slug: 'sites',
+    name: 'Construction & plants',
+    product: 'Engispider Site Manager',
+    href: '/solutions/site-manager',
+    note: 'Receive, store, issue and transfer consumable stock and fixed assets across warehouses, project sites and plants — scoped per organisation.',
+    Screen: SiteScreen,
+  },
+  {
+    slug: 'restaurants',
+    name: 'Restaurants & cafes',
+    product: 'Engispider Restro',
+    href: '/solutions/restaurant',
+    note: 'Billing and QR self-ordering at the front, kitchen display behind it, and ingredient stock that deducts itself from the recipe on every sale.',
+    Screen: RestaurantScreen,
   },
   {
     slug: 'hr',

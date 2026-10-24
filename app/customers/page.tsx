@@ -33,10 +33,12 @@ export const metadata = pageMetadata({
 /**
  * Customers.
  *
- * The page's whole argument is that the list is short and real. Every
- * organisation is named, every mark links to their own site, and the
- * count is derived from data/clients.ts — so it can never become the
- * "500+ clients" that used to sit on the About page.
+ * Two numbers live on this page and they must not read as a
+ * contradiction: the total served, which the company stands behind, and
+ * the shorter list of organisations that agreed to be named. The copy
+ * states the relationship every time either appears — "150+ served, 15
+ * named here" — because a big claim beside a short list looks like the
+ * short list is the real answer.
  *
  * The previous version was black with a purple gradient CTA; the logo
  * wall was the only part worth keeping, and it is unchanged.
@@ -52,12 +54,12 @@ export default function CustomersPage() {
       <main id="main">
         <PageHero
           marker="Customers"
-          title="Every one of them, by name."
-          lede={`${CLIENTS.length} organisations run software we built. Not a logo wall of companies that once bought a licence — these are the people who ring us when something is wrong, and each mark below links to their own site so you can check.`}
+          title="The ones who let us name them."
+          lede={`${COMPANY.organisations.servedDisplay} organisations run software we built. ${CLIENTS.length} of them agreed to appear here — and every one of those links to their own site, so you can check rather than take our word for it.`}
           cta={{ href: '/contact', label: 'Become the next one' }}
           secondary={{ href: '/solutions', label: 'See the products' }}
           spec={[
-            ['Customers', `${CLIENTS.length}, all named on this page`],
+            ['Organisations served', COMPANY.organisations.servedDisplay],
             ['Sectors', sectors.length > 0 ? `${sectors.length} — education to hospitality` : '—'],
             ['Support', COMPANY.hoursDisplay],
           ]}
@@ -81,9 +83,10 @@ export default function CustomersPage() {
               <div className="flex items-end lg:col-span-5 lg:col-start-8">
                 <Reveal delay={120}>
                   <p className="text-body">
-                    Grouped by the sector they work in. Names and marks belong
-                    to their respective owners, and each one opens their site
-                    in a new tab.
+                    A sample, not the whole book — most of our work sits behind
+                    an agreement that does not let us name it. Grouped by
+                    sector; marks belong to their owners and each opens their
+                    own site in a new tab.
                   </p>
                 </Reveal>
               </div>
@@ -112,10 +115,10 @@ function Numbers({ sectors }: { sectors: number }) {
       <div className="container-page">
         <dl className="grid gap-x-10 gap-y-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { count: CLIENTS.length, label: 'organisations, all named' },
+            { value: COMPANY.organisations.servedDisplay, label: 'organisations served' },
+            { count: CLIENTS.length, label: 'named here, with permission' },
             { count: sectors, label: 'sectors served' },
             { value: 'Linked', label: 'every mark goes to their site' },
-            { value: 'No logos', label: 'we have not earned' },
           ].map((item, i) => (
             <Reveal key={item.label} delay={i * 70} className="relative">
               <span

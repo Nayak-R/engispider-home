@@ -148,6 +148,7 @@ export default function PinnedScroller({
       }
       const overflow = track.scrollWidth - window.innerWidth;
       const tooLongForSmall = !mq.matches && overflow > MAX_TRAVEL_SMALL;
+
       if (overflow > MIN_TRAVEL && !tooLongForSmall) {
         setTravel(overflow);
         setPinned(true);
@@ -228,14 +229,31 @@ export default function PinnedScroller({
        */
       style={
         pinned
-          ? { height: `calc(100vh + ${Math.round((travel * PACE) / (1 - 2 * HOLD))}px)` }
+          ? {
+              height: `calc(100svh + ${Math.round(
+                (travel * PACE) / (1 - 2 * HOLD)
+              )}px)`,
+            }
           : undefined
       }
     >
       <div
         className={
           pinned
-            ? 'sticky top-0 flex h-screen flex-col justify-center overflow-hidden'
+            ? /*
+               * top/height clear the fixed site header — pinning at top:0
+               * put the first line of every heading behind the bar. svh
+               * rather than vh so collapsing mobile browser chrome does
+               * not re-clip it.
+               *
+               * `safe center` is the important part: plain `center` makes
+               * an over-tall block overflow EQUALLY in both directions,
+               * and with overflow hidden that eats the heading off the
+               * top. `safe` keeps the centring whenever it fits and falls
+               * back to top-alignment when it does not, so a short screen
+               * loses the bottom of a card instead of the words.
+               */
+              'sticky top-[var(--header-h)] flex h-[calc(100svh-var(--header-h))] flex-col [justify-content:safe_center] overflow-hidden'
             : 'py-14'
         }
       >

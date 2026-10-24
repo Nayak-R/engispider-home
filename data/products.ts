@@ -786,12 +786,24 @@ export function productBySlug(slug: string) {
  * list. Each names the product that serves it, so the claim is checkable.
  */
 export const INDUSTRIES = [
-  { name: 'Restaurants & cafes', product: 'Engispider Restro', href: '/solutions/restaurant' },
+  /*
+   * Order matters: this drives the homepage deck, so whatever sits first
+   * is what a visitor reads as the thing we mainly do. Restaurants led
+   * the list and the restaurant product was also the first catalogue
+   * entry, the first hero slide and the page the homepage headline was
+   * written around — which made a company with fourteen systems look
+   * like a restaurant-software company.
+   *
+   * Education leads now because it is the deepest build, and the rest run
+   * widest-market first. Restaurants keep their place in the list; they
+   * just no longer speak for the company.
+   */
   { name: 'Schools & colleges', product: 'Engispider Campus', href: '/solutions/education' },
   { name: 'Retail', product: 'Engispider Retail', href: '/solutions/retail' },
   { name: 'Laboratories', product: 'Engispider LIMS', href: '/solutions/lims' },
-  { name: 'Pharmacies', product: 'Engispider Pharmacy', href: '/solutions/pharmacy' },
   { name: 'Clinics & healthcare', product: 'Engispider Clinic', href: '/solutions/clinic' },
+  { name: 'Pharmacies', product: 'Engispider Pharmacy', href: '/solutions/pharmacy' },
   { name: 'Construction & infrastructure', product: 'Engispider Site Manager', href: '/solutions/site-manager' },
+  { name: 'Restaurants & cafes', product: 'Engispider Restro', href: '/solutions/restaurant' },
   { name: 'Logistics', product: 'Custom software', href: '/solutions/business' },
 ] as const;

@@ -2,13 +2,18 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import PinnedScroller from '@/components/motion/PinnedScroller';
 import { CLIENTS, type Client } from '@/data/clients';
+import { COMPANY } from '@/data/company';
 
 /**
  * The customer wall as a pinned horizontal gallery.
  *
- * All fifteen customers get a real card — logo, name, domain, sector — rather
- * than a logo strip, because the names and sectors are the part that reads as
- * evidence.
+ * Every named customer gets a real card — logo, name, domain, sector —
+ * rather than a logo strip, because the names and sectors are the part
+ * that reads as evidence.
+ *
+ * The heading states the total served; these cards are the subset that
+ * agreed to be named. Keeping both visible in one place is what stops
+ * the short list reading as a contradiction of the larger figure.
  *
  * Two rows below `lg`. Fifteen cards end to end is ~3,600px of travel, which
  * is far too much to pin to a phone's scroll; wrapped into two rows the track
@@ -28,9 +33,12 @@ export default function CustomerScroll() {
           <div>
             <p className="marker mono">Customers</p>
             <h2 className="display mt-4 text-f-5xl">
-              Running in production
+              Running in production at
               <br />
-              at <span className="accent-word">{CLIENTS.length} organisations</span>.
+              <span className="accent-word">
+                {COMPANY.organisations.servedDisplay} organisations
+              </span>
+              .
             </h2>
           </div>
           <Link href="/customers" className="link-arrow mono pb-1">
@@ -53,7 +61,14 @@ function CustomerCard({ client }: { client: Client }) {
           or dark matte, so each sits object-contained in an equal white box.
           That equalises optical weight instead of letting the square,
           high-resolution marks dwarf the small or very wide ones. */}
-      <div className="flex h-[108px] items-center justify-center rounded border border-hairline bg-white p-5">
+      {/*
+        Shorter on phones. Two rows of cards plus a three-line heading came
+        to ~818px inside a pinned viewport that only has ~776px once the
+        fixed header is cleared — and the overflow was clipped off the TOP,
+        taking the heading with it. 24px off each row's logo tile is the
+        least damaging 48px to find.
+      */}
+      <div className="flex h-[76px] items-center justify-center rounded border border-hairline bg-white p-3 sm:h-[84px] sm:p-4 lg:h-[108px] lg:p-5">
         {client.logo ? (
           <img
             src={client.logo}
@@ -74,13 +89,28 @@ function CustomerCard({ client }: { client: Client }) {
       </div>
 
       <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="font-display text-[0.98rem] font-bold leading-snug text-ink">
-          {client.name}
-        </h3>
+        {/* Same nesting, same reason — "Shreem Institute of Health
+            Sciences" runs to three lines on a phone. */}
+        <div>
+          <h3 className="line-clamp-2 font-display text-[0.98rem] font-bold leading-snug text-ink">
+            {client.name}
+          </h3>
+        </div>
         <p className="mono mt-1.5 text-faint">{client.label}</p>
 
+        {/*
+          The clamp lives on a nested element on purpose. A direct child of
+          a flex container has its display blockified, which turns the
+          `-webkit-box` that line-clamp depends on into `flow-root` and
+          makes the utility silently do nothing. The card is a fixed
+          height, so that safety net has to actually hold.
+        */}
         {client.description && (
-          <p className="mt-3 text-f-xs leading-relaxed text-muted">{client.description}</p>
+          <div className="mt-3">
+            <p className="line-clamp-2 text-f-xs leading-relaxed text-muted sm:line-clamp-3">
+              {client.description}
+            </p>
+          </div>
         )}
 
         {client.url && (
@@ -93,7 +123,14 @@ function CustomerCard({ client }: { client: Client }) {
   );
 
   const shell =
-    'group flex h-[320px] flex-col rounded-lg border border-hairline bg-white p-4 transition-all';
+    /*
+     * Shorter on phones. Two rows of these sit inside a pinned viewport
+     * that has ~776px once the fixed header is cleared; at 320px each the
+     * content came to ~818px and the overflow was clipped off the TOP,
+     * cutting the heading in half. Three steps because a 360x780 handset
+     * has ~712px of pinned box, not 776px.
+     */
+    'group flex h-[272px] flex-col rounded-lg border border-hairline bg-white p-4 transition-all sm:h-[292px] lg:h-[320px]';
 
   // A link only where we actually hold a site for the customer.
   return client.url ? (

@@ -15,7 +15,6 @@ import Faq from '@/components/home/Faq';
 import MethodScroll from '@/components/home/MethodScroll';
 import { Reveal, MaskText, MaskWords, MaskLine } from '@/components/motion/Reveal';
 
-import { CLIENTS } from '@/data/clients';
 import { COMPANY } from '@/data/company';
 import { PRODUCT_COUNT, PRODUCT_COUNT_WORD_CAP } from '@/data/products';
 import { TECH_STACK } from '@/data/services';
@@ -85,7 +84,7 @@ function Hero() {
                 the first frame. */}
             <h1 className="display text-f-7xl">
               <MaskWords className="block" step={75}>
-                From the first order
+                From the first entry
               </MaskWords>{' '}
               <MaskLine className="display-serif" delay={360}>
                 to the final ledger.
@@ -94,10 +93,10 @@ function Hero() {
 
             <Reveal delay={620}>
               <p className="mt-7 max-w-xl text-f-lg leading-relaxed text-body">
-                Billing, stock, fees, payroll and accounts — reconciled to the
-                rupee. {PRODUCT_COUNT_WORD_CAP} products running restaurants,
-                campuses, laboratories, pharmacies and retail, plus custom
-                software when none of them fit.
+                Billing, stock, fees, payroll and accounts — reconciled to
+                the rupee. {PRODUCT_COUNT_WORD_CAP} systems in production
+                across campuses, laboratories, retail, pharmacies, clinics and
+                kitchens, plus custom software when none of them fit.
               </p>
 
             </Reveal>
@@ -159,7 +158,7 @@ function Hero() {
 
           {[
             { value: `${PRODUCT_COUNT}+`, label: 'products in production' },
-            { value: `${CLIENTS.length}+`, label: 'organisations served' },
+            { value: COMPANY.organisations.servedDisplay, label: 'organisations served' },
             { value: '1 Lakh+', label: 'satisfied users' },
           ].map((item, i) => (
             <Reveal

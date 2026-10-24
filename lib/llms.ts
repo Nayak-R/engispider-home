@@ -43,8 +43,9 @@ export function buildLlmsIndex(): string {
   lines.push(
     `${COMPANY.shortName} is ${COMPANY.certification.label} and based in ` +
       `${COMPANY.address.locality}, ${COMPANY.address.region}, ${COMPANY.address.countryName}. ` +
-      `${PRODUCTS.length} products are in production with paying customers, and ` +
-      `${CLIENTS.length} organisations are named on the customers page. ` +
+      `${PRODUCTS.length} products are in production with paying customers, serving ` +
+      `${COMPANY.organisations.servedDisplay} organisations — of which ${CLIENTS.length} are ` +
+      `named on the customers page, the rest under agreements that do not permit naming. ` +
       `Support hours are ${COMPANY.hoursDisplay}.`
   );
   lines.push('');
@@ -74,7 +75,7 @@ export function buildLlmsIndex(): string {
   lines.push('## Company');
   lines.push('');
   lines.push(`- [About](${u('/about')}): Who we are, how we work, and the stack everything is built on.`);
-  lines.push(`- [Customers](${u('/customers')}): The ${CLIENTS.length} organisations running our software, named and linked.`);
+  lines.push(`- [Customers](${u('/customers')}): ${CLIENTS.length} of the ${COMPANY.organisations.servedDisplay} organisations we serve, named and linked.`);
   lines.push(`- [FAQ](${u('/faq')}): ${ALL_FAQS.length} buyer questions answered — pricing, demos, migration, tenancy, support.`);
   lines.push(`- [Contact](${u('/contact')}): Phone, email and a form that reaches the people who build the software.`);
   lines.push('');
@@ -181,7 +182,8 @@ export function buildLlmsFull(): string {
   lines.push(`- **Support:** ${COMPANY.contact.support.display}`);
   lines.push(`- **Email:** ${COMPANY.contact.email}`);
   lines.push(`- **Products in production:** ${PRODUCTS.length}`);
-  lines.push(`- **Named customers:** ${CLIENTS.length}`);
+  lines.push(`- **Organisations served:** ${COMPANY.organisations.servedDisplay}`);
+  lines.push(`- **Named publicly:** ${CLIENTS.length} — the rest are under agreements that do not permit naming`);
   lines.push('');
   lines.push(
     'Engispider sells its own products and also builds custom software. ' +
@@ -247,7 +249,10 @@ export function buildLlmsFull(): string {
   /* --- customers ----------------------------------------------------- */
   lines.push('## Customers');
   lines.push('');
-  lines.push(`${CLIENTS.length} organisations run software built by Engispider:`);
+  lines.push(
+    `Engispider software runs at ${COMPANY.organisations.servedDisplay} organisations. ` +
+      `${CLIENTS.length} of them have agreed to be named:`
+  );
   lines.push('');
   for (const c of CLIENTS) lines.push(`- **${c.name}** (${c.label}) — ${c.sector}`);
   lines.push('');

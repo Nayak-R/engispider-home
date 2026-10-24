@@ -59,11 +59,18 @@ import {
  * name nothing. The full product name is on the screen's own lockup
  * directly above, and on its page.
  */
+/*
+ * The first slide is the one most visitors see, because many never wait
+ * for the rotation. Restaurant led here, in the catalogue and in the
+ * industry deck at the same time, which read as a restaurant-software
+ * company that happens to sell other things. Campus leads now and the
+ * rest rotate as before — all four are equally the product.
+ */
 const SLIDES = [
-  { id: 'restro', label: 'Restro', note: 'Restaurant POS', Screen: LiveRestaurant },
   { id: 'academic', label: 'Campus', note: 'Academic Suite', Screen: AcademicScreen },
-  { id: 'crm', label: 'CRM', note: 'CRM Platform', Screen: CrmScreen },
   { id: 'hrms', label: 'HRMS', note: 'HR management', Screen: HrmsRealScreen },
+  { id: 'crm', label: 'CRM', note: 'CRM Platform', Screen: CrmScreen },
+  { id: 'restro', label: 'Restro', note: 'Restaurant POS', Screen: LiveRestaurant },
 ];
 
 /** Long enough to read the screen, short enough not to stall the hero. */

@@ -59,6 +59,26 @@ export const COMPANY = {
   hoursDisplay: 'Mon–Fri 9:00–18:00 · Sat 9:00–14:00 IST',
 
   /**
+   * Organisations served, as supplied by the company.
+   *
+   * This is NOT the same number as data/clients.ts. CLIENTS is the subset
+   * that has agreed to be named and have their mark shown — a permissioned
+   * sample, not the total. Both figures appear on the site, so every piece
+   * of copy that uses either one has to make the relationship explicit:
+   * "150+ served, 15 of them named here". Stated side by side without that
+   * framing, the short list reads as a contradiction of the big number,
+   * which is worse than publishing neither.
+   *
+   * `served` is the figure; `servedDisplay` is how it is written, because
+   * "150+" is an approximation and must never be rendered as an exact
+   * count or counted up digit by digit as though it were one.
+   */
+  organisations: {
+    served: 150,
+    servedDisplay: '150+',
+  },
+
+  /**
    * ISO certification, verified from the certificate
    * mark supplied by the company (public/images/iso-9001-2015.webp).
    *
