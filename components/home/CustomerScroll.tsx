@@ -1,34 +1,38 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import PinnedScroller from '@/components/motion/PinnedScroller';
 import { CLIENTS, type Client } from '@/data/clients';
 import { COMPANY } from '@/data/company';
 
 /**
- * The customer wall as a pinned horizontal gallery.
+ * The customer wall as an auto-scrolling logo strip.
  *
- * Every named customer gets a real card — logo, name, domain, sector —
- * rather than a logo strip, because the names and sectors are the part
- * that reads as evidence.
+ * The heading states the total served; the strip is the subset that agreed
+ * to be named. Keeping both in one place is what stops the short list
+ * reading as a contradiction of the larger figure.
  *
- * The heading states the total served; these cards are the subset that
- * agreed to be named. Keeping both visible in one place is what stops
- * the short list reading as a contradiction of the larger figure.
+ * The list is rendered TWICE. The track animates to exactly -50%, which
+ * lands copy two precisely where copy one began, so the loop is seamless
+ * and needs no measurement or JS. Copy two is aria-hidden — it is the same
+ * fifteen customers, and announcing them a second time is noise.
  *
- * Two rows below `lg`. Fifteen cards end to end is ~3,600px of travel, which
- * is far too much to pin to a phone's scroll; wrapped into two rows the track
- * halves to ~1,750px and the section animates on mobile like the others
- * instead of degrading to a static swipe.
+ * Nothing here is a link. The wall is evidence, not navigation: these are
+ * customers, not partners we are sending traffic to, and a moving target
+ * that opens someone else's site is a trap rather than a feature. The one
+ * link in the section is `See all customers`, which goes to our own page.
+ *
+ * This is a server component. The whole thing is one CSS animation; there
+ * is no scroll listener, no observer and no client bundle.
  */
 export default function CustomerScroll() {
   return (
-    <PinnedScroller
-      ariaLabel="Our customers"
-      smallRows={2}
-      highlight
-      className="border-y border-hairline bg-band"
-      itemClassName="w-[248px] sm:w-[268px]"
-      header={
+    <section
+      aria-label="Our customers"
+      /* Bottom padding is short by exactly the 24px of headroom each strip
+         item carries, so the band still breathes the same 56/64px under the
+         logos as every other section does under its content. */
+      className="border-y border-hairline bg-band pb-8 pt-14 sm:pb-10 sm:pt-16"
+    >
+      <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="marker mono">Customers</p>
@@ -45,105 +49,86 @@ export default function CustomerScroll() {
             See all customers <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-      }
-    >
-      {CLIENTS.map((c) => (
-        <CustomerCard key={c.slug} client={c} />
-      ))}
-    </PinnedScroller>
+      </div>
+
+      {/* Full-bleed on purpose: the strip runs edge to edge and is faded out
+          at both ends by the mask on `.marquee`, so it reads as continuous
+          rather than as a box that happens to contain moving logos. */}
+      <div className="marquee mt-4 sm:mt-6">
+        <ul className="marquee-track animate-marquee">
+          {CLIENTS.map((c) => (
+            <LogoTile key={c.slug} client={c} />
+          ))}
+          {CLIENTS.map((c) => (
+            <LogoTile key={`echo-${c.slug}`} client={c} echo />
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
-function CustomerCard({ client }: { client: Client }) {
-  const inner = (
+/**
+ * One customer in the strip. Logo plus name, and nothing clickable.
+ *
+ * `echo` marks the second, duplicate pass of the list — presentational only.
+ */
+function LogoTile({ client, echo = false }: { client: Client; echo?: boolean }) {
+  const inner = client.logo ? (
     <>
       {/* Logos arrive at wildly different aspect ratios and some ship a white
-          or dark matte, so each sits object-contained in an equal white box.
-          That equalises optical weight instead of letting the square,
+          or dark matte, so each sits object-contained in an equal box. That
+          equalises optical weight instead of letting the square,
           high-resolution marks dwarf the small or very wide ones. */}
-      {/*
-        Shorter on phones. Two rows of cards plus a three-line heading came
-        to ~818px inside a pinned viewport that only has ~776px once the
-        fixed header is cleared — and the overflow was clipped off the TOP,
-        taking the heading with it. 24px off each row's logo tile is the
-        least damaging 48px to find.
-      */}
-      <div className="flex h-[76px] items-center justify-center rounded border border-hairline bg-white p-3 sm:h-[84px] sm:p-4 lg:h-[108px] lg:p-5">
-        {client.logo ? (
-          <img
-            src={client.logo}
-            alt={`${client.name} logo`}
-            width={client.width}
-            height={client.height}
-            loading="lazy"
-            className="max-h-full w-auto max-w-full object-contain"
-          />
-        ) : (
-          <span className="text-center">
-            <span className="mono block text-faint">{client.wordmark?.kicker}</span>
-            <span className="mt-1 block font-display text-[0.95rem] font-bold leading-tight text-ink">
-              {client.wordmark?.title}
-            </span>
-          </span>
-        )}
+      <div className="flex min-h-0 flex-1 items-center justify-center">
+        <img
+          src={client.logo}
+          alt={echo ? '' : `${client.name} logo`}
+          width={client.width}
+          height={client.height}
+          loading="lazy"
+          className="max-h-full w-auto max-w-full object-contain"
+        />
       </div>
-
-      <div className="mt-4 flex flex-1 flex-col">
-        {/* Same nesting, same reason — "Shreem Institute of Health
-            Sciences" runs to three lines on a phone. */}
-        <div>
-          <h3 className="line-clamp-2 font-display text-[0.98rem] font-bold leading-snug text-ink">
-            {client.name}
-          </h3>
-        </div>
-        <p className="mono mt-1.5 text-faint">{client.label}</p>
-
-        {/*
-          The clamp lives on a nested element on purpose. A direct child of
-          a flex container has its display blockified, which turns the
-          `-webkit-box` that line-clamp depends on into `flow-root` and
-          makes the utility silently do nothing. The card is a fixed
-          height, so that safety net has to actually hold.
-        */}
-        {client.description && (
-          <div className="mt-3">
-            <p className="line-clamp-2 text-f-xs leading-relaxed text-muted sm:line-clamp-3">
-              {client.description}
-            </p>
-          </div>
-        )}
-
-        {client.url && (
-          <span className="mt-auto inline-flex items-center gap-1 pt-4 text-f-xs font-semibold text-ink transition-all group-hover:gap-2 group-hover:text-accent-ink">
-            Visit site <ArrowUpRight className="h-3.5 w-3.5" />
-          </span>
-        )}
-      </div>
+      <p className="mt-3 line-clamp-2 text-center text-f-2xs font-semibold leading-snug text-muted transition-colors group-hover:text-ink">
+        {client.name}
+      </p>
     </>
+  ) : (
+    /* No mark supplied, so the name itself becomes the mark, set in the
+       display face. A second name line underneath would only repeat it. */
+    <div className="flex flex-1 items-center justify-center">
+      <span className="text-center font-display text-[0.95rem] font-bold leading-tight text-ink">
+        {client.name}
+      </span>
+    </div>
   );
 
-  const shell =
+  return (
     /*
-     * Shorter on phones. Two rows of these sit inside a pinned viewport
-     * that has ~776px once the fixed header is cleared; at 320px each the
-     * content came to ~818px and the overflow was clipped off the TOP,
-     * cutting the heading in half. Three steps because a 360x780 handset
-     * has ~712px of pinned box, not 776px.
+     * The horizontal gutter is PADDING on each item, never `gap`. Thirty
+     * items have twenty-nine gaps, so half the track would be one copy plus
+     * half a gap — which is not one copy's width, and the loop would jump by
+     * half a gap on every pass. Padding belongs to the item, so each copy is
+     * exactly half the track and -50% is exact.
+     *
+     * The vertical padding is headroom. `.marquee` has to clip horizontally,
+     * which clips vertically too, so without it the hover lift and its
+     * shadow are sheared off against the top and bottom edges.
      */
-    'group flex h-[272px] flex-col rounded-lg border border-hairline bg-white p-4 transition-all sm:h-[292px] lg:h-[320px]';
-
-  // A link only where we actually hold a site for the customer.
-  return client.url ? (
-    <a
-      href={client.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`${client.name} — opens ${client.label} in a new tab`}
-      className={`${shell} hover:-translate-y-1 hover:border-accent-300 hover:shadow-lg`}
-    >
-      {inner}
-    </a>
-  ) : (
-    <div className={shell}>{inner}</div>
+    <li className="shrink-0 px-3 py-6 sm:px-4" {...(echo ? { 'aria-hidden': true } : {})}>
+      {/* Every mark keeps its own colours. These are fifteen real brands and
+          a desaturated wall flattened all of them to the same grey; the hover
+          state is carried by the border instead, which singles one out
+          without touching how any of them look. */}
+      <div className="logo-tile group h-[132px] w-[196px] sm:h-[144px] sm:w-[220px]">
+        <span className="logo-tile__ring" aria-hidden />
+        {/* Inset by the 2px that the ring shows through, and opaque, so the
+            ring is only ever visible as a border. */}
+        <div className="absolute inset-[2px] flex flex-col rounded-[8px] bg-white px-3 py-4 sm:px-4">
+          {inner}
+        </div>
+      </div>
+    </li>
   );
 }

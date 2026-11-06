@@ -29,13 +29,22 @@ export type Client = {
   /** Typeset stand-in used when `logo` is absent. */
   wordmark?: { kicker: string; title: string };
   /**
-   * `sector` and `description` are filled in ONLY where the organisation's own
-   * name or logo states its category — "Institute of Nursing", "RJ Logistic
-   * Pvt. Ltd.", "Cafe & Kitchen". They are deliberately left empty for the
-   * seven customers whose business is not stated on the assets supplied
-   * (CloudsArtist21, JPS & JPN, MatLabs, MediJini, Pixelr, Technosys,
-   * Waverra) rather than guessed, since this is a public page naming real
-   * companies. Fill those in and the cards pick them up automatically.
+   * `sector` and `description` are only ever taken from what the organisation
+   * says about itself — its own name or logo ("Institute of Nursing", "RJ
+   * Logistic Pvt. Ltd.", "Cafe & Kitchen", "Joharimall High School, Cuttack
+   * · Since 1980"), or the headline on its own homepage ("Material Testing
+   * Laboratory", "Excellence in Mining, Manpower & Industrial Projects").
+   * Nothing here is inferred, because this is a public page naming real
+   * companies.
+   *
+   * `sector` is therefore sparser than `description`: a materials testing lab
+   * plainly tests materials, but which industry it serves is a guess, so it
+   * carries the line and no sector. Analytical instruments fit none of the
+   * five sectors at all.
+   *
+   * Pixelr and Waverra stay empty. Both sites serve a title and nothing else
+   * — no heading, no meta description — so there is no self-description to
+   * quote. Fill either in and the card picks it up automatically.
    */
   sector?: Sector;
   description?: string;
@@ -43,13 +52,14 @@ export type Client = {
 
 export const CLIENTS: Client[] = [
   {
-    slug: 'cloudsartist21',
-    name: 'CloudsArtist21',
-    label: 'cloudsartist21.com',
-    url: 'https://cloudsartist21.com/',
-    logo: '/images/clients/cloudsartist21.webp',
-    width: 383,
-    height: 280,
+    slug: 'joharimall-high-school',
+    name: 'Joharimall High School',
+    label: 'High school in Cuttack',
+    logo: '/images/clients/joharimall-high-school.webp',
+    width: 225,
+    height: 225,
+    sector: 'education',
+    description: 'Secondary education in Cuttack, since 1980.',
   },
   {
     slug: 'jpsandjpn',
@@ -59,6 +69,8 @@ export const CLIENTS: Client[] = [
     logo: '/images/clients/jpsandjpn.webp',
     width: 130,
     height: 130,
+    sector: 'infrastructure',
+    description: 'Mining, manpower and industrial projects.',
   },
   {
     slug: 'matlabsindia',
@@ -68,6 +80,7 @@ export const CLIENTS: Client[] = [
     logo: '/images/clients/matlabsindia.webp',
     width: 560,
     height: 177,
+    description: 'Materials testing laboratory.',
   },
   {
     slug: 'medijini',
@@ -77,6 +90,8 @@ export const CLIENTS: Client[] = [
     logo: '/images/clients/medijini.webp',
     width: 519,
     height: 280,
+    sector: 'healthcare',
+    description: 'Medical equipment supplier.',
   },
   {
     slug: 'oreviacafe',
@@ -139,6 +154,7 @@ export const CLIENTS: Client[] = [
     logo: '/images/clients/technosys.webp',
     width: 560,
     height: 121,
+    description: 'Analytical instruments and equipment.',
   },
   {
     slug: 'waverra',

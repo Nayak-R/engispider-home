@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard, GraduationCap, Wallet, BookOpen, BedDouble, BarChart3,
   IndianRupee, Users, TrendingUp, CheckCircle2, Clock, Landmark, Bus,
+  ClipboardList, Building2, Library, AlertTriangle,
 } from 'lucide-react';
 import {
   BrowserFrame,
@@ -48,8 +49,10 @@ const NAV: NavItem[] = [
   { key: 'students', label: 'Students', Icon: GraduationCap },
   { key: 'fees', label: 'Fees', Icon: Wallet },
   { key: 'accounting', label: 'Accounting', Icon: Landmark },
+  { key: 'academics', label: 'Academics', Icon: ClipboardList },
   { key: 'hostel', label: 'Hostel', Icon: BedDouble },
   { key: 'transport', label: 'Transport', Icon: Bus },
+  { key: 'staff', label: 'Staff', Icon: Users },
   { key: 'reports', label: 'Reports', Icon: BarChart3 },
 ];
 
@@ -537,5 +540,406 @@ export function PhonePortalMock() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ===========================================================================
+   SCREENS ADDED FOR THE PRODUCT EXPLORER
+   ---------------------------------------------------------------------------
+   The tabbed explorer on /solutions/education needs one screen per module,
+   and five of the eight modules had none. Same rules as everything above:
+   drawn in HTML, aria-hidden, every value derived arithmetically from the
+   visibility-gated tick so server and first client render agree, and the
+   indigo of the real product rather than the site's orange.
+
+   The admissions screen is modelled column for column on the running
+   Students list (see components/home/RealScreens.tsx, itself a recreation
+   built from screenshots of the live product) so the explorer shows the same
+   object an administrator logs into, inside the same frame as its siblings.
+   =========================================================================== */
+
+/* ============================================================== admissions */
+
+export function AdmissionsMock() {
+  const [ref, t] = useLiveTick(3000);
+  const mounted = useMounted();
+
+  const students = [
+    ['Ananya Mohanty', 'ADM/2025/0418', 'B.Pharm · 2', 'General'],
+    ['Soumya Behera', 'ADM/2025/0419', 'Nursing · 1', 'SC'],
+    ['Rakesh Das', 'ADM/2024/0312', 'Polytechnic · 3', 'OBC'],
+    ['Priya Sahoo', 'ADM/2025/0421', 'B.Sc · 1', 'General'],
+  ] as const;
+
+  return (
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Students · Onboarded"
+      nav={NAV}
+      active="students"
+      accent={ACCENT}
+      tint={TINT}
+      search
+      badge={<LiveDot label={`${842 + t} active`} />}
+    >
+      <div className="mb-2 flex items-center gap-1.5">
+        {['All admission years', 'All courses', 'All categories'].map((f) => (
+          <span
+            key={f}
+            className="hidden flex-1 truncate rounded-md border border-gray-200 bg-white px-2 py-1 text-[9px] text-gray-500 sm:block"
+          >
+            {f}
+          </span>
+        ))}
+        <span
+          className="ml-auto shrink-0 rounded-md px-2.5 py-1 text-[9px] font-semibold text-white"
+          style={{ background: ACCENT }}
+        >
+          + Onboard student
+        </span>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.3fr_1.2fr_1fr_0.7fr_0.8fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Student</span>
+          <span>Admission no</span>
+          <span>Course</span>
+          <span>Category</span>
+          <span className="text-right">Status</span>
+        </div>
+        {students.map(([name, adm, course, cat], i) => (
+          <motion.div
+            key={adm}
+            initial={mounted ? { opacity: 0, x: 6 } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.26, delay: i * 0.035 }}
+            className="grid grid-cols-[1.3fr_1.2fr_1fr_0.7fr_0.8fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+          >
+            <span className="truncate font-medium text-gray-800">{name}</span>
+            <span className="mono-num truncate text-gray-500">{adm}</span>
+            <span className="truncate text-gray-600">{course}</span>
+            <span className="truncate text-gray-600">{cat}</span>
+            <span className="text-right">{pill('ACTIVE', 'bg-emerald-50 text-emerald-700')}</span>
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="mt-2 text-[9px] text-gray-400">
+        Guardian, hostel, transport and fee plan are all set in the same admission flow.
+      </p>
+    </MockShell>
+  );
+}
+
+/* ======================================================= attendance & exams */
+
+export function AttendanceExamMock() {
+  const [ref, t] = useLiveTick(2700);
+  const marked = Math.min(6, 2 + (t % 5));
+
+  const classes = [
+    { cls: 'B.Sc · 1 · A', present: 54, strength: 58 },
+    { cls: 'B.Pharm · 2', present: 41, strength: 46 },
+    { cls: 'Nursing · 1', present: 38, strength: 40 },
+    { cls: 'Polytechnic · 3', present: 47, strength: 55 },
+  ];
+
+  return (
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Academics · Attendance & exams"
+      nav={NAV}
+      active="academics"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label={`${marked}/6 marked`} />}
+    >
+      <div className="grid gap-2 sm:grid-cols-[1.15fr_1fr]">
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[11px] font-bold text-gray-800">Attendance today</span>
+            <span className="text-[9px] text-gray-400">Class-wise</span>
+          </div>
+          {classes.map(({ cls, present, strength }) => {
+            const pct = Math.round((present / strength) * 100);
+            return (
+              <div key={cls} className="mb-[7px] last:mb-0">
+                <div className="mb-1 flex items-center justify-between text-[9.5px]">
+                  <span className="truncate text-gray-600">{cls}</span>
+                  <span className="mono-num text-gray-800">
+                    {present}/{strength}
+                  </span>
+                </div>
+                <span className="block h-1.5 overflow-hidden rounded-full bg-gray-100">
+                  <motion.span
+                    className="block h-full rounded-full"
+                    style={{ background: pct >= 85 ? '#16a34a' : '#d97706' }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                </span>
+              </div>
+            );
+          })}
+          <p className="mt-2 text-[9px] text-gray-400">
+            Approved leave moves a student out of the absent count.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-2 block text-[11px] font-bold text-gray-800">
+            Semester exam · B.Pharm 2
+          </span>
+          {[
+            ['Form fill-up', '46 of 46 students', 'bg-emerald-50 text-emerald-700', 'DONE'],
+            ['Exam fee', '44 of 46 collected', 'bg-amber-50 text-amber-700', '2 DUE'],
+            ['Marks upload', '6 of 6 papers', 'bg-emerald-50 text-emerald-700', 'DONE'],
+            ['Result', 'Awaiting declaration', 'bg-indigo-50 text-indigo-700', 'READY'],
+          ].map(([step, detail, tone, tag]) => (
+            <div
+              key={step}
+              className="flex items-center justify-between gap-2 border-b border-gray-50 py-[7px] text-[10px] last:border-0"
+            >
+              <span className="min-w-0">
+                <span className="block truncate font-medium text-gray-800">{step}</span>
+                <span className="block truncate text-[9px] text-gray-400">{detail}</span>
+              </span>
+              <span className="shrink-0">{pill(tag, tone)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </MockShell>
+  );
+}
+
+/* ============================================ hostel, transport and library */
+
+export function CampusOpsMock() {
+  const [ref, t] = useLiveTick(2900);
+  const issued = 318 + t;
+
+  return (
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Hostel · Transport · Library"
+      nav={NAV}
+      active="hostel"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label="fees linked" />}
+    >
+      <div className="mb-2.5 grid grid-cols-3 gap-2">
+        <MockStat label="Beds allotted" value="214 / 260" Icon={BedDouble} tone={ACCENT} />
+        <MockStat label="On transport" value="186" Icon={Bus} tone="#0891b2" />
+        <MockStat label="Books issued" value={String(issued)} Icon={Library} tone="#7c3aed" />
+      </div>
+
+      <div className="grid gap-2 sm:grid-cols-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-1.5 block text-[11px] font-bold text-gray-800">Hostel · Block B</span>
+          {[
+            ['B-104', 'A. Mohanty', 'ALLOTTED', 'bg-emerald-50 text-emerald-700'],
+            ['B-107', 'S. Behera', 'ALLOTTED', 'bg-emerald-50 text-emerald-700'],
+            ['B-112', 'Vacant', 'VACANT', 'bg-gray-100 text-gray-500'],
+          ].map(([room, who, tag, tone]) => (
+            <div
+              key={room}
+              className="grid grid-cols-[0.7fr_1.1fr_0.9fr] items-center gap-1 border-b border-gray-50 py-[7px] text-[10px] last:border-0"
+            >
+              <span className="mono-num text-gray-500">{room}</span>
+              <span className="truncate text-gray-700">{who}</span>
+              <span className="text-right">{pill(tag, tone)}</span>
+            </div>
+          ))}
+          <p className="mt-1.5 text-[9px] text-gray-400">
+            Allotment raises the hostel fee on the student ledger.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-2.5">
+          <span className="mb-1.5 block text-[11px] font-bold text-gray-800">Transport routes</span>
+          {[
+            ['R-02 · Patia', 42, 8400],
+            ['R-05 · Jatni', 31, 10200],
+            ['R-07 · Khordha', 24, 12000],
+          ].map(([route, riders, fare]) => (
+            <div
+              key={route as string}
+              className="grid grid-cols-[1.3fr_0.5fr_0.9fr] items-center border-b border-gray-50 py-[7px] text-[10px] last:border-0"
+            >
+              <span className="truncate text-gray-700">{route as string}</span>
+              <span className="mono-num text-gray-500">{riders as number}</span>
+              <span className="mono-num text-right text-gray-800">{inr(fare as number)}</span>
+            </div>
+          ))}
+          <p className="mt-1.5 text-[9px] text-gray-400">
+            Map a student to a stop and the fare follows onto the ledger.
+          </p>
+        </div>
+      </div>
+    </MockShell>
+  );
+}
+
+/* ========================================================== staff & payroll */
+
+export function PayrollMock() {
+  const [ref, t] = useLiveTick(2600);
+  const approved = Math.min(3, (t % 4) + 1);
+
+  return (
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Staff · Payroll run"
+      nav={NAV}
+      active="staff"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label={`${approved}/3 approved`} />}
+    >
+      <div className="mb-2.5 grid grid-cols-3 gap-2">
+        <MockStat label="Staff on roll" value="128" Icon={Users} tone={ACCENT} />
+        <MockStat label="Payslips drafted" value="128" Icon={CheckCircle2} tone="#16a34a" />
+        <MockStat
+          label="Awaiting approval"
+          value={String(3 - approved)}
+          Icon={Clock}
+          tone="#d97706"
+        />
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.3fr_1fr_0.9fr_0.9fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Staff</span>
+          <span>Role</span>
+          <span>Net pay</span>
+          <span className="text-right">Status</span>
+        </div>
+        {[
+          ['B. Pradhan', 'Lecturer', 48200],
+          ['M. Nayak', 'Lab assistant', 26400],
+          ['K. Mishra', 'Accountant', 34800],
+        ].map(([name, role, net], i) => {
+          const done = i < approved;
+          return (
+            <div
+              key={name as string}
+              className="grid grid-cols-[1.3fr_1fr_0.9fr_0.9fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+            >
+              <span className="truncate font-medium text-gray-800">{name as string}</span>
+              <span className="truncate text-gray-600">{role as string}</span>
+              <span className="mono-num text-gray-800">{inr(net as number)}</span>
+              <span className="text-right">
+                {pill(
+                  done ? 'APPROVED' : 'PENDING',
+                  done ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                )}
+              </span>
+            </div>
+          );
+        })}
+        <div className="flex items-center justify-between bg-gray-50 px-2.5 py-1.5 text-[10px] font-bold text-gray-800">
+          <span>Bank disbursement file</span>
+          <span className="flex items-center gap-1 font-medium text-gray-500">
+            <Clock size={10} /> Released after approval
+          </span>
+        </div>
+      </div>
+
+      <p className="mt-2 text-[9px] text-gray-400">
+        Attendance and approved leave feed the run, under the same maker-checker rule as fees.
+      </p>
+    </MockShell>
+  );
+}
+
+/* ================================================== multi-institution group */
+
+export function MultiInstituteMock() {
+  const [ref, t] = useLiveTick(3000);
+
+  const institutes = [
+    { name: 'Science College', students: 842, collected: 1842000, due: 486000 },
+    { name: 'Polytechnic', students: 614, collected: 1264000, due: 392000 },
+    { name: 'Nursing Institute', students: 318, collected: 708000, due: 174000 },
+    { name: 'Pharmacy Institute', students: 286, collected: 642000, due: 88000 },
+  ].map((r, i) => ({ ...r, collected: r.collected + (i === 0 ? t * 5200 : 0) }));
+
+  const totalStudents = institutes.reduce((n, r) => n + r.students, 0);
+  const totalCollected = institutes.reduce((n, r) => n + r.collected, 0);
+
+  return (
+    <MockShell
+      innerRef={ref}
+      product="Engispider"
+      kicker="CAMPUS · ERP"
+      module="Group · All institutes"
+      nav={NAV}
+      active="dashboard"
+      accent={ACCENT}
+      tint={TINT}
+      badge={<LiveDot label="4 institutes" />}
+    >
+      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+        <span
+          className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[9px] font-semibold"
+          style={{ background: TINT, color: ACCENT }}
+        >
+          <Building2 size={10} /> All institutes
+        </span>
+        <span className="text-[9px] text-gray-400">
+          Switch to one institute to work inside it
+        </span>
+      </div>
+
+      <div className="mb-2.5 grid grid-cols-2 gap-2">
+        <MockStat
+          label="Students, group-wide"
+          value={String(totalStudents)}
+          Icon={GraduationCap}
+          tone={ACCENT}
+        />
+        <MockStat
+          label="Collected this month"
+          value={lakh(totalCollected)}
+          Icon={IndianRupee}
+          tone="#16a34a"
+        />
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="grid grid-cols-[1.4fr_0.7fr_0.9fr_0.9fr] border-b border-gray-100 px-2.5 py-1.5 text-[9px] font-semibold uppercase text-gray-400">
+          <span>Institute</span>
+          <span>Students</span>
+          <span>Collected</span>
+          <span className="text-right">Outstanding</span>
+        </div>
+        {institutes.map((r) => (
+          <div
+            key={r.name}
+            className="grid grid-cols-[1.4fr_0.7fr_0.9fr_0.9fr] items-center border-b border-gray-50 px-2.5 py-[7px] text-[10px] last:border-0"
+          >
+            <span className="truncate font-medium text-gray-800">{r.name}</span>
+            <span className="mono-num text-gray-600">{r.students}</span>
+            <span className="mono-num text-gray-800">{lakh(r.collected)}</span>
+            <span className="mono-num text-right text-red-600">{lakh(r.due)}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-2 flex items-center gap-1 text-[9px] text-gray-400">
+        <AlertTriangle size={9} /> Each institute keeps its own records; only group roles see
+        this consolidated view.
+      </p>
+    </MockShell>
   );
 }

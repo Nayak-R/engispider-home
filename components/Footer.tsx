@@ -72,7 +72,7 @@ const COMPANY_LINKS = [
  * CTA under one of those gave two consecutive panels asking for the same
  * thing in the same words.
  */
-const PAGES_WITH_OWN_CTA = ['/', '/contact'];
+const PAGES_WITH_OWN_CTA = ['/', '/contact', '/solutions/education'];
 
 function ColumnLabel({ children }: { children: React.ReactNode }) {
   return <p className="mono mb-5 text-faint">{children}</p>;

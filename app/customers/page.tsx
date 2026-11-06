@@ -20,7 +20,7 @@ import { INDUSTRIES } from '@/data/products';
 export const metadata = pageMetadata({
   title: 'Our Customers',
   description:
-    'The businesses and institutes we build software for — across education, healthcare, logistics, infrastructure and hospitality. Named, with their own sites linked.',
+    'The businesses and institutes we build software for — across education, healthcare, logistics, infrastructure and hospitality. Named here with their permission.',
   path: '/customers',
   keywords: [
     'Engispider customers',
@@ -40,11 +40,21 @@ export const metadata = pageMetadata({
  * named here" — because a big claim beside a short list looks like the
  * short list is the real answer.
  *
- * The previous version was black with a purple gradient CTA; the logo
- * wall was the only part worth keeping, and it is unchanged.
+ * The previous version was black with a purple gradient CTA. The logo wall
+ * survived that change unaltered and therefore unreadable — white names on
+ * a white page — which is what ClientLogoGrid was rebuilt to fix.
+ *
+ * Nothing on the wall links out. The copy here used to promise that every
+ * mark opened the customer's own site, so all four places that said so have
+ * been rewritten rather than left to contradict the page.
  */
 export default function CustomersPage() {
-  const sectors = [...new Set(CLIENTS.map((c) => c.sector))];
+  /*
+   * `sector` is optional, so a bare Set counts `undefined` as a sector of its
+   * own — the page claimed five while four were recorded. Drop the blanks and
+   * the figure is the number of sectors actually named on the cards.
+   */
+  const sectors = [...new Set(CLIENTS.map((c) => c.sector).filter(Boolean))];
 
   return (
     <>
@@ -55,7 +65,7 @@ export default function CustomersPage() {
         <PageHero
           marker="Customers"
           title="The ones who let us name them."
-          lede={`${COMPANY.organisations.servedDisplay} organisations run software we built. ${CLIENTS.length} of them agreed to appear here — and every one of those links to their own site, so you can check rather than take our word for it.`}
+          lede={`${COMPANY.organisations.servedDisplay} organisations run software we built. ${CLIENTS.length} of them agreed to be named here, with the sector each one works in. The rest sit behind agreements that do not let us name them at all.`}
           cta={{ href: '/contact', label: 'Become the next one' }}
           secondary={{ href: '/solutions', label: 'See the products' }}
           spec={[
@@ -84,16 +94,16 @@ export default function CustomersPage() {
                 <Reveal delay={120}>
                   <p className="text-body">
                     A sample, not the whole book — most of our work sits behind
-                    an agreement that does not let us name it. Grouped by
-                    sector; marks belong to their owners and each opens their
-                    own site in a new tab.
+                    an agreement that does not let us name it. Each card
+                    carries the sector it works in and what it does. Marks
+                    belong to their owners.
                   </p>
                 </Reveal>
               </div>
             </div>
 
             <div className="mt-14">
-              <ClientLogoGrid clients={CLIENTS} detailed />
+              <ClientLogoGrid clients={CLIENTS} />
             </div>
           </div>
         </section>
@@ -118,7 +128,7 @@ function Numbers({ sectors }: { sectors: number }) {
             { value: COMPANY.organisations.servedDisplay, label: 'organisations served' },
             { count: CLIENTS.length, label: 'named here, with permission' },
             { count: sectors, label: 'sectors served' },
-            { value: 'Linked', label: 'every mark goes to their site' },
+            { value: 'Live', label: 'every system named here is in production' },
           ].map((item, i) => (
             <Reveal key={item.label} delay={i * 70} className="relative">
               <span
@@ -128,7 +138,7 @@ function Numbers({ sectors }: { sectors: number }) {
               <dt className="font-display text-f-2xl font-extrabold leading-none text-ink">
                 {item.count !== undefined ? <CountUp value={item.count} duration={1100} /> : item.value}
               </dt>
-              <dd className="mono mt-2.5 text-faint">{item.label}</dd>
+              <dd className="mono mt-2.5 text-muted">{item.label}</dd>
             </Reveal>
           ))}
         </dl>
@@ -173,7 +183,7 @@ function Industries() {
                 href={industry.href}
                 className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 border-b border-hairline py-4 transition-colors hover:bg-accent-50 md:grid-cols-[4rem_minmax(0,22rem)_minmax(0,1fr)_2rem] md:gap-x-6 md:py-5"
               >
-                <span className="mono text-faint transition-colors group-hover:text-accent-700">
+                <span className="mono text-muted transition-colors group-hover:text-accent-700">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <span className="font-display text-f-lg font-bold tracking-tight text-ink transition-colors group-hover:text-accent-ink md:text-f-xl">

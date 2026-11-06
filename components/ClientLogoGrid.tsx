@@ -1,67 +1,53 @@
-import { ArrowUpRight } from 'lucide-react';
 import type { Client, Sector } from '@/data/clients';
 
 /**
- * Shared customer wall: compact logo tiles on the home page, full cards on
- * /customers.
+ * The customer wall on /customers: one card per named customer.
  *
- * Constraints the supplied assets imposed:
+ * This component was written for the old black theme and was left behind
+ * when the site went light — `text-white` names, `border-white/10` edges and
+ * `bg-white/5` fills meant most of each card was white-on-white and simply
+ * could not be read. Everything here is now on the light tokens.
+ *
+ * Constraints the supplied assets impose:
  *
  *  - Every mark sits on a white tile. Most are transparent PNGs, but MediJini
  *    ships a white matte and Orevia a dark brown one, so no single dark
  *    background renders them all — a light tile is the only surface that does.
  *  - Aspect ratios run from 1:1 to 6:1 and sources from 110px to 4200px wide,
- *    so the tile is a fixed box and each logo is `object-contain`ed to fill it.
+ *    so the tile is a fixed box and each logo is `object-contain`ed inside it.
  *    That equalises optical weight instead of letting the square, high-res
  *    logos dwarf the small or very wide ones.
- *  - Some customers have no logo, no site, or no description yet. Every one of
- *    those is optional and the card stays whole without it.
+ *  - Some customers have no logo and some no description. Both are optional
+ *    and the card stays whole without either.
  *
- * The sector palette lives here rather than in data/clients.ts because Tailwind
- * only scans ./app, ./components and ./pages — class names in the data
- * directory would be purged from the build.
+ * Nothing here is a link. These are customers, not partners we are sending
+ * traffic to, and the page's job is to let you read who they are.
  *
- * No framer-motion: this renders fifteen cards on pages that are already heavy,
- * and every bit of this polish is cheaper as plain CSS.
+ * The sector palette lives here rather than in data/clients.ts because
+ * Tailwind only scans ./app, ./components and ./pages — class names in the
+ * data directory would be purged from the build.
  */
 
-const SECTOR_STYLES: Record<Sector, { label: string; gradient: string }> = {
-  education: { label: 'Education', gradient: 'from-violet-500 to-indigo-500' },
-  healthcare: { label: 'Healthcare', gradient: 'from-teal-500 to-emerald-500' },
-  logistics: { label: 'Logistics', gradient: 'from-amber-500 to-orange-500' },
-  infrastructure: { label: 'Infrastructure', gradient: 'from-blue-500 to-cyan-500' },
-  hospitality: { label: 'Hospitality', gradient: 'from-rose-500 to-pink-500' },
+/**
+ * One quiet hue per sector: a rule across the top of the card and a tinted
+ * pill above the name.
+ *
+ * Solid colours, not the gradient-clipped text this used to carry. Gradient
+ * text has no single contrast ratio to answer for, and against a light card
+ * the old violet-to-indigo fill failed badly at pill size. Every pairing
+ * below is a 700 weight on a 50 tint, which clears AA comfortably.
+ */
+const SECTOR_STYLES: Record<Sector, { label: string; rule: string; pill: string; dot: string }> = {
+  education:      { label: 'Education',      rule: 'bg-indigo-400', pill: 'bg-indigo-50 text-indigo-700', dot: 'bg-indigo-500' },
+  healthcare:     { label: 'Healthcare',     rule: 'bg-teal-400',   pill: 'bg-teal-50 text-teal-700',     dot: 'bg-teal-500'   },
+  logistics:      { label: 'Logistics',      rule: 'bg-amber-400',  pill: 'bg-amber-50 text-amber-700',   dot: 'bg-amber-500'  },
+  infrastructure: { label: 'Infrastructure', rule: 'bg-sky-400',    pill: 'bg-sky-50 text-sky-700',       dot: 'bg-sky-500'    },
+  hospitality:    { label: 'Hospitality',    rule: 'bg-rose-400',   pill: 'bg-rose-50 text-rose-700',     dot: 'bg-rose-500'   },
 };
 
-const NEUTRAL_GRADIENT = 'from-blue-500 to-purple-500';
-
-/** Renders as a link only when we actually have a site for the customer. */
-function CardShell({
-  client,
-  className,
-  children,
-}: {
-  client: Client;
-  className: string;
-  children: React.ReactNode;
-}) {
-  if (!client.url) return <div className={className}>{children}</div>;
+function LogoMark({ client }: { client: Client }) {
   return (
-    <a
-      href={client.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`${client.name} — opens ${client.label} in a new tab`}
-      className={className}
-    >
-      {children}
-    </a>
-  );
-}
-
-function LogoMark({ client, className }: { client: Client; className: string }) {
-  return (
-    <div className={`flex items-center justify-center rounded-2xl bg-white ${className}`}>
+    <div className="flex h-28 shrink-0 items-center justify-center rounded-lg border border-hairline bg-white px-5 py-4">
       {client.logo ? (
         <img
           src={client.logo}
@@ -70,14 +56,12 @@ function LogoMark({ client, className }: { client: Client; className: string }) 
           height={client.height}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+          className="max-h-full w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
         />
       ) : (
         <span className="flex flex-col items-center text-center leading-tight transition-transform duration-300 group-hover:scale-105">
-          <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-gray-500">
-            {client.wordmark?.kicker}
-          </span>
-          <span className="mt-1 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-lg font-bold text-transparent">
+          <span className="mono text-muted">{client.wordmark?.kicker}</span>
+          <span className="mt-1 font-display text-f-lg font-bold text-ink">
             {client.wordmark?.title}
           </span>
         </span>
@@ -86,99 +70,56 @@ function LogoMark({ client, className }: { client: Client; className: string }) 
   );
 }
 
-function DetailedCard({ client }: { client: Client }) {
+function CustomerCard({ client }: { client: Client }) {
   const sector = client.sector ? SECTOR_STYLES[client.sector] : null;
-  const gradient = sector?.gradient ?? NEUTRAL_GRADIENT;
 
   return (
-    <li className="group relative h-full">
-      {/* Sector-tinted bloom behind the card, revealed on hover */}
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute -inset-0.5 rounded-3xl bg-gradient-to-b ${gradient} opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-30`}
-      />
-
-      <CardShell
-        client={client}
-        className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-      >
+    <li className="group h-full">
+      <div className="flex h-full flex-col overflow-hidden rounded-xl border border-hairline bg-white shadow-sm transition duration-300 ease-out group-hover:-translate-y-1 group-hover:border-accent-300 group-hover:shadow-lg">
+        {/* Sector rule. Hairline where the sector is not recorded, so an
+            unclassified customer reads as neutral rather than mislabelled. */}
         <span
           aria-hidden
-          className={`h-1 w-full shrink-0 bg-gradient-to-r ${gradient} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
+          className={`h-1 w-full shrink-0 ${sector ? sector.rule : 'bg-hairline-mid'}`}
         />
 
-        <div className="p-5">
-          <LogoMark client={client} className="h-32 px-6 py-5" />
+        <div className="flex flex-1 flex-col p-5">
+          <LogoMark client={client} />
 
-          <div className="mt-5">
+          <div className="mt-5 flex flex-1 flex-col">
             {sector && (
-              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider">
-                <span className={`h-1.5 w-1.5 rounded-full bg-gradient-to-r ${gradient}`} />
-                <span className={`bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
-                  {sector.label}
-                </span>
+              <span
+                className={`mono mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 ${sector.pill}`}
+              >
+                <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${sector.dot}`} />
+                {sector.label}
               </span>
             )}
 
-            <h3 className="text-lg font-semibold leading-snug text-white transition-colors group-hover:text-blue-200">
+            <h3 className="font-display text-f-lg font-bold leading-snug tracking-tight text-ink">
               {client.name}
             </h3>
 
-            {/* Height is reserved so cards align whether or not copy exists yet */}
-            <p className="mt-2 line-clamp-2 min-h-[2.5rem] text-sm leading-relaxed text-gray-400">
-              {client.description}
-            </p>
+            {/* Left out entirely rather than reserved as blank space: seven of
+                these customers have no description recorded, and an empty slot
+                under the name reads as a card that failed to load. */}
+            {client.description && (
+              <p className="mt-2 text-f-xs leading-relaxed text-muted">
+                {client.description}
+              </p>
+            )}
           </div>
         </div>
-
-        <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 px-5 py-3.5">
-          <span className="truncate text-xs text-gray-500">{client.label}</span>
-          {client.url && (
-            <span className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-blue-400 transition-transform duration-300 group-hover:translate-x-0.5">
-              Visit
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          )}
-        </div>
-      </CardShell>
+      </div>
     </li>
   );
 }
 
-function CompactTile({ client }: { client: Client }) {
+export default function ClientLogoGrid({ clients }: { clients: Client[] }) {
   return (
-    <li className="w-[calc(50%-0.5rem)] sm:w-44 lg:w-48">
-      <CardShell
-        client={client}
-        className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-blue-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-      >
-        <LogoMark client={client} className="h-24 px-5 py-4 sm:h-28" />
-      </CardShell>
-    </li>
-  );
-}
-
-type Props = {
-  clients: Client[];
-  /** Full cards with sector, name and description, instead of bare logo tiles. */
-  detailed?: boolean;
-};
-
-export default function ClientLogoGrid({ clients, detailed = false }: Props) {
-  if (detailed) {
-    return (
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {clients.map((client) => (
-          <DetailedCard key={client.slug} client={client} />
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <ul className="flex flex-wrap justify-center gap-4 sm:gap-5">
+    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {clients.map((client) => (
-        <CompactTile key={client.slug} client={client} />
+        <CustomerCard key={client.slug} client={client} />
       ))}
     </ul>
   );

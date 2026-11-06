@@ -347,6 +347,92 @@ html.lenis body { height: auto; }
 .animate-blink   { animation: blink 2.4s ease-in-out infinite; }
 .animate-pulse-ring { animation: pulse-ring 2.8s ease-in-out infinite; }
 .animate-marquee { animation: marquee 48s linear infinite; }
+
+/* ---- customer logo marquee ----------------------------------------------
+   The viewport for `.animate-marquee`. The track inside holds its list
+   twice, so translating exactly -50% lands copy two where copy one began
+   and the loop is seamless — see CustomerScroll for why the per-item
+   gutter is padding rather than `gap`.
+
+   Hover stops it, so a name that catches your eye can be read instead of
+   sliding away. Nothing in the strip is focusable, so there is no
+   :focus-within case to handle. */
+.marquee {
+  overflow: hidden;
+  /* Fade both ends so logos enter and leave the strip instead of being
+     guillotined by a hard edge. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6rem, #000 calc(100% - 6rem), transparent);
+          mask-image: linear-gradient(to right, transparent, #000 6rem, #000 calc(100% - 6rem), transparent);
+}
+.marquee-track { display: flex; width: max-content; }
+.marquee:hover .animate-marquee { animation-play-state: paused; }
+
+/* ---- logo tile: a border that traces itself on hover ---------------------
+   At rest the tile carries an ordinary 2px hairline. On hover that same 2px
+   becomes a rotating conic gradient, so the border reads as running around
+   the tile rather than merely changing colour.
+
+   The ring is a square layer wider than the tile's diagonal, spun with
+   `transform`. Rotating the element sidesteps @property: a conic gradient's
+   own `from` angle only interpolates once registered as an <angle> custom
+   property, and unregistered it jumps rather than turns. A transform
+   animates everywhere and stays on the compositor.
+
+   The face is opaque and inset by 2px, so the only part of the ring ever
+   visible is that 2px gutter.
+
+   The spin runs only while hovered. The strip holds thirty tiles; leaving
+   thirty conic layers rotating behind opaque cards would be thirty
+   composited layers repainting forever to show nothing. */
+.logo-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--hairline);
+  transition: background-color 220ms var(--ease), transform 300ms var(--ease),
+              box-shadow 300ms var(--ease);
+}
+.logo-tile:hover {
+  /* Sits under the travelling highlight, so the whole border warms instead
+     of only the arc the comet currently covers. */
+  background: var(--accent-200);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.logo-tile__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 170%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    rgba(251, 124, 31, 0) 0deg,
+    rgba(251, 124, 31, 0) 190deg,
+    var(--accent-500)     250deg,
+    #FFD2A8               285deg,
+    var(--accent-500)     315deg,
+    rgba(251, 124, 31, 0) 360deg
+  );
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+}
+.logo-tile:hover .logo-tile__ring {
+  opacity: 1;
+  animation: tile-ring-spin 1.6s linear infinite;
+}
+@keyframes tile-ring-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The global reduce rule below stops the animation dead, which would
+     strand every logo past the first screenful with no way to reach it.
+     Hand the strip back as an ordinary horizontal scroller instead. */
+  .marquee { overflow-x: auto; }
+}
 .animate-aurora-a { animation: aurora-a 19s ease-in-out infinite; }
 .animate-aurora-b { animation: aurora-b 24s ease-in-out infinite; }
 .animate-wave     { animation: wave-drift 28s ease-in-out infinite; }
